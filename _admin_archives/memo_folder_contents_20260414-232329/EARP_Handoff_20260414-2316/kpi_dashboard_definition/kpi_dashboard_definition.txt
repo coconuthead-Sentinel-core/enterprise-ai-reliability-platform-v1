@@ -1,0 +1,43 @@
+﻿KPI Dashboard Definition
+Version: 2.1
+
+LLM Scope Statement
+This dashboard tracks operational, reliability, safety, and business KPIs for LLM product releases.
+
+KPI-1 Groundedness Score
+Formula: GroundednessScore = supported_claims / total_claims
+Target: >= 0.92
+Owner: Reliability Engineering Lead
+
+KPI-2 Hallucination Rate
+Formula: HallucinationRate = unsupported_claims / total_claims
+Target: <= 0.03
+Owner: Applied AI Evaluation Lead
+
+KPI-3 Task Success Rate
+Formula: TaskSuccessRate = successful_tasks / total_tasks
+Target: >= 0.90
+Owner: Product Quality Lead
+
+KPI-4 Safety Violation Rate
+Formula: SafetyViolationRate = policy_violations / total_evaluations
+Target: <= 0.01
+Owner: Safety and Compliance Lead
+
+KPI-5 P95 Inference Latency
+Formula: P95Latency = percentile(response_time_ms, 95)
+Target: <= 2500 ms
+Owner: Platform Operations Lead
+
+KPI-6 Cost per Successful Task
+Formula: CostPerSuccessfulTask = total_inference_cost_usd / successful_tasks
+Target: within pricing model threshold
+Owner: FinOps Lead
+
+KPI-7 Release Gate Pass Rate
+Formula: GatePassRate = passed_releases / total_release_candidates
+Target: >= 0.80 with no safety degradation trend
+Owner: Release Engineering Lead
+
+Governance Rule
+Every KPI must include source system, refresh cadence, threshold band, and escalation action.

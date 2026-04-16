@@ -1,0 +1,47 @@
+﻿arc42 Mapping Index
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+
+arc42 Section 1 (Introduction and Goals)
+- project_charter/project_charter.txt
+- discovery_and_problem_definition/reliability-platform-v1 .txt
+
+arc42 Section 2 (Constraints)
+- requirements_and_prd_baseline/requirements_and_prd_baseline.txt
+
+arc42 Section 3 (Context and Scope)
+- architecture_and_api_contracts/architecture_and_api_contracts.txt
+
+arc42 Section 4 (Solution Strategy)
+- mvp_core_platform_build/mvp_core_platform_build.txt
+
+arc42 Section 5 (Building Block View)
+- architecture_and_api_contracts/building_block_view.txt
+
+arc42 Section 6 (Runtime View)
+- architecture_and_api_contracts/runtime_scenarios.txt
+
+arc42 Section 7 (Deployment View)
+- architecture_and_api_contracts/deployment_view.txt
+
+arc42 Section 8 (Cross-Cutting Concepts)
+- architecture_and_api_contracts/cross_cutting_concepts.txt
+
+arc42 Section 9 (Architecture Decisions)
+- decision_log_adr/decision_log_adr.txt
+
+arc42 Section 10 (Quality Requirements)
+- test_strategy_and_test_plan/test_strategy_and_test_plan.txt
+- kpi_dashboard_definition/kpi_dashboard_definition.txt
+
+arc42 Section 11 (Risks and Technical Debt)
+- risk_register/risk_register.txt
+
+arc42 Section 12 (Glossary)
+- project_charter/glossary.txt
+
+Mapping Rule
+Every arc42 section must remain traceable to at least one maintained project artifact.
+

@@ -1,0 +1,53 @@
+﻿Enterprise AI Reliability Platform (EARP)
+Software Development Life Cycle (SDLC) Master Standard
+Version: 2.2
+Status: Documentation Complete, Code Freeze Enforced Until Go Decision
+Owner: Product Engineering and Governance Office
+Last Updated: 2026-04-14
+
+LLM Scope Statement
+This SDLC governs large language model (LLM) product engineering, including prompt/version control, model evaluation, release-gate policy, and production risk management.
+
+1. Purpose
+Define an end-to-end, evidence-based engineering lifecycle for shipping LLM-enabled software to market with measurable reliability and compliance controls.
+
+2. Scope
+Includes: requirements, architecture, API contracts, evaluation methodology, integration, security, release governance, operations, and business validation.
+Excludes: direct coding before documentation gate approval.
+
+3. Mandatory LLM Evaluation Equations
+- HallucinationRate = unsupported_claims / total_claims
+- GroundednessScore = supported_claims / total_claims
+- TaskSuccessRate = successful_tasks / total_tasks
+- CostPerSuccessfulTask = total_inference_cost_usd / successful_tasks
+- ReliabilityIndex = 0.30*GroundednessScore + 0.25*TaskSuccessRate + 0.20*PolicyCompliance + 0.15*LatencySLOCompliance + 0.10*Availability
+
+4. SDLC Phases
+Phase 1 Charter and Business Definition
+Phase 2 Discovery and Requirements Baseline
+Phase 3 Architecture and API Contracts
+Phase 4 Build Planning and Work Breakdown
+Phase 5 Integration and Verification Planning
+Phase 6 Release Readiness and Compliance Gates
+Phase 7 Pilot Evaluation and Feedback Incorporation
+Phase 8 General Availability Hardening and Launch
+Phase 9 Continuous Operations and Improvement
+
+5. Acceptance Gates
+A release candidate is eligible for production only if:
+- ReliabilityIndex >= 0.85
+- HallucinationRate <= 0.03 on approved benchmark suites
+- P95 latency <= 2.5 seconds for target workflows
+- No open critical security findings
+- Full traceability from requirement to test evidence to gate decision
+
+6. Coding Assistant Pre-Code Intake Gate
+No implementation starts until the coding assistant confirms:
+- stack selection is fixed (Python backend + TypeScript frontend + PostgreSQL + Redis)
+- repository topology is created
+- environment bootstrap is reproducible
+- CI baseline (lint/test/security) is passing
+- contract synchronization between OpenAPI and generated client types is successful
+
+7. Legal-Readiness Boundary
+This package is structured for legal due diligence and counsel handoff. Final legal conclusions require licensed counsel review.

@@ -1,0 +1,19 @@
+﻿Glossary
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+
+AI Reliability Score: Composite metric representing release readiness based on quality, risk, and control evidence.
+Audit Trail: Immutable record of decisions, approvers, and evidence snapshots.
+Control Gate: Policy checkpoint that must pass before release progression.
+Evidence Package: Structured set of artifacts used to evaluate a release decision.
+Latency SLO: Maximum acceptable response latency for a service objective.
+MTTR: Mean time to restore service after an incident.
+NFR: Non-functional requirement.
+Policy Engine: Service that evaluates rules against system evidence.
+Release Candidate: Build candidate submitted for production approval.
+Risk Register: Structured inventory of identified risks, impact, and mitigations.
+Traceability Matrix: Mapping from requirements to implementation and verification evidence.
+Zero Trust Access: Security model requiring explicit verification for each access request.
+

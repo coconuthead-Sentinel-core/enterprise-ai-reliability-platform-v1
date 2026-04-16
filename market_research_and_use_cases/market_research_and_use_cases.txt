@@ -1,0 +1,52 @@
+﻿Market Research and Use Cases
+Version: 2.1
+
+LLM Scope Statement
+This document establishes market viability for an LLM reliability governance platform and links technical performance to commercial outcomes.
+
+1. Market Segmentation
+- Enterprise software organizations shipping LLM features
+- Regulated industries with audit and governance obligations
+- Mid-market teams requiring low-overhead release assurance
+
+2. Commercial Model
+- B2B subscription by active environment and monthly evaluated release candidates
+- Optional premium analytics for model-risk trend intelligence
+
+3. Quantitative Market Framework
+- TAM: total addressable spend on AI reliability and governance tooling
+- SAM: serviceable segment for LLM release-governance tools
+- SOM: target share based on integration and sales capacity
+
+4. Pricing and Revenue Assumptions
+- Base subscription: USD 199 to 499 per active team per month
+- Enterprise tier: annual contract with governance support
+- Revenue equation: MRR = active_accounts * average_monthly_price
+
+5. Primary Use Cases
+UC-1 LLM Release Readiness Evaluation
+UC-2 LLM Safety and Compliance Evidence Export
+UC-3 Incident-to-Decision Causality Analysis
+UC-4 Executive Reliability and Unit-Economics Reporting
+
+6. Verifiable Product-Market Evidence
+- Pilot conversion rate from trial to paid deployment
+- Reduction in failed production releases
+- Reduction in compliance remediation cycle time
+- Positive ROI based on avoided incident and rollback costs
+
+7. Market-Readiness Criteria
+The product is market-ready when reliability thresholds, security controls, and pricing viability are all validated in pilot cohorts.
+
+
+8. Consumer Market Track
+Consumer-facing deployment is supported through a governed feature subset.
+- Consumer onboarding success rate target: >= 85%
+- 30-day retention target: >= 40%
+- Consumer support ticket rate target: <= 0.10 per active user per month
+- Consumer safety escalation target: <= 0.5% of sessions
+
+9. Consumer Readiness Evidence
+- Usability test completion with statistically significant sample size
+- Safety and inclusivity checks pass on consumer prompt sets
+- Pricing acceptance validated through willingness-to-pay testing

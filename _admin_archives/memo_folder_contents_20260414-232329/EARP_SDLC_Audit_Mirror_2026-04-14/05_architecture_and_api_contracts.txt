@@ -1,0 +1,46 @@
+﻿Sprint 4: Architecture and API Contracts (Phase 1 System Design)
+Version: 1.6
+Date: 2026-04-14
+
+1. Unified Architectural Schematic
+EARP integrates:
+- Cognitive Neural Overlay (CNO)
+- A1 Filing System
+- Nexus Node Stack
+- Unified Dashboard and Avatar System
+- VIFA v1.0 Federated Security Layer (Vault)
+
+2. 7-Layer Operational Grid Mapping
+- L1-L2 Foundational Plane: persistence and Rule of Three coordination.
+- L3 Analytical Plane: A1 Filing controls, Entropy standard < 0.4.
+- L4 Synthesis Plane: synthesis controls, Entropy standard > 0.7.
+- L5 Integrative Plane: integration bridge through Nexus Node Stack.
+- L6 Protective Plane: Stillwater safety pause.
+- L7 Core Plane: system persona integrity controls.
+
+3. Interface and Output Contracts
+- Interface mode is Cognitive Gateway.
+- Avatar Co-Agent is the primary guided interface.
+- Symbolic Threading state protocol:
+  - Green = Active
+  - Yellow = Deferred
+  - Red = Archived
+- Structured reporting shape order is contract-bound:
+  - Square, Star, Pentagon, Triangle
+
+4. API and Export Contracts
+- Federated synchronization and contextual memory fields are mandatory in FR-8 payloads.
+- Leakage prevention and destination trust checks are required before export.
+- Archived evidence pointers are retained for audit replay continuity.
+
+5. External Model Handshake Model
+- External model interaction uses Structured Conversational Blueprinting handshake.
+- Handshake artifacts are logged and auditable for interoperability assurance.
+
+6. Inclusive Architecture Constraint
+- Default user-facing architecture descriptors must remain business-class and culturally neutral.
+- Production UI must not require esoteric symbols for core workflow completion.
+
+7. Exit Criteria
+- FR-1 to FR-10 contract fields and behaviors are fully documented.
+- Proof-check package is complete for GO/NO-GO review.

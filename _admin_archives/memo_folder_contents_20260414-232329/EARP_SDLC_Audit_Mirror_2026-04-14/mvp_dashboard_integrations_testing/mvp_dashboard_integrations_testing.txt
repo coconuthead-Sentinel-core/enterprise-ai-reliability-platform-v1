@@ -1,0 +1,37 @@
+﻿Sprint 7: MVP Dashboard Integrations and Testing
+Version: 1.2
+Date: 2026-04-14
+
+1. Test Objective
+Validate reliability, accessibility, and persistence behavior end-to-end.
+
+2. Integration Coverage
+- CI/CD, issue tracker, observability, identity provider
+- NLCA metadata validation path
+- Dashboard symbolic threading renderer
+- Guided Assistant persona orchestration path
+- Memory Anchoring replay path
+
+3. Required Test Suites
+A. Symbolic Threading Tests
+- State rendering correctness for Active Deferred Archived
+- State transition consistency across refresh and replay
+
+B. Persona Module Tests
+- Guided Assistant tone/behavior adjusts by User Preference Profile profile
+- Policy constraints prevent unauthorized persona drift
+
+C. Memory Anchoring Tests
+- Session state persists across restart scenarios
+- Audit replay reconstructs prior thread state deterministically
+
+D. Hard-Gate Reliability Tests
+- Cognitive Load, Entropy, and Memory Anchoring gate failures block release
+
+E. Metadata Compliance Tests
+- Required 10-field metadata schema enforced for evidence payloads
+
+4. Exit Criteria
+- All transition-critical tests pass.
+- Test evidence appended to proof-check package.
+

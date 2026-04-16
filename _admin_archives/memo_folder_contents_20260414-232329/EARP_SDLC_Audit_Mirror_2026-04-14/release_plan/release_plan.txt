@@ -1,0 +1,36 @@
+﻿Enterprise AI Reliability Platform (EARP)
+Release Plan
+Version: 1.2
+Date: 2026-04-14
+
+R-Doc: Pre-Sprint Documentation Gate
+- All 13 core SDLC documents complete and approved.
+- No coding before strategic proof-check greenlight.
+
+Release sequence
+R0 Documentation Finalization
+- Guided Assistant and Dashboard parameters integrated
+- FR-2/FR-3/FR-7 updates approved
+
+R1 Foundation Build
+- Core registry and service contracts
+
+R2 Reliability Gate Engine
+- Hard gates (Cognitive Load, Entropy, Memory Anchoring)
+
+R3 Unified Dashboard and Guided Assistant Integration
+- Symbolic Threading live
+- User Preference Profile behavior controlled and audited
+
+R4 Pilot
+- Memory continuity and usability validation
+
+R5 GA Candidate
+- Hardening and compliance complete
+
+Per-release mandatory checks
+- Metadata schema compliance
+- Memory anchor replay validity
+- SQA v8.1 reporting output
+- Hard-gate pass status
+

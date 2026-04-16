@@ -1,0 +1,33 @@
+﻿Incident Response Runbook
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+
+1. Severity Model
+SEV-1 Critical business disruption
+SEV-2 Major functional degradation
+SEV-3 Localized functional issue
+SEV-4 Minor non-blocking issue
+
+2. Response Workflow
+Step 1: Detect and classify incident severity.
+Step 2: Assign incident commander and responders.
+Step 3: Stabilize service and communicate status.
+Step 4: Identify root cause and apply remediation.
+Step 5: Validate recovery and close incident.
+Step 6: Publish post-incident report with corrective actions.
+
+3. Communication Standards
+- Internal status updates every 30 minutes for SEV-1/SEV-2
+- Executive summary for incidents with customer impact
+
+4. Evidence Requirements
+- Timeline log
+- Affected components
+- User impact analysis
+- Mitigation and verification records
+
+5. Postmortem Requirements
+Root cause category, contributing factors, prevention tasks, and owner commitments with due dates.
+

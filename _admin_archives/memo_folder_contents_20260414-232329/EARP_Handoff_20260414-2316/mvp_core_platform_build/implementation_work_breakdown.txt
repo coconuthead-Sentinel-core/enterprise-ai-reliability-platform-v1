@@ -1,0 +1,36 @@
+﻿Implementation Work Breakdown Structure (WBS)
+Version: 2.1
+
+LLM Scope Statement
+This work breakdown defines implementation tasks for an LLM reliability platform from coding-assistant execution perspective.
+
+WBS-0 Environment Bootstrap (Mandatory Before Coding)
+- Task 0.1 Install and verify toolchain versions
+- Task 0.2 Provision local PostgreSQL and Redis via Docker Compose
+- Task 0.3 Configure repository topology and branch protections
+- Task 0.4 Validate local lint/test/security baseline
+
+WBS-1 Platform Foundations
+- Task 1.1 API service scaffolding (FastAPI)
+- Task 1.2 Identity and access scaffolding
+- Task 1.3 Configuration and secrets model
+
+WBS-2 Evidence Pipeline
+- Task 2.1 Ingestion endpoint implementation
+- Task 2.2 Canonical schema normalization
+- Task 2.3 Lineage persistence
+
+WBS-3 Scoring and Policy Engine
+- Task 3.1 Metric computation modules
+- Task 3.2 Deterministic policy evaluator
+- Task 3.3 Decision persistence and audit log
+
+WBS-4 Dashboard and Reporting
+- Task 4.1 API client generation from OpenAPI
+- Task 4.2 Role-based dashboard implementation
+- Task 4.3 Audit export workflow
+
+WBS-5 Quality and Compliance
+- Task 5.1 Automated test suite completion
+- Task 5.2 Security validation tasks
+- Task 5.3 Traceability matrix closure

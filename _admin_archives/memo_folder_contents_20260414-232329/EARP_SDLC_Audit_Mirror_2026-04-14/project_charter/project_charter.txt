@@ -1,0 +1,31 @@
+﻿Enterprise AI Reliability Platform (EARP)
+Project Charter
+Version: 1.6
+Date: 2026-04-14
+Status: Yellow Ongoing (Documentation Locked, Coding Locked)
+
+1. Purpose
+This charter defines the final documentation baseline for Project 4 and confirms that coding is blocked until proof-check approval.
+
+2. Business Objective
+Deliver a reliability and governance platform suitable for enterprise use in culturally and ethnically diverse workforces.
+
+3. Integration Scope
+- 7-Layer Operational Grid
+- System Configuration v1.2 controls
+- VIFA federated security controls
+- NLCA metadata validation
+- SQA structured reporting
+
+4. Inclusivity and Cultural Neutrality Standard
+- Product interaction language must be human-centric and culturally neutral.
+- Default UI and reporting must avoid esoteric or occult themes.
+- System behavior must be inclusive across religion, ethnicity, and worldview.
+- Any user-facing narrative content must pass non-offense and non-discrimination checks.
+
+5. Governance Gate
+- No sprint coding starts before architectural proof-check and GO/NO-GO authorization.
+- Documentation package must include verifiable compliance with inclusive-use criteria.
+
+6. Approval Scope
+This charter authorizes documentation completion and audit packaging only.

@@ -1,0 +1,96 @@
+﻿Coding Assistant Pre-Code Intake Review
+Version: 1.0
+Reviewer Persona: On-site Coding Assistant (Implementation Owner)
+Review Date: 2026-04-14
+Status: Conditionally Approved for Coding After Environment Gate Pass
+
+1. Intake Verdict
+The documentation is implementable. The architecture, policy equations, and API contracts are sufficient for coding. The required enhancement is explicit engineering environment setup and repository topology, now defined in this review.
+
+2. Implementation Feasibility
+- Factual implementability: Yes
+- Structural soundness: Yes
+- Contract clarity for backend APIs: Yes
+- Testability of release-gate logic: Yes
+- Market-readiness evidence model: Yes
+
+3. Required Codebases and Languages (MVP)
+Backend Codebase
+- Language: Python 3.11+
+- Framework: FastAPI
+- Responsibilities: ingestion APIs, scoring engine, policy engine, audit export
+
+Frontend Codebase
+- Language: TypeScript
+- Framework: React 18 + Vite
+- Responsibilities: role-based dashboard, KPI views, decision drill-down
+
+Data and Storage Codebase
+- PostgreSQL 15+ for transactional entities and decision records
+- Redis 7+ for queueing, short-lived caching, and rate-limit counters
+
+Infrastructure Codebase
+- Docker Compose for local multi-service development
+- Terraform for reproducible cloud environment provisioning (staging and production)
+
+CI/CD Codebase
+- GitHub Actions pipeline definitions for lint, tests, security scans, and deploy promotion gates
+
+4. Explicit Non-Required Languages for MVP
+- C++: not required
+- C#: not required
+- Java: optional for future connectors, not required for MVP
+
+5. Required Toolchain and Plugins
+Developer Tools
+- Git, Python, Node.js LTS, Docker Desktop, PostgreSQL client, Redis CLI
+Python Packages
+- fastapi, uvicorn, pydantic, sqlalchemy, alembic, pytest, httpx, mypy, ruff, bandit
+TypeScript Packages
+- react, react-router, tanstack-query, zod, vitest, eslint, typescript
+Observability and Security
+- OpenTelemetry SDK
+- Structured logging library
+- Dependency scanner and secret scanner in CI
+
+6. Workspace Topology Required Before Coding
+repository-root/
+  apps/
+    api/               (Python FastAPI service)
+    web/               (TypeScript React dashboard)
+  libs/
+    schemas/           (shared JSON schema/OpenAPI generated types)
+    policy/            (shared policy and scoring utilities)
+  infra/
+    docker/            (local compose files)
+    terraform/         (staging/prod infrastructure)
+  docs/                (this documentation suite)
+
+7. Pre-Code Environment Gates
+Gate E1: Toolchain installed and version-verified.
+Gate E2: Local services boot via docker compose.
+Gate E3: API and web apps run with health checks passing.
+Gate E4: Baseline lint/test/security pipeline passes locally.
+Gate E5: OpenAPI contract generation and schema sync pass.
+
+8. Coding Assistant Execution Sequence
+Step 1: Initialize repository topology and dependency manifests.
+Step 2: Implement OpenAPI-first backend skeleton.
+Step 3: Implement schema-generated frontend API client.
+Step 4: Build policy and scoring modules with deterministic tests.
+Step 5: Integrate dashboard workflows and audit export.
+Step 6: Run full CI gate and produce first release candidate.
+
+9. Blocking Issues to Reject if Unresolved
+- Missing model_version and prompt_set_version in evaluation payloads
+- Missing traceability from tests to gate decisions
+- Missing security scans in CI
+- Missing reproducible local environment bootstrap
+
+10. Final Coding Assistant Position
+With the stack and environment requirements explicitly defined, this documentation package is ready for implementation planning and sprint execution.
+
+11. Canonical Source Path Locked
+All active implementation and documentation reads must use only:
+C:\Users\sbrya\OneDrive\Desktop\enterprise-ai-reliability-platform-v1\enterprise-ai-reliability-platform-v1
+Memo folder snapshots are handoff-only and excluded from active coding context.

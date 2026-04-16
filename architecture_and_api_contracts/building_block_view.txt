@@ -1,0 +1,33 @@
+﻿Building Block View
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+
+Level 1: Platform Context
+- External Connectors
+- EARP Control Plane
+- Enterprise Users and Reviewers
+
+Level 2: Primary Components
+- Connector Gateway
+- Evidence Registry
+- Scoring Engine
+- Policy Engine
+- Reporting and Export Module
+- Identity and Access Module
+
+Level 3: Internal Responsibilities
+Connector Gateway: schema validation and source authentication.
+Evidence Registry: canonical entities, versioning, and lineage.
+Scoring Engine: metric aggregation and weighted computation.
+Policy Engine: rule execution and gate adjudication.
+Reporting Module: evidence packaging and export generation.
+IAM Module: RBAC, approval constraints, and audit ownership.
+
+Quality Attributes Mapped
+- Reliability: resilient ingest and deterministic evaluation
+- Security: strong authentication and least privilege
+- Maintainability: bounded interfaces and contract tests
+- Auditability: immutable event and decision logs
+

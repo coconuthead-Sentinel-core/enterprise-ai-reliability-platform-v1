@@ -1,0 +1,29 @@
+﻿Sprint 1: Discovery and Problem Definition
+Version: 1.2
+Date: 2026-04-14
+
+1. Objective
+Define the reliability, memory, and accessibility pain points addressed by EARP with Unified Dashboard and Guided Assistant integration.
+
+2. Updated Problem Definition
+Current AI reliability workflows are fragmented, cognitively heavy, and weak in long-horizon continuity. Users cannot easily track cognitive process state or trust session persistence across release audits.
+
+3. Discovery Focus Areas
+- Unified Reliability Dashboard and Guided Assistant requirements
+- User Preference Profile requirements for user-adaptive behavior
+- Symbolic Threading requirements across Active, Deferred, Archived states
+- Memory Anchoring requirements for persistent session recall
+- Signal Classification Model context for triage and reliability interpretation
+
+4. Stakeholder Discovery Questions
+- Where does cognitive overload occur in release workflows?
+- Which roles need symbolic state visualization most?
+- What level of Guided Assistant adaptation is acceptable for governance contexts?
+- Which audit scenarios require deterministic memory replay?
+
+5. Exit Criteria
+- Discovery brief includes dashboard/Guided Assistant use cases.
+- Symbolic Threading states are approved.
+- Memory Anchoring acceptance criteria are drafted.
+- Signal Classification Model mapping is documented.
+

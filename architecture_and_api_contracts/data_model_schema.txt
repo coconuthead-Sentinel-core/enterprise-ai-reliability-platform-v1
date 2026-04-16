@@ -1,0 +1,43 @@
+﻿Data Model Schema Specification
+Version: 2.1
+
+Entity: LLMModelVersion
+- model_id: string
+- provider: string
+- model_name: string
+- model_version: string
+- release_date: timestamp
+
+Entity: PromptSetVersion
+- prompt_set_id: string
+- prompt_set_version: string
+- benchmark_suite_id: string
+- created_at: timestamp
+
+Entity: LLMEvaluationRun
+- evaluation_id: string
+- model_id: string
+- model_version: string
+- prompt_set_id: string
+- prompt_set_version: string
+- total_prompts: integer
+- successful_tasks: integer
+- supported_claims: integer
+- unsupported_claims: integer
+- policy_violations: integer
+- p95_latency_ms: integer
+- total_inference_cost_usd: decimal(12,4)
+
+Entity: GateDecision
+- decision_id: string
+- evaluation_id: string
+- policy_score: decimal(5,4)
+- result: enum(pass, conditional, fail)
+- rationale: string
+- decided_at: timestamp
+
+Derived Metrics
+- TaskSuccessRate = successful_tasks / total_prompts
+- GroundednessScore = supported_claims / (supported_claims + unsupported_claims)
+- HallucinationRate = unsupported_claims / (supported_claims + unsupported_claims)
+- CostPerSuccessfulTask = total_inference_cost_usd / successful_tasks

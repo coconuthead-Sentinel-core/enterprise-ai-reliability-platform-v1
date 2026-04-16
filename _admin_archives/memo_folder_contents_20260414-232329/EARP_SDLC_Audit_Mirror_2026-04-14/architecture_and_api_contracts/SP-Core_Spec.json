@@ -1,0 +1,97 @@
+﻿{
+  "document": {
+    "name": "Sentinel Prime Core Schema",
+    "id": "SP-Core_Spec",
+    "version": "1.2",
+    "date": "2026-04-14",
+    "project": "Enterprise AI Reliability Platform (EARP)",
+    "status": "YELLOW ONGOING - CODE FREEZE ACTIVE",
+    "purpose": "Schema baseline for secure, inclusive, and enterprise-grade reliability operations before Sprint 1 authorization."
+  },
+  "architecture": {
+    "coreComponents": [
+      {
+        "component": "COE",
+        "description": "Context Orchestration Engine for appraisal and orchestration.",
+        "appraisalWeights": {
+          "logic": 0.34,
+          "creativity": 0.33,
+          "emotion": 0.33,
+          "recursiveTriangulation": {
+            "enabled": true,
+            "objective": "Balance logic, creativity, and emotion to a neutral and auditable center."
+          }
+        }
+      },
+      {
+        "component": "A1FilingSystem",
+        "description": "Analytical persistence and traceability subsystem.",
+        "entropyStandard": "< 0.4"
+      },
+      {
+        "component": "ReliabilityContextGraph",
+        "description": "Integration bridge across processing streams."
+      }
+    ],
+    "operationalGrid": {
+      "L1": { "name": "Foundational Persistence", "control": "RuleOfThree" },
+      "L2": { "name": "Rhythmic Coordination", "control": "RuleOfThree" },
+      "L3": { "name": "Analytical Layer", "entropyStandard": "< 0.4" },
+      "L4": { "name": "Synthesis Layer", "entropyStandard": "> 0.7" },
+      "L5": { "name": "Integration Layer", "mapping": "ReliabilityContextGraph" },
+      "L6": { "name": "Protective Layer", "mapping": "StillwaterProtocol" },
+      "L7": { "name": "Core Persona Layer", "mapping": "CorePersonaControl" }
+    }
+  },
+  "interfaceLayer": {
+    "mode": "CognitiveGateway",
+    "avatarCoAgent": {
+      "role": "PrimaryUserInterface",
+      "personaSource": "PersonaNode",
+      "behavior": "Policy-bounded adaptive guidance"
+    },
+    "zoneActivationProtocols": {
+      "green": "Active",
+      "yellow": "Deferred",
+      "red": "Archived"
+    },
+    "inclusiveUsePolicy": {
+      "culturallyNeutralLanguage": true,
+      "noEsotericRequiredContent": true,
+      "nonDiscriminatoryInteraction": true
+    }
+  },
+  "interComponentProtocols": {
+    "federatedSecurity": {
+      "protocol": "VIFA v1.0",
+      "distributedNodeClusters": { "enabled": true },
+      "contextualMemorySync": { "enabled": true }
+    },
+    "externalModelHandshake": {
+      "standard": "Structured Conversational Blueprinting",
+      "targets": ["Gemini", "OpenAI", "Claude"]
+    }
+  },
+  "metadataStandard": {
+    "format": "YAML",
+    "requiredFieldCount": 10,
+    "requiredFields": [
+      "node_id",
+      "node_type",
+      "title",
+      "owner_role",
+      "source_system",
+      "created_utc",
+      "updated_utc",
+      "zone_state",
+      "entropy_state",
+      "anchor_ref"
+    ]
+  },
+  "governance": {
+    "codingState": "LOCKED",
+    "nextStep": "Architectural proof-check and GO/NO-GO signal before Sprint 1"
+  }
+}
+
+

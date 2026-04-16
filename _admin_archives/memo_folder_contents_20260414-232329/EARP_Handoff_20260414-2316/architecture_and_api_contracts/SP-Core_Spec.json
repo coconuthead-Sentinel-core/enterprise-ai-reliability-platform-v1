@@ -1,0 +1,66 @@
+﻿{
+  "document": "EARP Core Architecture Schema",
+  "version": "2.0",
+  "status": "documentation_complete",
+  "ownership": {
+    "business_owner": "Project Sponsor",
+    "technical_owner": "Engineering Lead",
+    "governance_owner": "Compliance Lead"
+  },
+  "components": [
+    {
+      "name": "ConnectorGateway",
+      "responsibility": "Authenticates and validates external evidence payloads"
+    },
+    {
+      "name": "EvidenceRegistryService",
+      "responsibility": "Stores canonical evidence entities with lineage"
+    },
+    {
+      "name": "ReliabilityScoringService",
+      "responsibility": "Computes release readiness scores from weighted metrics"
+    },
+    {
+      "name": "PolicyEvaluationService",
+      "responsibility": "Evaluates gate policies and produces release decisions"
+    },
+    {
+      "name": "AuditReportingService",
+      "responsibility": "Produces immutable audit exports and decision summaries"
+    }
+  ],
+  "control_layers": {
+    "L1": "Platform Foundations",
+    "L2": "Coordination and Scheduling",
+    "L3": "Analytical Processing",
+    "L4": "Decision Intelligence",
+    "L5": "Integration Layer",
+    "L6": "Safety and Governance Layer",
+    "L7": "Identity and Access Layer"
+  },
+  "policy_defaults": {
+    "require_evidence_traceability": true,
+    "require_non_discriminatory_output": true,
+    "require_audit_log_immutability": true,
+    "require_release_gate_approval": true
+  },
+  "metadata_contract": {
+    "required_fields": [
+      "artifact_id",
+      "artifact_type",
+      "owner_role",
+      "source_system",
+      "classification",
+      "created_at",
+      "updated_at",
+      "retention_policy",
+      "integrity_hash",
+      "approval_state"
+    ]
+  },
+  "legal_readiness": {
+    "ip_ownership_documented": true,
+    "compliance_evidence_packaged": true,
+    "counsel_review_required_before_launch": true
+  }
+}

@@ -1,0 +1,34 @@
+﻿Discovery and Problem Definition
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+
+1. Discovery Objective
+Establish a rigorous definition of reliability and governance pain points in enterprise AI release workflows.
+
+2. Observed Pain Points
+- Inconsistent release criteria between teams
+- Weak traceability from requirement to release approval
+- Late-stage compliance discovery that delays deployment
+- Fragmented evidence across multiple tools
+
+3. User and Workflow Analysis
+Primary workflow participants include release managers, security reviewers, and engineering leads. All participants require role-appropriate visibility into gate criteria and evidence lineage.
+
+4. Root Cause Analysis
+Core failure mode: teams evaluate reliability qualitatively instead of via measurable standards and formal decision records.
+
+5. Problem Statement
+Enterprises need a deterministic and auditable release-governance platform for AI workloads that can be integrated into existing engineering systems.
+
+6. Discovery Outputs
+- Validated problem statement
+- Stakeholder map
+- Initial feature hypotheses
+- Risk and adoption assumptions
+
+7. Acceptance Criteria
+- Problem statement approved by product, engineering, and compliance stakeholders
+- At least three high-impact use cases documented with measurable outcomes
+

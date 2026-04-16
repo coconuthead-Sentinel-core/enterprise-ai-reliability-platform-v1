@@ -1,0 +1,41 @@
+﻿MVP Core Platform Build Plan
+Version: 2.2
+
+LLM Scope Statement
+This MVP delivers minimum production-capable services required to govern LLM release quality and safety.
+
+1. Build Objective
+Implement a contract-driven control plane that computes and enforces LLM release-gate decisions.
+
+2. MVP Scope
+- LLM evidence ingestion API
+- Evidence registry with model/prompt version lineage
+- Reliability scoring service
+- Policy gate evaluation service
+- Audit report generation service
+- RBAC and approval workflow baseline
+
+3. Codebase Partitioning
+apps/api: Python FastAPI backend
+apps/web: TypeScript React frontend
+libs/schemas: shared schemas and generated client types
+libs/policy: shared scoring/policy logic
+infra: docker and terraform definitions
+
+4. Build Constraints
+- OpenAPI contract must be frozen before implementation
+- Policy logic must be deterministic and testable
+- CI must block merge on failing security or evaluation tests
+- Database migrations must be versioned and reversible
+
+5. Technical Acceptance Criteria
+- End-to-end gate evaluation pipeline returns deterministic outcome
+- Benchmark dataset run produces all required LLM metrics
+- Audit export includes model ID, prompt set ID, and evidence hashes
+- P95 gate evaluation latency <= 2.5 seconds
+
+6. Handoff Deliverables
+- API contract, schema definitions, and environment configuration matrix
+- Validation report for reliability and safety metrics
+- Known issues register and mitigation plan
+- Coding assistant intake review approval record

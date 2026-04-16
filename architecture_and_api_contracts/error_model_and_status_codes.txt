@@ -1,0 +1,32 @@
+﻿Error Model and Status Codes
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+
+HTTP Status Policy
+200: Successful read or evaluation
+201: Resource created
+202: Asynchronous processing accepted
+400: Request schema or semantic validation error
+401: Authentication failure
+403: Authorization failure
+404: Resource not found
+409: State conflict (version mismatch or duplicate decision)
+422: Policy evaluation cannot execute due to domain constraints
+429: Rate limit exceeded
+500: Internal service fault
+503: Dependent service unavailable
+
+Canonical Error Object
+- error_code: machine-readable identifier
+- message: human-readable summary
+- correlation_id: request tracing identifier
+- details: optional field-level diagnostics
+- remediation_hint: actionable next step
+
+Error Handling Requirements
+- No stack traces in user responses
+- Correlation identifier returned for all failures
+- Security-sensitive information must be redacted
+

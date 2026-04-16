@@ -1,0 +1,203 @@
+﻿Azure Implementation Readiness Guide
+Project: Enterprise AI Reliability Platform (EARP)
+Version: 1.0
+Last Updated: 2026-04-14
+Audience: Coding Assistant, User (Human-in-the-Loop), Engineering Lead
+
+1. Purpose
+This document prepares the Azure environment so the coding assistant can begin implementation immediately after setup gates pass. It defines tools, access, permissions, resource architecture, and human-in-the-loop actions.
+
+2. Outcome Required Before Coding
+The assistant must have:
+- Azure account access and active subscription context
+- permission to create/read/update required resources
+- CI/CD identity configured
+- secret management configured
+- observability configured
+- local and cloud environment parity documented
+
+3. Is Custom Skill Writing Required?
+Short answer: Not required to begin coding in this environment.
+Reason: The environment already includes Azure-focused skills and workflows.
+
+Built-in Azure skill coverage available:
+- azure-resource-lookup
+- azure-rbac
+- azure-prepare
+- azure-validate
+- azure-deploy
+- azure-diagnostics
+- azure-compliance
+- azure-cost-optimization
+- azure-storage
+- azure-resource-visualizer
+- azure-enterprise-infra-planner
+- azure-ai and related AI gateway skills
+
+Optional custom project skills (only if you want stricter automation templates):
+- earp-azure-bootstrap
+- earp-azure-deploy-guardrails
+- earp-azure-ops-playbook
+
+4. Human-in-the-Loop Actions (User Must Perform)
+The assistant cannot complete these without your approval or login.
+
+Action H1: Azure sign-in on laptop
+- Run: az login
+- Complete browser authentication
+
+Action H2: Set active subscription
+- Run: az account list -o table
+- Run: az account set --subscription "<SUBSCRIPTION_ID_OR_NAME>"
+
+Action H3: Confirm tenant and subscription context
+- Run: az account show -o json
+
+Action H4: Approve permission elevation when assistant requests out-of-sandbox actions.
+
+Action H5: Confirm target region for deployment
+- Example: eastus, westus2, centralus
+
+5. Minimum Azure RBAC Required
+For implementation phase:
+- Contributor on target resource group(s)
+- User Access Administrator only if role assignment changes are required
+- Key Vault Secrets User for runtime identities
+- Storage Blob Data Contributor where artifact storage is required
+
+For CI/CD identity:
+- least-privilege role assignment scoped to deployment resource group
+- federated credential or service principal configured
+
+6. Required Local Toolchain
+Install and verify:
+- Azure CLI (az)
+- Azure Developer CLI (azd)
+- Terraform (if infra-as-code path uses Terraform)
+- Docker Desktop
+- Git
+- Python 3.11+
+- Node.js 20 LTS
+
+Verification commands:
+- az version
+- azd version
+- terraform version
+- docker --version
+- python --version
+- node --version
+
+7. Azure Reference Architecture for EARP (MVP)
+Core services:
+- Compute: Azure Container Apps or App Service
+- API runtime: Python FastAPI container/service
+- Frontend runtime: Static Web App or App Service (TypeScript React build)
+- Database: Azure Database for PostgreSQL Flexible Server
+- Cache/queue: Azure Cache for Redis
+- Secrets: Azure Key Vault
+- Storage: Azure Storage Account (Blob)
+- Monitoring: Log Analytics + Application Insights
+- Identity: Microsoft Entra ID
+
+Optional phase-2 services:
+- Azure API Management
+- Event Hubs or Service Bus
+- Azure Front Door / WAF
+
+8. Resource Naming Convention (Required)
+Use deterministic names:
+- Resource Group: rg-earp-<env>-<region>
+- App/API: app-earp-api-<env>
+- Web: app-earp-web-<env>
+- PostgreSQL: pg-earp-<env>
+- Redis: redis-earp-<env>
+- Key Vault: kv-earp-<env>
+- Storage: stearp<env><region>
+
+Environments:
+- dev
+- int
+- stg
+- prod
+
+9. Environment Variables Required
+Application runtime:
+- APP_ENV
+- DATABASE_URL
+- REDIS_URL
+- JWT_SECRET
+- OPENAI_API_KEY (or provider key)
+- APPLICATIONINSIGHTS_CONNECTION_STRING
+- KEY_VAULT_URI
+
+CI/CD variables:
+- AZURE_SUBSCRIPTION_ID
+- AZURE_TENANT_ID
+- AZURE_CLIENT_ID (for OIDC/federated identity)
+- RESOURCE_GROUP
+- DEPLOY_REGION
+
+10. Pre-Coding Setup Sequence (Assistant + User)
+Step 1: User logs in and sets Azure subscription.
+Step 2: Assistant verifies account context and permissions.
+Step 3: Assistant creates or validates target resource groups.
+Step 4: Assistant validates required provider registrations.
+Step 5: Assistant configures Key Vault and secrets references.
+Step 6: Assistant validates infrastructure template plan.
+Step 7: Assistant validates CI/CD identity and environment protections.
+Step 8: Assistant runs preflight checks and records evidence.
+Step 9: User confirms GO to begin coding.
+
+11. Preflight Gate Checklist (Must Pass)
+Gate A1: Azure login and subscription set
+Gate A2: Required RBAC roles in place
+Gate A3: Region and quota validated
+Gate A4: Resource naming and tags approved
+Gate A5: Key Vault and secrets path validated
+Gate A6: Database and cache connectivity path validated
+Gate A7: Monitoring workspace configured
+Gate A8: CI/CD identity and permissions validated
+Gate A9: Cost guardrails and budget alerts configured
+Gate A10: Security baseline checks pass
+
+12. Security Baseline Before Coding
+Required controls:
+- private secrets only in Key Vault
+- no credentials in repository
+- least privilege role assignments
+- vulnerability scanning enabled in CI
+- audit logs enabled for subscription/resource group
+- production requires protected approvals
+
+13. Coding Assistant Operating Instructions
+The coding assistant should:
+- never start coding until A1-A10 are passed
+- ask for user approval for privilege changes
+- document every environment change in logs/docs
+- enforce contract-first implementation from OpenAPI
+- fail closed on missing security/compliance prerequisites
+
+14. What the User Should Expect During Setup
+The assistant will ask you to:
+- log in to Azure
+- choose subscription and region
+- approve privileged actions when needed
+- confirm resource naming/environment choices
+- confirm GO/NO-GO before coding starts
+
+15. Fast Start Command Sequence (User + Assistant)
+User runs:
+- az login
+- az account list -o table
+- az account set --subscription "<SUBSCRIPTION>"
+- az account show -o table
+
+Assistant then validates:
+- resource group availability
+- RBAC checks
+- environment variable matrix
+- CI/CD deployment identity path
+
+16. Final Readiness Statement
+If all Azure gates pass, the coding assistant has everything needed to start coding immediately with full implementation context.
+No additional custom skills are mandatory in this environment unless you want project-specific automation wrappers.

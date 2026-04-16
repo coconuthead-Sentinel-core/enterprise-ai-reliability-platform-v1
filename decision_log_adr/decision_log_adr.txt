@@ -1,0 +1,39 @@
+﻿Architecture Decision Record Log
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+
+ADR-001: API-First Contract Governance
+Status: Accepted
+Decision: OpenAPI contract must be approved before implementation.
+Rationale: Reduces integration defects and improves parallel development.
+
+ADR-002: Deterministic Policy Evaluation
+Status: Accepted
+Decision: Gate rules execute through deterministic evaluation with versioned policies.
+Rationale: Ensures repeatability and audit defensibility.
+
+ADR-003: Immutable Decision Ledger
+Status: Accepted
+Decision: Decision outputs stored in append-only audit records.
+Rationale: Supports compliance evidence and forensic analysis.
+
+ADR-004: Role-Based Approval Separation
+Status: Accepted
+Decision: No single role may author, approve, and release the same gate decision.
+Rationale: Reduces control failure risk.
+
+ADR-005: Inclusive Enterprise Language Standard
+Status: Accepted
+Decision: User-facing wording must remain culturally neutral and professional.
+Rationale: Required for global enterprise adoption and non-discrimination compliance.
+
+ADR Template for Future Entries
+- Context
+- Decision
+- Alternatives Considered
+- Tradeoffs
+- Consequences
+- Approval Signatures
+

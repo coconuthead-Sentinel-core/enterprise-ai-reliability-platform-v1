@@ -1,0 +1,42 @@
+﻿Sprint 6: MVP Readiness Engine and Release Gates
+Version: 1.2
+Date: 2026-04-14
+
+1. Readiness Decision Logic
+Weighted score is computed, then hard gates are evaluated.
+Any hard-gate failure results in FAIL.
+
+2. Weighted Inputs
+- test_pass_rate: 20%
+- error_budget_status: 15%
+- security_scan_status: 15%
+- documentation_completeness: 10%
+- incident_risk_score: 10%
+- nlca_evidence_integrity_score: 10%
+- reporting_compliance_score: 10%
+- operational_stability_score: 10%
+
+3. Hard Gates (FR-3)
+HG-1 Cognitive Load Gate
+- Block if cognitive_load_score >= 8 for critical workflow.
+
+HG-2 Entropy Gate
+- Critical evidence cannot remain Green at approval.
+- Regulated/security-critical evidence requires Red.
+
+HG-3 Memory Anchoring Gate
+- Block if required session anchors are missing or non-replayable.
+
+HG-4 Metadata Integrity Gate
+- Block if 10-field schema validation fails for required artifacts.
+
+HG-5 Reporting Compliance Gate
+- Block if SQA v8.1 glyph-structured report is missing or invalid.
+
+4. Exception Policy
+- Hard-gate exceptions require executive and legal signoff.
+- Exception must include expiry and mitigation owner.
+
+5. Exit Criteria
+- Gate specs approved and testable.
+- Hard-gate matrix added to proof-check packet.

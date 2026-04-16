@@ -1,0 +1,26 @@
+﻿Sprint 5: MVP Core Platform Build
+Version: 1.2
+Date: 2026-04-14
+Status: Planning Locked - Execution Blocked
+
+1. Objective
+Prepare implementation plan for transition modules without starting code.
+
+2. Workstreams
+WS-1 Core service scaffolding and registry updates
+WS-2 Unified Dashboard symbolic threading data model
+WS-3 Avatar Co-Agent and Persona Node contract definition
+WS-4 Memory Anchoring service interface plan
+WS-5 Hard-gate rules implementation plan for FR-3
+WS-6 SQA v8.1 report formatter plan
+
+3. Required Build Specs (Documentation Only)
+- Interface contract for memory_anchor create/lookup/replay
+- Persona policy map for tone and behavior constraints
+- Dashboard state legend and event mapping
+- Metadata schema validation hooks at ingestion boundaries
+
+4. Definition of Done (Planning)
+- Task decomposition complete.
+- Traceability to FR-2, FR-3, FR-7, FR-8, FR-9 complete.
+- Proof-check packet prepared.

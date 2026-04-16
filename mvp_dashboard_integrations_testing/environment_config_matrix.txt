@@ -1,0 +1,56 @@
+﻿Environment Configuration Matrix
+Version: 2.2
+
+LLM Scope Statement
+This matrix defines required runtime, tooling, and secrets configuration prior to coding and deployment.
+
+1. Runtime Baselines
+- Python: 3.11.x
+- Node.js: 20.x LTS
+- PostgreSQL: 15+
+- Redis: 7+
+- Docker Compose: v2+
+
+2. Development Environment
+Purpose: local feature development and fast validation.
+Required services: api, web, postgres, redis, otel collector (optional local).
+Required env vars:
+- APP_ENV=development
+- DATABASE_URL
+- REDIS_URL
+- JWT_SECRET
+- OPENAI_API_KEY (or provider equivalent for LLM evaluation)
+
+3. Integration Environment
+Purpose: connector and contract validation.
+Additional requirements:
+- managed secrets store
+- CI-issued short-lived credentials
+
+4. Staging Environment
+Purpose: pre-production release validation.
+Requirements:
+- production-like topology
+- full observability stack
+- policy override controls enabled with audit logging
+
+5. Production Environment
+Purpose: customer-facing service.
+Requirements:
+- zero-trust access controls
+- immutable audit storage
+- on-call routing and incident runbook integration
+
+6. Workspace and Repository Setup
+Required structure:
+- apps/api
+- apps/web
+- libs/schemas
+- libs/policy
+- infra/docker
+- infra/terraform
+
+Branch model:
+- main protected
+- pull-request required checks
+- signed commits required for release branches

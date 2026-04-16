@@ -1,0 +1,80 @@
+﻿Sprint 3: Requirements and PRD Baseline
+Version: 1.6
+Date: 2026-04-14
+Status: Documentation Locked (Yellow Ongoing)
+
+1. Functional Requirements
+FR-1 Core Reliability Registry
+- Maintain canonical requirement lineage with immutable trace from intent to evidence.
+
+FR-2 Component and Interface Registry
+- Register COE, Evidence Registry Service, Reliability Context Graph, Unified Dashboard, Guided Assistant, User Preference Profile.
+- Register NLCA Metadata Engine as primary validator.
+- Register VIFA v1.0 Federated Security Layer as synchronization privacy control.
+- Enforce 10-field YAML metadata schema for all node and evidence payloads.
+
+FR-3 Readiness Score and Reliability Gates
+- Enforce Cognitive Load (1-10), Entropy (Green/Yellow/Red), and Memory Anchoring as hard gates.
+- Enforce 7-Layer standards: L3 Entropy < 0.4, L4 Entropy > 0.7.
+- Trigger Stillwater safety pause when cognitive desync is detected.
+
+FR-4 Role and Rhythm Control
+- Apply Rule of Three cadence for synchronized approvals and governance checkpoints.
+- Record immutable approvals, overrides, and exception expiry windows.
+
+FR-5 Interface Layer
+- Guided Assistant is the primary UI for guided reliability navigation.
+- Symbolic Threading visual protocol is mandatory:
+  - Green (Active)
+  - Yellow (Deferred)
+  - Red (Archived)
+
+FR-6 Continuity and Drift Control
+- Preserve continuity context during incidents and rollback workflows.
+- Enforce Stillwater safety pause and controlled resume actions.
+
+FR-7 Structured Reliability Reporting
+- Reporting output is mandatory in SQA v8.1 shape order:
+  - Square
+  - Star
+  - Pentagon
+  - Triangle
+- Include Memory Anchoring state and archived evidence references.
+
+FR-8 API and Export (Federated Security)
+- Implement VIFA federated synchronization for multi-platform sync without leakage.
+- Require destination trust checks, scoped export, signed metadata, and fail-closed behavior.
+- Enforce Contextual Memory Synchronization for cross-system continuity.
+
+FR-9 Persona Governance Controls
+- User Preference Profile governs Guided Assistant tone and behavior within policy constraints.
+- Core persona controls maintain stable behavior boundaries.
+
+FR-10 External Model Handshake
+- Adopt Structured Conversational Blueprinting as external handshake standard.
+- Standardize interoperability contracts for OpenAI, Gemini, Claude, and peer model systems.
+
+2. Compliance Naming and YAML Metadata Standard
+All reliability evidence must follow the 10-field YAML metadata schema:
+1) node_id
+2) node_type
+3) title
+4) owner_role
+5) source_system
+6) created_utc
+7) updated_utc
+8) zone_state
+9) entropy_state
+10) anchor_ref
+
+3. Inclusive Use and Cultural Neutrality Requirements
+- Default system language must be business-class and culturally neutral.
+- Product outputs must avoid esoteric or occult framing in enterprise-facing contexts.
+- No user should be required to engage with religious or symbolic content to complete core workflows.
+
+4. Acceptance Criteria
+- FR-1 to FR-10 are mapped to tests and audit artifacts.
+- VIFA and 7-Layer controls are traceable in architecture and risk docs.
+- Inclusive-use checks pass in UX, reporting, and policy validation.
+- Coding remains blocked until proof-check passes.
+

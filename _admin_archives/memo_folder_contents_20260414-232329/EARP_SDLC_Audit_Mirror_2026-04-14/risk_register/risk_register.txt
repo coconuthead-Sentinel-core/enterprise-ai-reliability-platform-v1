@@ -1,0 +1,100 @@
+﻿Enterprise AI Reliability Platform (EARP)
+Risk Register
+Version: 1.2
+Date: 2026-04-14
+
+Scoring model:
+- Probability: Low/Medium/High
+- Impact: Low/Medium/High
+- Severity: Probability x Impact
+
+R-001 | Integration complexity across customer toolchains
+Probability: High
+Impact: High
+Severity: Critical
+Mitigation: Connector abstraction and phased onboarding.
+Owner: Platform Engineering
+
+R-002 | Data quality mismatch in imported metrics
+Probability: Medium
+Impact: High
+Severity: High
+Mitigation: Schema validation, freshness checks, quality alerts.
+Owner: Data Platform Lead
+
+R-003 | Security review delays before pilot
+Probability: Medium
+Impact: High
+Severity: High
+Mitigation: Staged security evidence and weekly sync.
+Owner: Security Lead
+
+R-004 | Over-customization from early pilots
+Probability: High
+Impact: Medium
+Severity: High
+Mitigation: Productized configuration and change control.
+Owner: Product Owner
+
+R-005 | Readiness score trust risk
+Probability: Medium
+Impact: High
+Severity: High
+Mitigation: Transparent scoring and explainable gate outputs.
+Owner: Product + SRE
+
+R-006 | Performance degradation under concurrent dashboards
+Probability: Medium
+Impact: Medium
+Severity: Medium
+Mitigation: Load testing, caching, autoscaling.
+Owner: Engineering Manager
+
+R-007 | Compliance gaps for enterprise buyers
+Probability: Medium
+Impact: High
+Severity: High
+Mitigation: SOC2 mapping, retention policy, compliance checkpoints.
+Owner: Compliance Program Owner
+
+R-008 | Adoption risk from workflow resistance
+Probability: Medium
+Impact: Medium
+Severity: Medium
+Mitigation: Change management and role-based onboarding.
+Owner: Customer Success Lead
+
+R-009 | Incident process inconsistency
+Probability: Low
+Impact: High
+Severity: Medium
+Mitigation: Runbook drills and escalation verification.
+Owner: SRE Manager
+
+R-010 | Budget overrun due to scope expansion
+Probability: Medium
+Impact: Medium
+Severity: Medium
+Mitigation: MVP guardrails and monthly budget checks.
+Owner: Program Manager
+
+R-011 | Enterprise data privacy exposure during federated synchronization
+Probability: Medium
+Impact: High
+Severity: High
+Mitigation: VIFA controls, scoped synchronization, signed logs, fail-closed exports.
+Owner: Security Lead
+
+R-012 | Context drift or memory leakage across federated nodes
+Probability: Medium
+Impact: High
+Severity: High
+Mitigation: Contextual Memory Synchronization, anchor checks, replay verification.
+Owner: Platform Reliability Lead
+
+R-013 | User offense risk from non-neutral language or esoteric framing
+Probability: Medium
+Impact: High
+Severity: High
+Mitigation: Inclusive language standards, cultural-neutrality review, UX content validation before release.
+Owner: Product and Compliance

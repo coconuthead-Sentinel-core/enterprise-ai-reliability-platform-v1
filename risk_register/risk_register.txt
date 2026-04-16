@@ -1,0 +1,17 @@
+﻿Risk Register
+Version: 2.1
+
+LLM Scope Statement
+This register tracks technical, compliance, and market risks specific to LLM-enabled release governance.
+
+ID | Risk | Probability | Impact | Owner | Mitigation | Trigger | Status
+R-001 | Hallucination rate exceeds threshold in critical workflow | Medium | High | AI Evaluation Lead | Benchmark expansion and retrieval grounding controls | HallucinationRate > 0.03 | Open
+R-002 | Safety policy violation drift after model update | Medium | High | Safety Lead | Version pinning and mandatory regression suite | SafetyViolationRate > 0.01 | Open
+R-003 | Prompt set regression reduces task success | Medium | High | Product Quality Lead | Prompt version control and A/B holdout evaluation | TaskSuccessRate < 0.90 | Open
+R-004 | Cost overrun from inference usage growth | Medium | Medium | FinOps Lead | Budget caps and routing optimization | CostPerSuccessfulTask above budget | Open
+R-005 | Missing audit evidence blocks release approval | Low | High | Compliance Lead | Evidence completeness gate and signed checklist | Audit completeness < 1.0 | Open
+R-006 | Cultural neutrality defect in user-facing text | Low | Medium | Product Lead | Content linting and pre-release review | Complaint or review finding | Open
+R-007 | API contract drift breaks integrations | Medium | Medium | Platform Lead | Contract tests and backward-compatibility policy | Integration failure spike | Open
+R-008 | Critical security vulnerability in dependencies | Medium | High | Security Lead | SCA, patch SLA, and release block policy | Open critical CVE | Open
+
+Cadence: Weekly review; monthly executive risk summary.

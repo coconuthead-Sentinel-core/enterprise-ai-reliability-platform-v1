@@ -1,0 +1,196 @@
+﻿GitHub Documentation
+Project: Enterprise AI Reliability Platform (EARP)
+Version: 1.0
+Last Updated: 2026-04-14
+Audience: Engineering Lead, Coding Assistant, DevOps, Security, Compliance
+
+1. Purpose
+This document defines the GitHub operating standard required to build, test, secure, and release EARP. It is the implementation-facing guide for repository setup, branch governance, CI/CD, security controls, and auditability.
+
+2. Scope
+In scope:
+- GitHub repository architecture
+- Branching and pull request workflow
+- GitHub Actions CI/CD
+- Security and compliance controls in GitHub
+- Release, tagging, and artifact practices
+- Access control and review policy
+Out of scope:
+- Non-GitHub hosting providers
+- Product feature design details (covered by SDLC documents)
+
+3. Repository Strategy
+Recommended model: Monorepo with clear boundaries.
+Repository layout:
+- apps/api (Python FastAPI backend)
+- apps/web (TypeScript React frontend)
+- libs/schemas (OpenAPI schemas and generated client/server types)
+- libs/policy (scoring and gate policy logic)
+- infra/docker (local orchestration)
+- infra/terraform (staging and production infrastructure definitions)
+- docs (project documentation suite)
+
+4. Branch Model
+- main: protected, production-ready only
+- develop: optional integration branch for multi-feature coordination
+- feature/*: scoped implementation branches
+- hotfix/*: urgent production fixes
+- release/*: release hardening and staging verification
+
+5. Branch Protection Rules (Mandatory)
+Enable for main and release branches:
+- Require pull request before merge
+- Require at least 2 approvals
+- Require status checks to pass before merge
+- Require conversation resolution before merge
+- Dismiss stale approvals on new commits
+- Require linear history
+- Restrict force pushes and branch deletion
+- Require signed commits for release branches
+
+6. Pull Request Standard
+PR template must include:
+- Problem statement
+- Scope of change
+- Linked requirement IDs and backlog IDs
+- Test evidence summary
+- Security impact statement
+- Rollback strategy
+- Checklist for docs updates
+PR labels:
+- type: feature, fix, refactor, docs, security
+- area: api, web, infra, policy, docs
+- risk: low, medium, high
+
+7. Commit Standard
+Use conventional commits:
+- feat: new capability
+- fix: defect correction
+- refactor: behavior-preserving structural change
+- docs: documentation changes
+- test: test additions/changes
+- chore: non-functional maintenance
+
+8. Issue and Project Management
+Use GitHub Issues for implementation units and defects.
+Required issue fields:
+- Requirement reference (FR/NFR)
+- Acceptance criteria
+- Owner
+- Priority
+- Risk level
+Use GitHub Projects for sprint tracking:
+- Backlog
+- In Progress
+- In Review
+- Ready for QA
+- Done
+
+9. GitHub Actions CI/CD Standard
+Required workflows:
+- ci-api.yml
+- ci-web.yml
+- ci-contracts.yml
+- security-scans.yml
+- release.yml
+Required checks:
+- Lint and static analysis (ruff, mypy, eslint, tsc)
+- Unit and integration tests (pytest, vitest)
+- OpenAPI contract validation
+- Generated type compatibility checks
+- Dependency and secret scanning
+- SBOM generation for releasable artifacts
+
+10. Environment and Secrets Management
+Use GitHub Environments:
+- development
+- staging
+- production
+Use environment-level secrets and required reviewers.
+Minimum secrets:
+- DATABASE_URL
+- REDIS_URL
+- JWT_SECRET
+- OPENAI_API_KEY (or equivalent provider key)
+- CLOUD_PROVIDER_CREDENTIALS
+Rules:
+- No secrets in repository files
+- Rotate secrets periodically
+- Use least privilege for tokens
+
+11. Security Controls in GitHub
+Enable and enforce:
+- Dependabot alerts and security updates
+- Secret scanning and push protection
+- Code scanning (CodeQL or equivalent)
+- Required PR reviews from CODEOWNERS
+- Private vulnerability reporting
+- Audit log review cadence
+
+12. CODEOWNERS and Review Routing
+Create CODEOWNERS with mandatory owners:
+- /apps/api -> backend lead and security lead
+- /apps/web -> frontend lead
+- /infra -> DevOps lead and security lead
+- /libs/policy -> reliability lead
+- /docs -> product and compliance leads
+
+13. Release Management
+Release flow:
+1) Merge approved release PR into main.
+2) Tag semantic version (vMAJOR.MINOR.PATCH).
+3) Generate release notes from merged PRs.
+4) Attach artifacts and SBOM.
+5) Deploy to staging and run smoke tests.
+6) Promote to production after GO approval.
+
+14. Compliance and Audit Evidence in GitHub
+Evidence to retain:
+- PR approvals and review history
+- Status check results
+- Workflow run logs
+- Signed tags/releases
+- Issue linkage to requirements/tests
+- Security scan results
+Retention recommendation:
+- Keep workflow and release evidence aligned with legal/compliance retention policy.
+
+15. Required Files to Add to Repository Before Coding
+- README.md (project bootstrap and setup)
+- CONTRIBUTING.md (developer workflow)
+- CODEOWNERS
+- .github/PULL_REQUEST_TEMPLATE.md
+- .github/ISSUE_TEMPLATE/*
+- .github/workflows/*.yml
+- SECURITY.md
+- RELEASE.md
+
+16. Coding Assistant Pre-Code Checklist (GitHub)
+- Repository created and branch protection enabled
+- Required workflows committed and passing
+- CODEOWNERS active and review routes verified
+- Environments and secrets configured
+- PR template and issue templates active
+- First dry-run release tag succeeds in staging
+
+17. Failure Conditions (Immediate Rework Required)
+- Direct pushes to protected branches
+- Missing required status checks on merge
+- No requirement-to-PR traceability
+- Missing security scanning in CI
+- Missing review ownership for high-risk files
+
+18. Recommended Official GitHub Documentation Topics
+Use docs.github.com for:
+- Repositories and branch protection
+- Pull requests and code review
+- GitHub Actions workflows
+- Dependabot and code scanning
+- Secret scanning and push protection
+- CODEOWNERS and review assignment
+- GitHub Projects and Issues
+- Releases and semantic versioning
+- Environments and deployment protections
+
+19. Final Implementation Position
+This GitHub standard is sufficient for engineering execution, security governance, and release traceability. Coding may begin only after all GitHub pre-code checklist items pass.
