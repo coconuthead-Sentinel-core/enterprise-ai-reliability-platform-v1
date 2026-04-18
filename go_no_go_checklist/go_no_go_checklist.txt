@@ -1,0 +1,36 @@
+﻿Go/No-Go Checklist
+Version: 2.1
+
+LLM Scope Statement
+This checklist defines mandatory pre-release gates for LLM-enabled software deployment.
+
+Gate 0 Coding Assistant Environment Readiness
+- Repository topology created and validated
+- Python/Node/PostgreSQL/Redis toolchain verified
+- Local bootstrap script succeeds on clean machine
+
+Gate 1 Requirements and Architecture
+- Requirements baseline approved
+- Architecture and API contracts approved
+
+Gate 2 Build and Integration Readiness
+- Critical implementation tasks complete
+- Integration contracts validated
+
+Gate 3 Test and Security Readiness
+- Test exit criteria satisfied
+- Security review completed
+
+Gate 4 Compliance and Legal Readiness
+- Evidence package complete
+- Ownership and licensing records complete
+- Counsel review packet prepared
+
+Gate 5 Operational Readiness
+- On-call schedule active
+- Incident runbook validated
+- Rollback procedure tested
+
+Decision Rule
+Any failed mandatory gate results in NO-GO.
+GO requires explicit approvals from Product, Engineering, Security, and Compliance owners.

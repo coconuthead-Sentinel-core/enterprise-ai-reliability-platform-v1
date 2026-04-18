@@ -1,0 +1,28 @@
+.env
+**/.env
+.env.*
+!.env.example
+.venv/
+**/.venv/
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.pytest_cache/
+**/.pytest_cache/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.db
+*.sqlite
+*.sqlite3
+earp.db
+*.log
+infra/bicep/main.json
+infra/bicep/main.parameters.*.json
+!infra/bicep/main.parameters.example.json
+
+# Local/staging archives are not part of the public HR review repository.
+.claude-skills-staging/
+_admin_archives/
+Back in/

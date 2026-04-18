@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: .
+    container_name: enterprise_ai_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=sqlite:///./data/enterprise_ai.db
+      - HOST=0.0.0.0
+      - PORT=8000
+      - RELOAD=false
+    restart: unless-stopped

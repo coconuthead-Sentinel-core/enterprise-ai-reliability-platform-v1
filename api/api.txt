@@ -1,0 +1,10 @@
+This folder is a legacy signpost. The canonical API source tree lives at:
+
+    ../enterprise_ai_backend/
+
+and the monorepo signpost is at:
+
+    ../apps/api/
+
+Both README files explain how to run, test, and deploy the API.
+Do not put code here.

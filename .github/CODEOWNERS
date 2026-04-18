@@ -1,0 +1,28 @@
+# CODEOWNERS - Enterprise AI Reliability Platform
+# Syntax: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Everyone-owns-everything fallback. Replace @shannon-kelly with your
+# GitHub handle and add teams as they come onboard.
+
+*                                 @shannon-kelly
+
+# Backend
+/enterprise_ai_backend/           @shannon-kelly
+/apps/api/                        @shannon-kelly
+
+# Frontend
+/apps/web/                        @shannon-kelly
+
+# Shared contracts and policy - changes require contract CI review
+/libs/schemas/                    @shannon-kelly
+/libs/policy/                     @shannon-kelly
+
+# Infra + CI/CD - changes require infra review
+/infra/                           @shannon-kelly
+/.github/                         @shannon-kelly
+
+# Governance docs
+/README.md                        @shannon-kelly
+/SECURITY.md                      @shannon-kelly
+/CONTRIBUTING.md                  @shannon-kelly
+/RELEASE.md                       @shannon-kelly

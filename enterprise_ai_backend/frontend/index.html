@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Enterprise AI Reliability Platform</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Enterprise AI Reliability Platform</h1>
+    <p id="status">Checking backend...</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. System Health</h2>
+      <button id="btn-health">Refresh /health</button>
+      <pre id="out-health">—</pre>
+    </section>
+
+    <section class="card">
+      <h2>2. Reliability Compute</h2>
+      <p>Calls <code>POST /reliability/compute</code> with real MTBF / MTTR values.</p>
+      <div class="row">
+        <label>MTBF (hours) <input id="mtbf" type="number" value="1000" /></label>
+        <label>MTTR (hours) <input id="mttr" type="number" value="4" /></label>
+        <label>Mission (hours) <input id="mission" type="number" value="720" /></label>
+      </div>
+      <button id="btn-rel">Compute</button>
+      <pre id="out-rel">—</pre>
+    </section>
+
+    <section class="card">
+      <h2>3. NIST AI RMF Assessment</h2>
+      <div class="row">
+        <label>System name <input id="system_name" value="Claims Triage Model" /></label>
+        <label>Owner <input id="owner" value="Shannon Brian Kelly" /></label>
+      </div>
+      <div class="row">
+        <label>Govern (0-100) <input id="govern_score" type="number" value="85" /></label>
+        <label>Map (0-100) <input id="map_score" type="number" value="78" /></label>
+        <label>Measure (0-100) <input id="measure_score" type="number" value="72" /></label>
+        <label>Manage (0-100) <input id="manage_score" type="number" value="81" /></label>
+      </div>
+      <button id="btn-asm">Create Assessment</button>
+      <pre id="out-asm">—</pre>
+      <h3>All assessments</h3>
+      <button id="btn-list">Refresh list</button>
+      <pre id="out-list">—</pre>
+    </section>
+
+    <section class="card">
+      <h2>4. SHA-256</h2>
+      <input id="hash-text" value="Enterprise AI Reliability Platform v1" />
+      <button id="btn-hash">Hash</button>
+      <pre id="out-hash">—</pre>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

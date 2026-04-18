@@ -1,0 +1,43 @@
+﻿CI/CD Pipeline Specification
+Version: 2.2
+
+LLM Scope Statement
+This pipeline governs large language model (LLM) service quality, safety, and release gate enforcement.
+
+1. Required CI/CD Platform
+- GitHub Actions (primary)
+- Optional Azure DevOps mirror pipeline for enterprise environments
+
+2. Pipeline Stages
+Stage 1 Source Validation
+- Python lint: ruff
+- TypeScript lint: eslint
+- Type checks: mypy and tsc
+
+Stage 2 Build and Unit Tests
+- Python tests: pytest
+- TypeScript tests: vitest
+- Coverage thresholds enforced
+
+Stage 3 Contract and Integration Tests
+- OpenAPI schema validation
+- Generated client compatibility check
+- Connector contract tests
+
+Stage 4 Security Gates
+- SAST: bandit (Python), semgrep (multi-language)
+- Dependency scan: pip-audit / npm audit
+- Secret scan: gitleaks
+
+Stage 5 Artifact and Deployment Gates
+- Signed container images
+- SBOM generation
+- Staging deployment with smoke tests
+
+Stage 6 Manual Governance Approval
+- Engineering approval
+- Security approval
+- Compliance approval
+
+3. Failure Policy
+Any failed mandatory stage blocks merge or promotion.

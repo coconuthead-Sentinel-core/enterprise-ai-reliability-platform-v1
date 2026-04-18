@@ -1,0 +1,11 @@
+This folder is a legacy signpost. The real frontend source lives at:
+
+    ../apps/web/
+
+Stack: React 18 + TypeScript + Vite.
+
+    cd ../apps/web
+    npm install
+    npm run dev         # http://127.0.0.1:5173
+
+See ../apps/web/README.md and ../README.md for the full story.

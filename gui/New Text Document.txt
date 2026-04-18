@@ -1,0 +1,14 @@
+This folder is a legacy signpost. The real GUI (React 18 +
+TypeScript + Vite) lives at:
+
+    ../apps/web/
+
+    cd ../apps/web
+    npm install
+    npm run dev         # http://127.0.0.1:5173
+
+The dev server proxies /api/* to the FastAPI backend on
+http://127.0.0.1:8000/ (see ../apps/web/vite.config.ts).
+
+See ../apps/web/README.md and ../README.md for the full story.
+Do not put code here.

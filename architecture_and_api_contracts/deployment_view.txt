@@ -1,0 +1,33 @@
+﻿Deployment View
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+
+1. Environment Topology
+- Development
+- Integration
+- Staging
+- Production
+
+2. Deployment Units
+- API Gateway
+- Core Services (ingest, registry, scoring, policy, reporting)
+- Data Stores (operational DB, audit ledger, object storage)
+- Observability Stack (logs, metrics, traces)
+
+3. Runtime Placement
+- Stateless services in orchestrated containers
+- Stateful components with managed persistence
+- Regional failover for production critical path
+
+4. Security Boundaries
+- Private network segments for control-plane services
+- Public ingress only through hardened API gateway
+- Privileged operations behind administrative policy controls
+
+5. Operational Controls
+- Infrastructure as Code required for all environment changes
+- Deployment approvals gated by test and security evidence
+- Automated rollback for critical SLO breaches
+

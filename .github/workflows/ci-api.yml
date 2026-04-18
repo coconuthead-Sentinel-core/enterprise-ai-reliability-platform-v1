@@ -1,0 +1,53 @@
+name: ci-api
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "enterprise_ai_backend/**"
+      - "apps/api/**"
+      - "libs/policy/**"
+      - ".github/workflows/ci-api.yml"
+  pull_request:
+    paths:
+      - "enterprise_ai_backend/**"
+      - "apps/api/**"
+      - "libs/policy/**"
+      - ".github/workflows/ci-api.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+          cache-dependency-path: enterprise_ai_backend/requirements.txt
+
+      - name: Install backend deps
+        working-directory: enterprise_ai_backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint (ruff if present, else skip)
+        working-directory: enterprise_ai_backend
+        run: |
+          pip install ruff
+          ruff check app/ tests/ || true
+
+      - name: Full-build integration test (real bcrypt, real JWT, real sklearn)
+        working-directory: enterprise_ai_backend
+        env:
+          JWT_SECRET: ci-only-secret-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        run: python tests/test_backend.py
+
+      - name: Build API Docker image
+        run: docker build -t earp-api:${{ github.sha }} enterprise_ai_backend

@@ -1,0 +1,63 @@
+name: ci-contracts
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "enterprise_ai_backend/**"
+      - "libs/schemas/**"
+      - "libs/policy/**"
+      - ".github/workflows/ci-contracts.yml"
+  pull_request:
+    paths:
+      - "enterprise_ai_backend/**"
+      - "libs/schemas/**"
+      - "libs/policy/**"
+      - ".github/workflows/ci-contracts.yml"
+
+jobs:
+  openapi:
+    name: openapi & policy drift check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: enterprise_ai_backend/requirements.txt
+
+      - name: Install backend deps
+        working-directory: enterprise_ai_backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Regenerate OpenAPI spec
+        working-directory: enterprise_ai_backend
+        env:
+          JWT_SECRET: contracts-only-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        run: |
+          python -c "import json; from app.main import app; \
+            open('../libs/schemas/openapi.json.new', 'w').write(json.dumps(app.openapi(), indent=2))"
+
+      - name: Diff OpenAPI spec
+        run: |
+          if ! diff -u libs/schemas/openapi.json libs/schemas/openapi.json.new; then
+            echo "::error::OpenAPI spec is out of date. Regenerate with:"
+            echo "    cd enterprise_ai_backend && python -c 'import json; from app.main import app; open(\"../libs/schemas/openapi.json\", \"w\").write(json.dumps(app.openapi(), indent=2))'"
+            exit 1
+          fi
+
+      - name: Policy smoke test (libs/policy/scoring.py)
+        run: |
+          python -c "
+          from libs.policy.scoring import AssessmentInput, overall_score, risk_tier
+          inp = AssessmentInput(govern=85, map=78, measure=72, manage=81)
+          assert abs(overall_score(inp) - 79.0) < 1e-6, overall_score(inp)
+          assert risk_tier(85) == 'LOW'
+          assert risk_tier(79.0) == 'MEDIUM'
+          assert risk_tier(50) == 'HIGH'
+          print('policy OK')
+          "

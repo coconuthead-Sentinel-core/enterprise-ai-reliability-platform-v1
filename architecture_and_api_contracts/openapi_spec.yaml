@@ -1,0 +1,226 @@
+﻿openapi: 3.1.0
+info:
+  title: EARP LLM Reliability API
+  version: 1.1.0
+  description: API for LLM evaluation ingestion, policy gate decisions, and audit export.
+servers:
+  - url: https://api.earp.example.com/v1
+security:
+  - bearerAuth: []
+paths:
+  /models/versions:
+    post:
+      summary: Register LLM model version metadata
+      operationId: registerModelVersion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelVersionCreate'
+      responses:
+        '201':
+          description: Model version registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelVersion'
+  /prompt-sets:
+    post:
+      summary: Register prompt set version
+      operationId: registerPromptSet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptSetCreate'
+      responses:
+        '201':
+          description: Prompt set registered
+  /evaluations:
+    post:
+      summary: Submit LLM evaluation run
+      operationId: submitEvaluation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluationRunCreate'
+      responses:
+        '202':
+          description: Evaluation accepted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /gates/evaluate:
+    post:
+      summary: Evaluate release gates from an evaluation run
+      operationId: evaluateGates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GateEvaluationRequest'
+      responses:
+        '200':
+          description: Gate decision returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GateDecision'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  /reports/audit/{decisionId}:
+    get:
+      summary: Export audit report for a gate decision
+      operationId: exportAuditReport
+      parameters:
+        - name: decisionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Audit report metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditReportResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unprocessable:
+      description: Domain validation failure
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    ModelVersionCreate:
+      type: object
+      required: [provider, modelName, modelVersion]
+      properties:
+        provider:
+          type: string
+        modelName:
+          type: string
+        modelVersion:
+          type: string
+    ModelVersion:
+      allOf:
+        - $ref: '#/components/schemas/ModelVersionCreate'
+        - type: object
+          required: [modelId, registeredAt]
+          properties:
+            modelId:
+              type: string
+            registeredAt:
+              type: string
+              format: date-time
+    PromptSetCreate:
+      type: object
+      required: [promptSetVersion, benchmarkSuiteId]
+      properties:
+        promptSetVersion:
+          type: string
+        benchmarkSuiteId:
+          type: string
+    EvaluationRunCreate:
+      type: object
+      required: [modelId, modelVersion, promptSetId, promptSetVersion, totalPrompts, successfulTasks, supportedClaims, unsupportedClaims, policyViolations, p95LatencyMs, totalInferenceCostUsd]
+      properties:
+        modelId:
+          type: string
+        modelVersion:
+          type: string
+        promptSetId:
+          type: string
+        promptSetVersion:
+          type: string
+        totalPrompts:
+          type: integer
+        successfulTasks:
+          type: integer
+        supportedClaims:
+          type: integer
+        unsupportedClaims:
+          type: integer
+        policyViolations:
+          type: integer
+        p95LatencyMs:
+          type: integer
+        totalInferenceCostUsd:
+          type: number
+          format: float
+    GateEvaluationRequest:
+      type: object
+      required: [evaluationId, policyId]
+      properties:
+        evaluationId:
+          type: string
+        policyId:
+          type: string
+    GateDecision:
+      type: object
+      required: [decisionId, evaluationId, policyScore, result, decidedAt]
+      properties:
+        decisionId:
+          type: string
+        evaluationId:
+          type: string
+        policyScore:
+          type: number
+          format: float
+        result:
+          type: string
+          enum: [pass, conditional, fail]
+        rationale:
+          type: string
+        decidedAt:
+          type: string
+          format: date-time
+    AuditReportResponse:
+      type: object
+      required: [decisionId, generatedAt, reportUri]
+      properties:
+        decisionId:
+          type: string
+        generatedAt:
+          type: string
+          format: date-time
+        reportUri:
+          type: string
+          format: uri
+    Error:
+      type: object
+      required: [errorCode, message, correlationId]
+      properties:
+        errorCode:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+        remediationHint:
+          type: string

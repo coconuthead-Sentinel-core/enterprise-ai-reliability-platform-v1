@@ -1,0 +1,46 @@
+﻿Architecture and API Contracts
+Version: 2.2
+
+LLM Scope Statement
+This architecture defines the control-plane services required to evaluate and govern LLM behavior in production release workflows.
+
+1. Architectural Goal
+Provide deterministic, auditable, and scalable release decisions for LLM-enabled applications.
+
+2. Core Services
+- Evidence Ingestion Service
+- Evidence Registry Service
+- LLM Evaluation Service
+- Reliability Scoring Service
+- Policy Evaluation Service
+- Audit Reporting Service
+- Identity and Access Service
+
+3. Data and Control Flow
+1) Ingest evaluation evidence from CI, benchmark runs, and production telemetry.
+2) Normalize records with model_version and prompt_set_version lineage.
+3) Compute metrics and composite score.
+4) Apply policy gates and persist signed decision.
+5) Export audit package.
+
+4. Composite Reliability Equation
+ReliabilityIndex = 0.30*Groundedness + 0.20*TaskSuccess + 0.15*PromptRobustness + 0.15*(1-SafetyViolationRate) + 0.10*LatencyCompliance + 0.10*Availability
+
+5. Implementation Stack Decision
+Backend: Python 3.11 + FastAPI
+Frontend: TypeScript + React + Vite
+Primary DB: PostgreSQL 15+
+Cache/Queue: Redis 7+
+Observability: OpenTelemetry traces/metrics/log correlation
+
+6. Architectural Constraints
+- Deterministic policy engine
+- Immutable decision log
+- Versioned API and schema compatibility
+- Least-privilege RBAC enforcement
+
+7. Coding Assistant Integration Rule
+All implementation work must be API-contract-first. Generated client/server types must be produced from OpenAPI and version-pinned in repository CI.
+
+8. Inclusivity Constraint
+All user-facing language and interaction patterns must be culturally neutral and non-discriminatory.

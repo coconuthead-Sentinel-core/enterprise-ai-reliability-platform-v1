@@ -1,0 +1,57 @@
+﻿Project Charter
+Project: Enterprise AI Reliability Platform (EARP)
+Version: 2.0
+LLM Scope Statement
+This artifact applies to large language model (LLM) product engineering, evaluation, release governance, and operational reliability in 2026 enterprise environments.
+
+Date: 2026-04-14
+
+1. Project Objective
+Design and launch an enterprise software platform that quantifies AI system reliability and provides auditable release decisions for production environments.
+
+2. Problem Statement
+Organizations deploy AI features without consistent reliability evidence, resulting in regression risk, governance failures, and delayed releases.
+
+3. Solution Summary
+EARP provides a reliability control plane with policy-based release gates, evidence traceability, and dashboard-driven decision support.
+
+4. Stakeholders
+- Executive Sponsor
+- Product Manager
+- Engineering Lead
+- Security Lead
+- Legal and Compliance Lead
+- Operations Lead
+- Customer Success Lead
+
+5. In-Scope Capabilities
+- Reliability score computation
+- Evidence ingestion and normalization
+- Policy-driven gate evaluation
+- Audit trail generation
+- Incident and remediation workflows
+
+6. Out-of-Scope
+- Model training pipeline development
+- Non-enterprise consumer social features
+- Jurisdiction-specific legal opinions
+
+7. Success Criteria
+- Reduction in failed production releases
+- Reduced mean time to detect reliability regressions
+- Full traceability from requirement to release decision
+- Documented compliance and governance evidence
+
+8. Inclusivity and Professional Conduct Requirements
+The product and documentation must be culturally neutral, non-discriminatory, and suitable for users from all religious and non-religious backgrounds.
+
+9. Governance and Approval Workflow
+Document set approval order:
+1) Product and Architecture Review
+2) Security and Compliance Review
+3) Legal Readiness Review
+4) Executive Go Decision
+
+10. Ownership
+The project sponsor owns the product concept, funded delivery, and resulting intellectual property rights subject to contractor agreements and applicable law.
+

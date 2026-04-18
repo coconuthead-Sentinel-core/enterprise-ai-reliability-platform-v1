@@ -1,0 +1,25 @@
+This folder is a legacy signpost. The middle layer (FastAPI
+application sitting between the database and the web client)
+lives at:
+
+    ../enterprise_ai_backend/
+
+Shared modules that both the API and the CI contract checks
+depend on live at:
+
+    ../libs/policy/      # NIST AI RMF scoring (pure Python)
+    ../libs/schemas/     # OpenAPI contract (auto-generated)
+
+Monorepo signpost for the same code:
+
+    ../apps/api/
+
+Stack: FastAPI + SQLAlchemy 2.0 + Pydantic v2 + python-jose + bcrypt.
+
+    cd ../enterprise_ai_backend
+    python -m venv .venv && source .venv/bin/activate
+    pip install -r requirements.txt
+    uvicorn app.main:app --reload --port 8000
+
+See ../enterprise_ai_backend/README.md and ../README.md for the
+full story. Do not put code here.
