@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .config import settings
 from .database import init_db
-from .routers import ai, assessments, auth, hash as hash_router, health, reliability
+from .routers import ai, assessments, auth, hash as hash_router, health, info, reliability
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -36,6 +36,7 @@ app.include_router(reliability.router)
 app.include_router(assessments.router)
 app.include_router(ai.router)
 app.include_router(hash_router.router)
+app.include_router(info.router)
 
 
 _FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
