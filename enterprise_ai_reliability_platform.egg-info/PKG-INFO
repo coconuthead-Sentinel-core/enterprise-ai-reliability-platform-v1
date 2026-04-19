@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: enterprise-ai-reliability-platform
+Version: 0.3.0
+Summary: Enterprise AI Reliability Platform — quantifies AI reliability with auditable release decisions
+Requires-Python: >=3.11
+Requires-Dist: fastapi<1.0.0,>=0.111.0
+Requires-Dist: uvicorn[standard]<1.0.0,>=0.29.0
+Requires-Dist: pydantic<3.0.0,>=2.7.0
+Provides-Extra: dev
+Requires-Dist: pytest<9.0.0,>=8.2.0; extra == "dev"
+Requires-Dist: httpx<1.0.0,>=0.27.0; extra == "dev"
+Requires-Dist: ruff<1.0.0,>=0.4.0; extra == "dev"
