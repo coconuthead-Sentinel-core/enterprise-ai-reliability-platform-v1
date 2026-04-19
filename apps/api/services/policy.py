@@ -13,9 +13,8 @@ if _libs_path not in sys.path:
 
 from policy.scoring import compute_metrics  # noqa: E402
 from policy.policy_engine import evaluate_gate_score  # noqa: E402
-
-from models.evaluation_run import LLMEvaluationRun
-from models.gate_decision import GateDecision, GateResult
+from models.evaluation_run import LLMEvaluationRun  # noqa: E402
+from models.gate_decision import GateDecision, GateResult  # noqa: E402
 
 
 def evaluate_gate(run: LLMEvaluationRun, policy_id: str, db: Session) -> GateDecision:

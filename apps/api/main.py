@@ -1,13 +1,21 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
 from database import engine, Base
 from routers import model_versions, prompt_sets, evaluations, gates, reports
 
-# Create tables on startup (migrations handle this in production via Alembic)
-Base.metadata.create_all(bind=engine)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # DDL only for local dev; production uses Alembic migrations
+    Base.metadata.create_all(bind=engine)
+    yield
+
 
 app = FastAPI(
+    lifespan=lifespan,
     title="EARP LLM Reliability API",
     version="1.1.0",
     description="API for LLM evaluation ingestion, policy gate decisions, and audit export.",

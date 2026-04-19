@@ -1,8 +1,10 @@
-import sys, os
+import os
+import sys
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "libs"))
 
-from policy.scoring import compute_metrics
-from policy.policy_engine import evaluate_gate_score, PASS_THRESHOLD, CONDITIONAL_THRESHOLD
+from policy.scoring import compute_metrics  # noqa: E402
+from policy.policy_engine import evaluate_gate_score, PASS_THRESHOLD, CONDITIONAL_THRESHOLD  # noqa: E402
 
 
 def _perfect_metrics():

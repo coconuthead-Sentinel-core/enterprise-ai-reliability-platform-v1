@@ -1,7 +1,9 @@
-import sys, os
+import os
+import sys
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "libs"))
 
-from policy.scoring import compute_metrics, compute_reliability_index, LATENCY_THRESHOLD_MS
+from policy.scoring import compute_metrics, compute_reliability_index, LATENCY_THRESHOLD_MS  # noqa: E402
 
 
 def test_perfect_run_scores_one():
