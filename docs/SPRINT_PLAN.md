@@ -92,12 +92,24 @@ framework memory saved.
   weight normalization, three tier boundaries, and three validation
   failures. Suite runs **81/81**.
 
-### Story E2-S2 — Score explanation service (⏳ next)
+### Story E2-S2 — Score explanation service (✅ done)
 
-- Endpoint (or response field) that explains *why* a composite score
-  landed where it did: which components pulled it down, which function
-  of the NIST RMF is weakest, and what the minimum viable improvement
-  would be to jump tiers.
+- `POST /reliability/score/explain` wraps the composite score with a
+  structured `explanation` object:
+  - per-component contributions (absolute + percent-of-composite),
+    sorted highest-first,
+  - `top_driver` (largest contributor) and `top_gap` (lowest-value
+    component, i.e. biggest upside),
+  - `tier_gap` — distance in composite points to the adjacent
+    LOW / MEDIUM / HIGH tier boundaries,
+  - `weakest_nist_function` / `strongest_nist_function` from the NIST
+    AI RMF breakdown,
+  - a one-sentence plain-English `recommendation`.
+- Pure-Python layer on top of `compute_reliability_score()` — no new
+  dependencies.
+- 35 integration assertions added (happy path, sort invariants, sum-to-
+  composite, LOW / MEDIUM / HIGH tier-gap paths, single-component edge
+  case, validation). Suite runs **116/116**.
 
 ### Story E2-S3 — Historical trend computation (⏳ next)
 

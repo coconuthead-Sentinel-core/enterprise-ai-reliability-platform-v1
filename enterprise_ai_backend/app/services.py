@@ -126,6 +126,167 @@ def compute_reliability_score(
     )
 
 
+# ---------- Reliability Score Explanation (Sprint 2, E2-S2) ----------
+
+def _tier_gap(composite_100: float, tier: str) -> schemas.TierGap:
+    """Distance (in composite points) to adjacent tiers.
+
+    LOW has no tier-up; HIGH has no tier-down.
+    """
+    if tier == "LOW":
+        return schemas.TierGap(
+            current_tier=tier,
+            next_tier_up=None,
+            points_needed_up=None,
+            next_tier_down="MEDIUM",
+            points_buffer_down=round(composite_100 - _TIER_LOW_MIN, 4),
+        )
+    if tier == "MEDIUM":
+        return schemas.TierGap(
+            current_tier=tier,
+            next_tier_up="LOW",
+            points_needed_up=round(_TIER_LOW_MIN - composite_100, 4),
+            next_tier_down="HIGH",
+            points_buffer_down=round(composite_100 - _TIER_MEDIUM_MIN, 4),
+        )
+    # HIGH
+    return schemas.TierGap(
+        current_tier=tier,
+        next_tier_up="MEDIUM",
+        points_needed_up=round(_TIER_MEDIUM_MIN - composite_100, 4),
+        next_tier_down=None,
+        points_buffer_down=None,
+    )
+
+
+def _recommendation(
+    tier: str,
+    top_gap: Optional[schemas.ScoreContribution],
+    weakest_fn: Optional[schemas.NISTFunction],
+    tier_gap: schemas.TierGap,
+) -> str:
+    """One-sentence, plain-English suggestion for the system owner."""
+    if top_gap is None:
+        return f"Composite is in the {tier} tier; no components available to target."
+
+    gap_name = top_gap.component_name
+    fn_hint = (
+        f" (NIST {weakest_fn.value})" if weakest_fn is not None else ""
+    )
+
+    if tier == "HIGH":
+        return (
+            f"System is in the HIGH-risk tier; raising '{gap_name}'{fn_hint} "
+            f"would need roughly {tier_gap.points_needed_up} points to reach MEDIUM."
+        )
+    if tier == "MEDIUM":
+        return (
+            f"Focus on '{gap_name}'{fn_hint}; about {tier_gap.points_needed_up} "
+            f"composite points still separate this system from the LOW-risk tier."
+        )
+    # LOW
+    return (
+        f"System is in the LOW-risk tier with a {tier_gap.points_buffer_down}-point "
+        f"buffer; '{gap_name}'{fn_hint} is still the best place to harden further."
+    )
+
+
+def explain_reliability_score(
+    payload: schemas.ReliabilityScoreInput,
+) -> schemas.ReliabilityScoreWithExplanation:
+    """Composite reliability score + per-component explanation.
+
+    Wraps :func:`compute_reliability_score` and adds:
+
+    * ``contributions`` - how much each component adds to the 0-100 composite,
+      with both an absolute share (``contribution``) and a relative share
+      (``contribution_percent``) across the whole score.
+    * ``top_driver`` - the component pulling the composite up the most.
+    * ``top_gap`` - the component with the lowest value (biggest upside).
+    * ``tier_gap`` - how many points separate the current composite from the
+      adjacent tier boundaries.
+    * ``weakest_nist_function`` / ``strongest_nist_function`` - the NIST AI RMF
+      functions with the lowest and highest per-function breakdown scores.
+    * ``recommendation`` - a short, plain-English suggestion.
+    """
+    base = compute_reliability_score(payload)
+
+    total_weight = sum(c.weight for c in payload.components)
+    # ``compute_reliability_score`` already guarded against zero totals, but
+    # keep a local fallback so this helper is safe in isolation.
+    if total_weight <= 0:
+        raise ValueError("Total component weight must be positive.")
+
+    contributions: List[schemas.ScoreContribution] = []
+    for c in payload.components:
+        norm_w = c.weight / total_weight
+        contribution = round(c.value * norm_w * 100.0, 4)
+        if base.composite_score > 0:
+            contribution_percent = round(
+                contribution / base.composite_score * 100.0, 4
+            )
+        else:
+            contribution_percent = 0.0
+        contributions.append(
+            schemas.ScoreContribution(
+                component_name=c.name,
+                value=c.value,
+                weight=c.weight,
+                contribution=contribution,
+                contribution_percent=contribution_percent,
+                nist_function=c.nist_function,
+            )
+        )
+
+    # Sort highest contribution first so the UI can just render the list.
+    contributions.sort(key=lambda x: x.contribution, reverse=True)
+
+    top_driver = contributions[0] if contributions else None
+    # The biggest improvement opportunity is the component whose value is
+    # lowest; weight ties are broken by larger weight (bigger lever).
+    top_gap: Optional[schemas.ScoreContribution] = None
+    if contributions:
+        top_gap = min(contributions, key=lambda x: (x.value, -x.weight))
+
+    # Weakest / strongest NIST function across the breakdown.
+    breakdown_items = [
+        (fn, getattr(base.nist_breakdown, fn))
+        for fn in ("govern", "map", "measure", "manage")
+        if getattr(base.nist_breakdown, fn) is not None
+    ]
+    weakest_fn: Optional[schemas.NISTFunction] = None
+    strongest_fn: Optional[schemas.NISTFunction] = None
+    if breakdown_items:
+        weakest_name = min(breakdown_items, key=lambda x: x[1])[0]
+        strongest_name = max(breakdown_items, key=lambda x: x[1])[0]
+        weakest_fn = schemas.NISTFunction(weakest_name)
+        strongest_fn = schemas.NISTFunction(strongest_name)
+
+    tier_gap = _tier_gap(base.composite_score, base.tier)
+    recommendation = _recommendation(base.tier, top_gap, weakest_fn, tier_gap)
+
+    explanation = schemas.ScoreExplanation(
+        top_driver=top_driver,
+        top_gap=top_gap,
+        contributions=contributions,
+        tier_gap=tier_gap,
+        weakest_nist_function=weakest_fn,
+        strongest_nist_function=strongest_fn,
+        recommendation=recommendation,
+    )
+
+    return schemas.ReliabilityScoreWithExplanation(
+        system_name=base.system_name,
+        composite_score=base.composite_score,
+        tier=base.tier,
+        weights_normalized=base.weights_normalized,
+        nist_breakdown=base.nist_breakdown,
+        components=base.components,
+        computed_at=base.computed_at,
+        explanation=explanation,
+    )
+
+
 # ---------- Hash ----------
 
 def sha256_of(text: str) -> str:

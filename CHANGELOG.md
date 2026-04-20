@@ -10,6 +10,27 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+**Sprint 2 — Reliability Scoring Engine (Epic E2, story E2-S2):**
+- `POST /reliability/score/explain` — composite score plus a structured
+  explanation object. The response includes:
+  - `contributions` — per-component contribution to the composite (absolute
+    on the 0-100 scale and percent-of-composite), sorted highest-first,
+  - `top_driver` and `top_gap` — the component pulling the score up the
+    most vs. the component with the largest improvement opportunity,
+  - `tier_gap` — points-to-next-tier-up / points-of-buffer-down against
+    the LOW (≥80) and MEDIUM (≥60) thresholds,
+  - `weakest_nist_function` / `strongest_nist_function` — derived from the
+    per-NIST-function breakdown,
+  - `recommendation` — one-sentence plain-English suggestion for the owner.
+- `ScoreContribution`, `TierGap`, `ScoreExplanation`, and
+  `ReliabilityScoreWithExplanation` Pydantic schemas.
+- `explain_reliability_score()` service layered on top of
+  `compute_reliability_score()` — no new dependencies.
+- 35 new integration assertions for the explanation endpoint (happy path,
+  sort invariants, contribution arithmetic, LOW / MEDIUM / HIGH tier-gap
+  paths, single-component edge case, validation). Suite now runs
+  **116/116**, up from 81/81.
+
 **Sprint 2 — Reliability Scoring Engine (Epic E2, story E2-S1):**
 - `POST /reliability/score` — weighted composite reliability score endpoint.
   Accepts a list of `ReliabilityScoreComponent` (name, value 0-1, weight 0-1,
@@ -21,7 +42,7 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   implementation and automatic weight normalization.
 - 19 new integration assertions for the scoring engine (happy path, NIST
   breakdown, weight normalization, three tier boundaries, three validation
-  errors). Suite now runs **81/81**, up from 62/62.
+  errors). Suite ran **81/81**, up from 62/62.
 
 **Sprint 1 (earlier):**
 - `GET /info/epics` endpoint exposing the 5 product backlog epics and their
