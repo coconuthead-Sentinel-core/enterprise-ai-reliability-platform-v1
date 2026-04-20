@@ -14,7 +14,7 @@ from app.main import app
 def main() -> None:
     repo_root = Path(__file__).resolve().parents[2]
     output = repo_root / "libs" / "schemas" / "openapi.json"
-    output.write_text(json.dumps(app.openapi(), indent=2) + "\n", encoding="utf-8")
+    output.write_text(json.dumps(app.openapi(), indent=2), encoding="utf-8")
     print(f"wrote {output}")
 
 
