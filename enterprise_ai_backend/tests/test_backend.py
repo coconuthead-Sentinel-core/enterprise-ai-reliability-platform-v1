@@ -221,6 +221,27 @@ def main():
     exp_hash = hashlib.sha256(text.encode()).hexdigest()
     check("matches hashlib.sha256", r.json()["sha256"] == exp_hash)
 
+    # ---------- 11. Info endpoints (public, read-only) ----------
+    section("11. GET /info/epics and /info/sprint")
+    r = client.get("/info/epics")
+    check("info/epics 200", r.status_code == 200)
+    epics = r.json()
+    check("5 epics returned", len(epics) == 5, f"got {len(epics)}")
+    check("first epic is E1", epics[0]["id"] == "E1")
+    check("E1 in_progress", epics[0]["status"] == "in_progress")
+    check("E2 not_started", epics[1]["status"] == "not_started")
+    check("every epic has title", all(e.get("title") for e in epics))
+    check("every epic has int sprint", all(isinstance(e["sprint"], int) for e in epics))
+    check("epic statuses are valid",
+          all(e["status"] in {"not_started", "in_progress", "done"} for e in epics))
+
+    r = client.get("/info/sprint")
+    check("info/sprint 200", r.status_code == 200)
+    s = r.json()
+    check("current_sprint is 1", s["current_sprint"] == 1)
+    check("total_sprints is 5", s["total_sprints"] == 5)
+    check("release is v0.3.0", s["release"] == "v0.3.0")
+
     # ---------- Summary ----------
     section("SUMMARY")
     passed = sum(1 for _, ok in results if ok)

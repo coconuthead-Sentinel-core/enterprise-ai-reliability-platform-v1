@@ -7,7 +7,7 @@ and real ML-based anomaly detection.
 
 **Status:** v0.3.0, full build online. Real FastAPI, real bcrypt + JWT,
 real scikit-learn IsolationForest, real SQLite in dev /
-PostgreSQL-ready in prod. 50/50 integration assertions pass.
+PostgreSQL-ready in prod. 62/62 integration assertions pass.
 
 ## Monorepo layout
 
@@ -19,7 +19,7 @@ enterprise-ai-reliability-platform-v1/
 │
 ├─ enterprise_ai_backend/   The actual backend source tree
 │  ├─ app/                  FastAPI app (auth, assessments, ai, reliability)
-│  ├─ tests/                Integration test suite (50 assertions)
+│  ├─ tests/                Integration test suite (62 assertions)
 │  └─ requirements.txt
 │
 ├─ libs/
@@ -49,7 +49,7 @@ enterprise-ai-reliability-platform-v1/
 cd enterprise_ai_backend
 pip install -r requirements.txt
 uvicorn app.main:app --reload                # http://127.0.0.1:8000/docs
-python tests/test_backend.py                  # 50/50 assertions
+python tests/test_backend.py                  # 62/62 assertions
 ```
 
 For an HR-facing verification path, see `docs/hr-review-guide.md`.
@@ -115,4 +115,5 @@ auto-scale 1–5 API replicas.
 
 ## Licence
 
-Internal / pre-commercial. See `SECURITY.md` for vulnerability reporting.
+Internal / pre-commercial. See `LICENSE` at the project root for the full
+notice and `SECURITY.md` for vulnerability reporting.

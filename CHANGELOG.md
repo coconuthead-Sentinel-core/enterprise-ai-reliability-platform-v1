@@ -12,12 +12,31 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `GET /info/epics` endpoint exposing the 5 product backlog epics and their
   current status, so the dashboard and CI can surface sprint progress without
   reading the backlog file directly.
+- `GET /info/sprint` endpoint returning the current sprint summary
+  (`current_sprint`, `total_sprints`, `release`, `branch`).
 - `docs/SPRINT_PLAN.md` mapping the product backlog (E1–E5) to a 5-sprint
   delivery roadmap.
 - `CHANGELOG.md` at the project root (this file).
+- `LICENSE` at the project root — proprietary / pre-commercial notice; will be
+  replaced with a standard OSS or commercial license at v1.0.0.
+- `Azure/README.md` explaining the three-way Azure layout (`Azure/` for
+  planning prose, `.azure/` for live deployment status, `infra/bicep/` for IaC).
+- Integration tests for the new `/info/epics` and `/info/sprint` endpoints
+  (12 new assertions — suite now runs **62/62**, up from 50/50).
 
 ### Changed
 - Registered the new `info` router in `enterprise_ai_backend/app/main.py`.
+- `README.md` updated from "50/50 integration assertions" to the new count.
+
+### Removed
+- Untracked four stale legacy draft folders from git (files remain on the
+  author's disk, but are no longer part of the repository):
+  - `Back in/` (old backend iterations, already in `.gitignore`)
+  - `Front end/` (early draft text)
+  - `Middle layer/` (early draft text)
+  - `Enterprise readability AI Platform v1 Artificial Intelligence/` (misspelled
+    legacy folder containing a duplicate NIST RMF PDF)
+- `.gitignore` extended to prevent these legacy folders from being re-added.
 
 ## [0.3.0] - 2026-04-19
 

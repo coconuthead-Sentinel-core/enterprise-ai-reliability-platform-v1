@@ -1,0 +1,46 @@
+Enterprise AI Reliability Platform (EARP) — Proprietary License
+Copyright (c) 2026 Shannon Bryan Kelly. All rights reserved.
+
+STATUS
+------
+This software is in a pre-commercial, internal-review state. It is NOT open
+source and is NOT licensed for redistribution, modification, sublicensing, or
+commercial use by any third party without the prior written permission of the
+copyright holder.
+
+PERMITTED USE
+-------------
+1. HR / employer / investor review.
+   Parties invited in writing by the copyright holder may clone and run the
+   code locally for the sole purpose of evaluating the author's work.
+
+2. Personal, non-production use by the copyright holder and collaborators
+   explicitly named in the project's CONTRIBUTING.md file.
+
+PROHIBITED USE
+--------------
+Without prior written permission from the copyright holder, you MAY NOT:
+
+- Distribute the source code or compiled binaries to any party not covered
+  above.
+- Use the software, in whole or in part, in any production, commercial, or
+  revenue-generating system.
+- Create derivative works for public release.
+- Remove or alter this notice, the copyright line, or the SECURITY.md
+  contact information.
+
+WARRANTY DISCLAIMER
+-------------------
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE
+USE OF THE SOFTWARE.
+
+CONTACT
+-------
+Questions about licensing, commercial use, or partnership inquiries: see
+SECURITY.md for the current contact channel.
+
+This license supersedes any earlier notice and will be replaced with a
+standard open-source or commercial license when the project reaches v1.0.0.
