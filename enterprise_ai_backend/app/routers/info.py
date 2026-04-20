@@ -32,7 +32,7 @@ _EPICS: List[Epic] = [
     Epic(
         id="E2",
         title="Reliability Scoring Engine",
-        status="not_started",
+        status="in_progress",
         sprint=2,
     ),
     Epic(
@@ -75,8 +75,8 @@ class SprintSummary(BaseModel):
 def current_sprint() -> SprintSummary:
     """Return the current sprint summary."""
     return SprintSummary(
-        current_sprint=1,
+        current_sprint=2,
         total_sprints=5,
         release="v0.3.0",
-        branch="release/v0.3.0",
+        branch="sprint-2/reliability-scoring",
     )

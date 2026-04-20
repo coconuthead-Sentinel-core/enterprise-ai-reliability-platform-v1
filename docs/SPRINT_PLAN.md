@@ -19,8 +19,8 @@ pushed, tests green, and a CHANGELOG entry.
 | Sprint | Epic | Title                                  | Status       |
 |--------|------|----------------------------------------|--------------|
 | 0      | —    | Repo handoff, remote wiring, baseline  | ✅ done       |
-| 1      | E1   | Evidence Ingestion and Normalization   | 🟢 in progress|
-| 2      | E2   | Reliability Scoring Engine             | ⏳ planned    |
+| 1      | E1   | Evidence Ingestion and Normalization   | ✅ done (shim) |
+| 2      | E2   | Reliability Scoring Engine             | 🟢 in progress|
 | 3      | E3   | Policy Gate Evaluation                 | ⏳ planned    |
 | 4      | E4   | Dashboard and Reporting                | ⏳ planned    |
 | 5      | E5   | Security and Compliance                | ⏳ planned    |
@@ -74,15 +74,36 @@ framework memory saved.
 
 ---
 
-## Sprint 2 — Reliability Scoring Engine (⏳ planned)
+## Sprint 2 — Reliability Scoring Engine (🟢 in progress)
 
-**Epic:** E2.
+**Epic:** E2. Backlog stories: `E2-S1`, `E2-S2`, `E2-S3`.
 
-- Wire the existing reliability math (MTBF / MTTR / availability) to a
-  `POST /reliability/score` endpoint that accepts structured incident data.
-- Return a reliability score plus the NIST AI RMF mapping (Govern / Map /
-  Measure / Manage).
-- Add unit tests for the scoring math.
+### Story E2-S1 — Weighted score algorithm implementation (✅ done)
+
+- `POST /reliability/score` endpoint accepts an arbitrary list of
+  reliability signals (availability, governance, security posture, etc.),
+  each with a value in `[0, 1]` and a weight.
+- Returns a weighted 0-100 composite score, a LOW/MEDIUM/HIGH tier, a
+  boolean indicating whether the input weights were normalized, and a
+  per-NIST-AI-RMF-function breakdown (govern/map/measure/manage).
+- Pure-Python math in `services.compute_reliability_score()` — no new
+  heavy dependencies.
+- 19 integration assertions cover the happy path, NIST breakdown,
+  weight normalization, three tier boundaries, and three validation
+  failures. Suite runs **81/81**.
+
+### Story E2-S2 — Score explanation service (⏳ next)
+
+- Endpoint (or response field) that explains *why* a composite score
+  landed where it did: which components pulled it down, which function
+  of the NIST RMF is weakest, and what the minimum viable improvement
+  would be to jump tiers.
+
+### Story E2-S3 — Historical trend computation (⏳ next)
+
+- Persist each scoring call (similar to the `ReliabilityComputation`
+  table) and expose a `GET /reliability/score/history` endpoint with
+  simple trend stats (rolling average, tier transitions).
 
 ---
 

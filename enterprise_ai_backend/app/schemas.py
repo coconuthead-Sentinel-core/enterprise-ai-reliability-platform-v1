@@ -1,5 +1,6 @@
 """Pydantic request / response schemas."""
 from datetime import datetime
+from enum import Enum
 from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -77,6 +78,67 @@ class ReliabilityOutput(BaseModel):
     failure_rate_per_hour: float
     expected_failures: float
     created_at: datetime
+
+
+# ---------- Reliability Score (Sprint 2, E2-S1) ----------
+
+class NISTFunction(str, Enum):
+    """NIST AI RMF 1.0 functions."""
+
+    govern = "govern"
+    map = "map"
+    measure = "measure"
+    manage = "manage"
+
+
+class ReliabilityScoreComponent(BaseModel):
+    """One input signal to the weighted reliability score."""
+
+    name: str = Field(..., min_length=1, max_length=100)
+    value: float = Field(
+        ..., ge=0.0, le=1.0,
+        description="Normalized component value between 0.0 and 1.0.",
+    )
+    weight: float = Field(
+        ..., gt=0.0, le=1.0,
+        description="Component weight; weights are normalized if they do not sum to 1.0.",
+    )
+    nist_function: Optional[NISTFunction] = Field(
+        None,
+        description="Optional NIST AI RMF function this component maps to.",
+    )
+
+
+class ReliabilityScoreInput(BaseModel):
+    """Request body for POST /reliability/score."""
+
+    system_name: str = Field(..., min_length=1, max_length=200)
+    components: List[ReliabilityScoreComponent] = Field(..., min_length=1)
+
+
+class NISTBreakdown(BaseModel):
+    """Per-function weighted-average score, 0-100. None if no components
+    in the request were tagged for that function."""
+
+    govern: Optional[float] = None
+    map: Optional[float] = None
+    measure: Optional[float] = None
+    manage: Optional[float] = None
+
+
+class ReliabilityScoreOutput(BaseModel):
+    """Response body for POST /reliability/score."""
+
+    system_name: str
+    composite_score: float = Field(..., description="Weighted composite score, 0-100.")
+    tier: str = Field(..., description="LOW (>=80), MEDIUM (>=60), or HIGH (<60).")
+    weights_normalized: bool = Field(
+        ...,
+        description="True if input weights did not sum to 1.0 and were normalized.",
+    )
+    nist_breakdown: NISTBreakdown
+    components: List[ReliabilityScoreComponent]
+    computed_at: datetime
 
 
 # ---------- Hash ----------
