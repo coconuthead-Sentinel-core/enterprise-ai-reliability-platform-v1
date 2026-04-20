@@ -230,6 +230,7 @@ def main():
     check("first epic is E1", epics[0]["id"] == "E1")
     check("E1 in_progress", epics[0]["status"] == "in_progress")
     check("E2 done (Sprint 2 complete)", epics[1]["status"] == "done")
+    check("E3 in_progress (Sprint 3 active)", epics[2]["status"] == "in_progress")
     check("every epic has title", all(e.get("title") for e in epics))
     check("every epic has int sprint", all(isinstance(e["sprint"], int) for e in epics))
     check("epic statuses are valid",
@@ -238,11 +239,13 @@ def main():
     r = client.get("/info/sprint")
     check("info/sprint 200", r.status_code == 200)
     s = r.json()
-    check("current_sprint is 2", s["current_sprint"] == 2)
+    check("current_sprint is 3", s["current_sprint"] == 3)
     check("total_sprints is 5", s["total_sprints"] == 5)
     check("release is v0.3.0", s["release"] == "v0.3.0")
     check("E2 is done (Epic E2 shipped in Sprint 2)",
           next(e for e in epics if e["id"] == "E2")["status"] == "done")
+    check("E3 is in_progress (Sprint 3 active)",
+          next(e for e in epics if e["id"] == "E3")["status"] == "in_progress")
 
     # ---------- 12. Reliability composite score (Sprint 2, E2-S1) ----------
     section("12. POST /reliability/score (weighted composite + NIST breakdown)")
@@ -571,6 +574,148 @@ def main():
     check("limit=0 -> 422", r.status_code == 422)
     r = client.get("/reliability/score/history?limit=501")
     check("limit=501 -> 422", r.status_code == 422)
+
+    # ---------- 15. Policy gate evaluation (Sprint 3, E3-S1) ----------
+    section("15. POST /policy/evaluate (allow / warn / block)")
+
+    # ALLOW path: composite 87.84 >= 80, all NIST functions well above floor.
+    r = client.post("/policy/evaluate", json={
+        "score_input": {
+            "system_name": "Claims Triage Model",
+            "components": [
+                {"name": "availability", "value": 0.996, "weight": 0.4,
+                 "nist_function": "measure"},
+                {"name": "governance", "value": 0.85, "weight": 0.3,
+                 "nist_function": "govern"},
+                {"name": "security_posture", "value": 0.75, "weight": 0.3,
+                 "nist_function": "manage"},
+            ],
+        },
+    })
+    check("policy/evaluate 200", r.status_code == 200, r.text)
+    body = r.json()
+    check("allow decision", body["decision"] == "allow",
+          f"got {body['decision']}")
+    check("composite echoed (~87.84)",
+          abs(body["composite_score"] - 87.84) < 0.01)
+    check("tier LOW on allow", body["tier"] == "LOW")
+    check("allow has 1 info reason",
+          len(body["reasons"]) == 1
+          and body["reasons"][0]["severity"] == "info")
+    check("allow reason code composite_meets_allow",
+          body["reasons"][0]["code"] == "composite_meets_allow")
+    check("default thresholds echoed",
+          body["thresholds_applied"]["allow_min_composite"] == 80.0)
+
+    # WARN path: composite 75 is between 60 (warn) and 80 (allow).
+    r = client.post("/policy/evaluate", json={
+        "score_input": {
+            "system_name": "Medium",
+            "components": [{"name": "x", "value": 0.75, "weight": 1.0}],
+        },
+    })
+    check("warn 200", r.status_code == 200)
+    body = r.json()
+    check("warn decision", body["decision"] == "warn",
+          f"got {body['decision']}")
+    check("warn tier MEDIUM", body["tier"] == "MEDIUM")
+    # With no NIST function tagged, only the composite rule fires -> 1 warn.
+    check("warn 1 reason", len(body["reasons"]) == 1)
+    check("warn reason code",
+          body["reasons"][0]["code"] == "composite_below_allow")
+    check("warn reason severity",
+          body["reasons"][0]["severity"] == "warn")
+
+    # BLOCK path: composite 30 < 60.
+    r = client.post("/policy/evaluate", json={
+        "score_input": {
+            "system_name": "Bad",
+            "components": [{"name": "x", "value": 0.3, "weight": 1.0}],
+        },
+    })
+    check("block 200", r.status_code == 200)
+    body = r.json()
+    check("block decision", body["decision"] == "block")
+    check("block tier HIGH", body["tier"] == "HIGH")
+    check("block reason severity",
+          body["reasons"][0]["severity"] == "block")
+    check("block reason code",
+          body["reasons"][0]["code"] == "composite_below_warn")
+
+    # NIST FLOOR trumps: composite passes allow (85) but a NIST function
+    # comes in below the min_nist_function_score floor -> block overall.
+    r = client.post("/policy/evaluate", json={
+        "score_input": {
+            "system_name": "NistFloor",
+            "components": [
+                # Weighted so composite ~85 (allow) but 'manage' by itself is 30.
+                {"name": "strong_measure", "value": 1.0, "weight": 0.9,
+                 "nist_function": "measure"},
+                {"name": "weak_manage", "value": 0.3, "weight": 0.1,
+                 "nist_function": "manage"},
+            ],
+        },
+    })
+    check("nist-floor 200", r.status_code == 200, r.text)
+    body = r.json()
+    # Composite = 1.0*0.9 + 0.3*0.1 = 0.93 -> 93 -> LOW tier.
+    check("nist-floor composite ~93",
+          abs(body["composite_score"] - 93.0) < 0.01,
+          f"got {body['composite_score']}")
+    check("nist-floor tier LOW", body["tier"] == "LOW")
+    # Despite LOW tier, NIST manage = 30 < floor 40 -> overall block.
+    check("nist-floor overall BLOCK",
+          body["decision"] == "block",
+          f"got {body['decision']}")
+    reason_codes = [r["code"] for r in body["reasons"]]
+    check("nist-floor has composite_meets_allow reason",
+          "composite_meets_allow" in reason_codes)
+    check("nist-floor has nist_manage_below_floor reason",
+          "nist_manage_below_floor" in reason_codes,
+          f"got {reason_codes}")
+    # Block reasons come first (sorted by severity).
+    check("nist-floor block reasons sorted first",
+          body["reasons"][0]["severity"] == "block")
+
+    # CUSTOM THRESHOLDS: stricter allow_min pushes a normally-allowed
+    # score into the warn band.
+    r = client.post("/policy/evaluate", json={
+        "score_input": {
+            "system_name": "Claims Triage Model",
+            "components": [{"name": "x", "value": 0.85, "weight": 1.0}],
+        },
+        "thresholds": {
+            "allow_min_composite": 90.0,
+            "warn_min_composite": 60.0,
+            "min_nist_function_score": 40.0,
+        },
+    })
+    check("custom-threshold 200", r.status_code == 200)
+    body = r.json()
+    # 85 composite, allow threshold raised to 90 -> warn band.
+    check("custom-threshold warn", body["decision"] == "warn")
+    check("custom thresholds echoed",
+          body["thresholds_applied"]["allow_min_composite"] == 90.0)
+
+    # VALIDATION: warn_min_composite > allow_min_composite -> 422.
+    r = client.post("/policy/evaluate", json={
+        "score_input": {
+            "system_name": "X",
+            "components": [{"name": "x", "value": 0.5, "weight": 1.0}],
+        },
+        "thresholds": {
+            "allow_min_composite": 70.0,
+            "warn_min_composite": 80.0,
+            "min_nist_function_score": 40.0,
+        },
+    })
+    check("invalid thresholds -> 422", r.status_code == 422)
+
+    # VALIDATION: empty components propagate to 422.
+    r = client.post("/policy/evaluate", json={
+        "score_input": {"system_name": "X", "components": []},
+    })
+    check("policy empty components -> 422", r.status_code == 422)
 
     # ---------- Summary ----------
     section("SUMMARY")

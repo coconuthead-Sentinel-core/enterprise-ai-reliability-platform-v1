@@ -10,6 +10,31 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+**Sprint 3 — Policy Gate Evaluation (Epic E3, story E3-S1):**
+- `POST /policy/evaluate` — run a gate against a reliability score and
+  return an `allow` / `warn` / `block` decision with detailed reasons.
+- New `policy` router and `app/routers/policy.py` module.
+- New Pydantic schemas:
+  - `PolicyDecision` enum (`allow` / `warn` / `block`),
+  - `PolicySeverity` enum (`info` / `warn` / `block`),
+  - `PolicyThresholds` — configurable `allow_min_composite` (default 80),
+    `warn_min_composite` (default 60), `min_nist_function_score`
+    (default 40) with a validator that enforces warn ≤ allow,
+  - `PolicyReason` — machine-readable `code`, human-readable `message`,
+    and a `severity`,
+  - `PolicyGateInput` / `PolicyGateDecision` request / response models.
+- `evaluate_policy_gate()` and `evaluate_policy_gate_from_input()`
+  service helpers. Rules fired in this order: composite-band classification
+  (allow / warn / block) then per-NIST-function floor. Reasons are
+  returned worst-severity-first; a single `block` reason forces the
+  overall decision to `block`.
+- Epic E3 now reports `in_progress` in `/info/epics` and
+  `current_sprint=3` in `/info/sprint`.
+- 32 new integration assertions: allow / warn / block happy paths, NIST
+  floor trumping a passing composite, custom-threshold override, and
+  validation (`warn_min > allow_min` → 422, empty components → 422).
+  Suite now runs **184/184**, up from 152/152.
+
 **Sprint 2 — Reliability Scoring Engine (Epic E2, story E2-S3):**
 - `GET /reliability/score/history` — persisted score history + trend stats.
   Optional `system_name` filter and `limit` (1–500, default 50).

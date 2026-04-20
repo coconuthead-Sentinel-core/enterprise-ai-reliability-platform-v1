@@ -21,7 +21,7 @@ pushed, tests green, and a CHANGELOG entry.
 | 0      | —    | Repo handoff, remote wiring, baseline  | ✅ done       |
 | 1      | E1   | Evidence Ingestion and Normalization   | ✅ done (shim) |
 | 2      | E2   | Reliability Scoring Engine             | ✅ done       |
-| 3      | E3   | Policy Gate Evaluation                 | ⏳ planned    |
+| 3      | E3   | Policy Gate Evaluation                 | 🟢 in progress|
 | 4      | E4   | Dashboard and Reporting                | ⏳ planned    |
 | 5      | E5   | Security and Compliance                | ⏳ planned    |
 
@@ -131,14 +131,37 @@ framework memory saved.
 
 ---
 
-## Sprint 3 — Policy Gate Evaluation (⏳ planned)
+## Sprint 3 — Policy Gate Evaluation (🟢 in progress)
 
-**Epic:** E3.
+**Epic:** E3. Backlog stories: `E3-S1`, `E3-S2`, `E3-S3`.
 
-- Add a policy gate that consumes the reliability score and returns
-  allow / warn / block with reasons.
-- Hook into `/assessments` so each assessment gets a gate decision attached.
-- Add integration tests covering allow / warn / block paths.
+### Story E3-S1 — Core policy gate engine (✅ done)
+
+- `POST /policy/evaluate` takes the same component payload as
+  `/reliability/score` (plus an optional `thresholds` override) and
+  returns a structured `PolicyGateDecision`:
+  - `decision`: `allow` / `warn` / `block`,
+  - `reasons`: machine + human-readable list (sorted worst-first),
+  - `thresholds_applied`: echoed so callers see exactly which rules ran,
+  - `composite_score`, `tier`, `evaluated_at`.
+- Default rules: composite ≥ 80 → allow, ≥ 60 → warn, else block. Any
+  tagged NIST function below 40 forces an overall block regardless of
+  composite.
+- Pure-Python on top of `compute_reliability_score()` — no new deps.
+- 32 integration assertions: allow / warn / block, NIST-floor override,
+  custom thresholds, validator (`warn_min > allow_min` → 422), empty
+  components → 422. Suite now runs **184/184**.
+
+### Story E3-S2 — Policy gate attached to `/assessments` (⏳ next)
+
+- Run the gate as part of `POST /assessments` and persist the decision
+  alongside each assessment record so risk tiers and gate decisions
+  are always in sync.
+
+### Story E3-S3 — Policy audit log (⏳ next)
+
+- Persist each `/policy/evaluate` call and add `GET /policy/history`
+  with simple trend stats (mirrors `/reliability/score/history`).
 
 ---
 

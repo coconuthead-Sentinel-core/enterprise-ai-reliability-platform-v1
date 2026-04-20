@@ -281,6 +281,91 @@ class ReliabilityScoreHistoryOut(BaseModel):
     records: List[ReliabilityScoreRecordOut]
 
 
+# ---------- Policy Gate (Sprint 3, E3-S1) ----------
+
+class PolicyDecision(str, Enum):
+    """Overall gate outcome."""
+
+    allow = "allow"
+    warn = "warn"
+    block = "block"
+
+
+class PolicySeverity(str, Enum):
+    """Severity classification for a single policy reason."""
+
+    info = "info"
+    warn = "warn"
+    block = "block"
+
+
+class PolicyThresholds(BaseModel):
+    """Configurable thresholds controlling the gate outcome.
+
+    ``allow_min_composite`` and ``warn_min_composite`` partition the
+    composite score into allow / warn / block bands; ``min_nist_function_score``
+    is a hard floor -- any per-NIST-function breakdown below it forces
+    ``block`` regardless of composite.
+    """
+
+    allow_min_composite: float = Field(
+        80.0, ge=0.0, le=100.0,
+        description="Composite score >= this value maps to 'allow'.",
+    )
+    warn_min_composite: float = Field(
+        60.0, ge=0.0, le=100.0,
+        description="Composite score >= this (and < allow threshold) maps to 'warn'.",
+    )
+    min_nist_function_score: float = Field(
+        40.0, ge=0.0, le=100.0,
+        description="Per-function score floor; any tagged NIST function below "
+                    "this value forces 'block'.",
+    )
+
+    @field_validator("warn_min_composite")
+    @classmethod
+    def _warn_below_allow(cls, v: float, info) -> float:
+        allow_min = info.data.get("allow_min_composite", 80.0)
+        if v > allow_min:
+            raise ValueError(
+                "warn_min_composite must be <= allow_min_composite"
+            )
+        return v
+
+
+class PolicyReason(BaseModel):
+    """One machine-readable + human-readable rationale for the decision."""
+
+    code: str = Field(..., description="Short stable identifier for the rule.")
+    message: str = Field(..., description="Plain-English explanation.")
+    severity: PolicySeverity
+
+
+class PolicyGateInput(BaseModel):
+    """Request body for POST /policy/evaluate."""
+
+    score_input: ReliabilityScoreInput
+    thresholds: Optional[PolicyThresholds] = Field(
+        None,
+        description="Override the default thresholds; omit to use defaults.",
+    )
+
+
+class PolicyGateDecision(BaseModel):
+    """Response body for POST /policy/evaluate."""
+
+    system_name: str
+    decision: PolicyDecision
+    composite_score: float
+    tier: str
+    reasons: List[PolicyReason] = Field(
+        ...,
+        description="All rules that fired, worst severity first.",
+    )
+    thresholds_applied: PolicyThresholds
+    evaluated_at: datetime
+
+
 # ---------- Hash ----------
 
 class HashInput(BaseModel):

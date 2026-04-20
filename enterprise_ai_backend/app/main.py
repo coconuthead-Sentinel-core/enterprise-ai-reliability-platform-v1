@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .config import settings
 from .database import init_db
-from .routers import ai, assessments, auth, hash as hash_router, health, info, reliability
+from .routers import ai, assessments, auth, hash as hash_router, health, info, policy, reliability
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -33,6 +33,7 @@ def on_startup():
 app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(reliability.router)
+app.include_router(policy.router)
 app.include_router(assessments.router)
 app.include_router(ai.router)
 app.include_router(hash_router.router)
