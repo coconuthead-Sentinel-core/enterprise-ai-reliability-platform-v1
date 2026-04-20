@@ -11,6 +11,7 @@ from ..schemas import (
     ReliabilityOutput,
     ReliabilityScoreInput,
     ReliabilityScoreOutput,
+    ReliabilityScoreWithExplanation,
 )
 
 router = APIRouter(prefix="/reliability", tags=["reliability"])
@@ -37,3 +38,19 @@ def score(payload: ReliabilityScoreInput):
     (LOW/MEDIUM/HIGH), and optionally rolled up per NIST AI RMF function.
     """
     return services.compute_reliability_score(payload)
+
+
+@router.post("/score/explain", response_model=ReliabilityScoreWithExplanation)
+def score_explain(payload: ReliabilityScoreInput):
+    """Composite reliability score + per-component explanation.
+
+    Extends ``POST /reliability/score`` with an ``explanation`` object that
+    identifies:
+
+    * ``top_driver`` and ``top_gap`` components,
+    * per-component contributions (absolute and percent of the composite),
+    * distance to adjacent tier boundaries (``tier_gap``),
+    * weakest / strongest NIST AI RMF function, and
+    * a one-sentence plain-English recommendation.
+    """
+    return services.explain_reliability_score(payload)

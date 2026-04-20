@@ -320,6 +320,129 @@ def main():
     })
     check("weight = 0 -> 422", r.status_code == 422)
 
+    # ---------- 13. Reliability score explanation (Sprint 2, E2-S2) ----------
+    section("13. POST /reliability/score/explain (composite + explanation)")
+
+    explain_payload = {
+        "system_name": "Claims Triage Model",
+        "components": [
+            {"name": "availability", "value": 0.996, "weight": 0.4,
+             "nist_function": "measure"},
+            {"name": "governance", "value": 0.85, "weight": 0.3,
+             "nist_function": "govern"},
+            {"name": "security_posture", "value": 0.75, "weight": 0.3,
+             "nist_function": "manage"},
+        ],
+    }
+    r = client.post("/reliability/score/explain", json=explain_payload)
+    check("score/explain 200", r.status_code == 200, r.text)
+    body = r.json()
+    check("explain echoes system_name",
+          body["system_name"] == "Claims Triage Model")
+    check("explain composite ~87.84",
+          abs(body["composite_score"] - 87.84) < 0.01,
+          f"got {body['composite_score']}")
+    check("explain tier LOW", body["tier"] == "LOW")
+    check("explain nist measure = 99.6",
+          abs(body["nist_breakdown"]["measure"] - 99.6) < 0.01)
+
+    explanation = body["explanation"]
+    check("explanation present", isinstance(explanation, dict))
+    contribs = explanation["contributions"]
+    check("3 contributions returned", len(contribs) == 3)
+    # Contributions are sorted highest-first.
+    check("contributions sorted desc",
+          contribs[0]["contribution"] >= contribs[1]["contribution"]
+          >= contribs[2]["contribution"])
+    # Availability (0.996 * 0.4 = 0.3984 -> 39.84) drives the score hardest.
+    check("top_driver is availability",
+          explanation["top_driver"]["component_name"] == "availability")
+    check("top_driver contribution ~39.84",
+          abs(explanation["top_driver"]["contribution"] - 39.84) < 0.01,
+          f"got {explanation['top_driver']['contribution']}")
+    # security_posture has the lowest value (0.75).
+    check("top_gap is security_posture",
+          explanation["top_gap"]["component_name"] == "security_posture")
+    # Contributions on the 0-100 scale should sum to the composite score.
+    total_contrib = sum(c["contribution"] for c in contribs)
+    check("sum(contributions) ~= composite",
+          abs(total_contrib - body["composite_score"]) < 0.01,
+          f"sum={total_contrib} composite={body['composite_score']}")
+    # contribution_percent sums to 100 (allow small float drift).
+    total_pct = sum(c["contribution_percent"] for c in contribs)
+    check("sum(contribution_percent) ~= 100",
+          abs(total_pct - 100.0) < 0.05,
+          f"sum={total_pct}")
+    # Tier gap for LOW: no tier-up, MEDIUM below with buffer = composite - 80.
+    tg = explanation["tier_gap"]
+    check("tier_gap current_tier LOW", tg["current_tier"] == "LOW")
+    check("tier_gap no tier_up", tg["next_tier_up"] is None)
+    check("tier_gap no points_needed_up", tg["points_needed_up"] is None)
+    check("tier_gap next_tier_down MEDIUM",
+          tg["next_tier_down"] == "MEDIUM")
+    check("tier_gap buffer ~7.84",
+          abs(tg["points_buffer_down"] - 7.84) < 0.01,
+          f"got {tg['points_buffer_down']}")
+    # measure > govern > manage, so weakest = manage, strongest = measure.
+    check("weakest_nist_function = manage",
+          explanation["weakest_nist_function"] == "manage")
+    check("strongest_nist_function = measure",
+          explanation["strongest_nist_function"] == "measure")
+    check("recommendation non-empty",
+          isinstance(explanation["recommendation"], str)
+          and len(explanation["recommendation"]) > 10)
+
+    # Single-component edge case.
+    r = client.post("/reliability/score/explain", json={
+        "system_name": "Solo",
+        "components": [{"name": "only", "value": 0.6, "weight": 1.0}],
+    })
+    check("single-component explain 200", r.status_code == 200)
+    body = r.json()
+    check("single-component tier MEDIUM", body["tier"] == "MEDIUM")
+    check("single-component only one contribution",
+          len(body["explanation"]["contributions"]) == 1)
+    check("single-component top_driver == top_gap",
+          body["explanation"]["top_driver"]["component_name"]
+          == body["explanation"]["top_gap"]["component_name"])
+    # MEDIUM tier-gap: needs (80 - 60) = 20 points up, buffer of 0 down.
+    tg = body["explanation"]["tier_gap"]
+    check("MEDIUM tier_gap next_tier_up LOW",
+          tg["next_tier_up"] == "LOW")
+    check("MEDIUM tier_gap needs 20 points",
+          abs(tg["points_needed_up"] - 20.0) < 0.01,
+          f"got {tg['points_needed_up']}")
+    check("MEDIUM tier_gap next_tier_down HIGH",
+          tg["next_tier_down"] == "HIGH")
+    # No NIST function tagged -> weakest/strongest are null.
+    check("solo weakest_nist_function null",
+          body["explanation"]["weakest_nist_function"] is None)
+
+    # HIGH-tier path: composite well below 60.
+    r = client.post("/reliability/score/explain", json={
+        "system_name": "Struggling",
+        "components": [
+            {"name": "bad_governance", "value": 0.3, "weight": 0.5,
+             "nist_function": "govern"},
+            {"name": "bad_security", "value": 0.2, "weight": 0.5,
+             "nist_function": "manage"},
+        ],
+    })
+    check("HIGH-tier explain 200", r.status_code == 200)
+    body = r.json()
+    check("HIGH-tier tier HIGH", body["tier"] == "HIGH")
+    tg = body["explanation"]["tier_gap"]
+    check("HIGH-tier no next_tier_down", tg["next_tier_down"] is None)
+    check("HIGH-tier points_needed_up > 0",
+          tg["points_needed_up"] is not None and tg["points_needed_up"] > 0)
+    check("HIGH-tier recommendation mentions HIGH",
+          "HIGH" in body["explanation"]["recommendation"])
+
+    # Validation: empty components still rejected at schema layer.
+    r = client.post("/reliability/score/explain",
+                    json={"system_name": "E", "components": []})
+    check("explain empty components -> 422", r.status_code == 422)
+
     # ---------- Summary ----------
     section("SUMMARY")
     passed = sum(1 for _, ok in results if ok)

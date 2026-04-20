@@ -141,6 +141,84 @@ class ReliabilityScoreOutput(BaseModel):
     computed_at: datetime
 
 
+# ---------- Reliability Score Explanation (Sprint 2, E2-S2) ----------
+
+class ScoreContribution(BaseModel):
+    """One component's contribution to the composite score."""
+
+    component_name: str
+    value: float
+    weight: float
+    contribution: float = Field(
+        ...,
+        description="Component's share of the composite score on a 0-100 scale "
+                    "(normalized weight * value * 100).",
+    )
+    contribution_percent: float = Field(
+        ...,
+        description="Percent of the composite score attributable to this component "
+                    "(sums to 100 across all components when composite > 0).",
+    )
+    nist_function: Optional[NISTFunction] = None
+
+
+class TierGap(BaseModel):
+    """How close the current composite is to adjacent tiers."""
+
+    current_tier: str
+    next_tier_up: Optional[str] = Field(
+        None,
+        description="Tier label above the current one, or null if already at LOW.",
+    )
+    points_needed_up: Optional[float] = Field(
+        None,
+        description="Composite points needed to jump to the next tier up.",
+    )
+    next_tier_down: Optional[str] = Field(
+        None,
+        description="Tier label below the current one, or null if already at HIGH.",
+    )
+    points_buffer_down: Optional[float] = Field(
+        None,
+        description="Composite points of headroom before falling to the next tier down.",
+    )
+
+
+class ScoreExplanation(BaseModel):
+    """Human- and machine-readable rationale for a composite score."""
+
+    top_driver: Optional[ScoreContribution] = Field(
+        None,
+        description="Component contributing most to the composite score.",
+    )
+    top_gap: Optional[ScoreContribution] = Field(
+        None,
+        description="Component with the lowest value (largest improvement opportunity).",
+    )
+    contributions: List[ScoreContribution] = Field(
+        ...,
+        description="Per-component contributions, sorted highest first.",
+    )
+    tier_gap: TierGap
+    weakest_nist_function: Optional[NISTFunction] = None
+    strongest_nist_function: Optional[NISTFunction] = None
+    recommendation: str = Field(
+        ...,
+        description="One-sentence plain-English suggestion for the owner.",
+    )
+
+
+class ReliabilityScoreWithExplanation(ReliabilityScoreOutput):
+    """Response body for POST /reliability/score/explain.
+
+    Extends the base score response with a detailed ``explanation`` object
+    that tells the caller *why* the composite landed where it did and what
+    to do about it.
+    """
+
+    explanation: ScoreExplanation
+
+
 # ---------- Hash ----------
 
 class HashInput(BaseModel):
