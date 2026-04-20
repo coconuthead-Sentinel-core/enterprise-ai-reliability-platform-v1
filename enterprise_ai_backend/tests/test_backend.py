@@ -841,6 +841,159 @@ def main():
     r = client.get("/assessments/99999", headers=hdr)
     check("missing assessment -> 404", r.status_code == 404)
 
+    # ---------- 17. Policy evaluation history + trends (Sprint 3, E3-S3) ----------
+    section("17. GET /policy/history (audit log + trend stats)")
+
+    # Empty system_name filter on a brand-new system returns count=0 cleanly.
+    r = client.get("/policy/history?system_name=Fresh%20System")
+    check("empty system history 200", r.status_code == 200, r.text)
+    empty = r.json()
+    check("empty history count=0", empty["stats"]["count"] == 0)
+    check("empty history trend insufficient_data",
+          empty["stats"]["trend_direction"] == "insufficient_data")
+    check("empty history records []",
+          empty["records"] == [])
+    check("empty history system_name echoed",
+          empty["system_name"] == "Fresh System")
+
+    # Build a deterministic, chronological story for one system:
+    # ALLOW (90) -> WARN (70) -> BLOCK (30) -> ALLOW (95) so we get
+    # 3 decision transitions and a clear allow/warn/block distribution.
+    history_system = "AuditLogSystem"
+    history_inputs = [
+        ("allow_v1", 0.90, "allow"),
+        ("warn_v1", 0.70, "warn"),
+        ("block_v1", 0.30, "block"),
+        ("allow_v2", 0.95, "allow"),
+    ]
+    for name, value, _expected in history_inputs:
+        r = client.post("/policy/evaluate", json={
+            "score_input": {
+                "system_name": history_system,
+                "components": [
+                    {"name": name, "value": value, "weight": 1.0},
+                ],
+            },
+        })
+        check(f"seed {name} 200", r.status_code == 200, r.text)
+        seeded = r.json()
+        check(f"seed {name} decision matches expected",
+              seeded["decision"] == _expected,
+              f"expected {_expected}, got {seeded['decision']}")
+
+    # Pull the newly-seeded history back out.
+    r = client.get(f"/policy/history?system_name={history_system}")
+    check("audit log 200", r.status_code == 200, r.text)
+    log = r.json()
+    check("audit log count=4", log["stats"]["count"] == 4,
+          f"got {log['stats']['count']}")
+    check("audit log system_name filter echoed",
+          log["system_name"] == history_system)
+    check("audit log records length = 4", len(log["records"]) == 4)
+
+    # Newest-first ordering: the last seeded call (95 -> allow) should be first.
+    check("audit log newest-first decision == allow",
+          log["records"][0]["decision"] == "allow")
+    check("audit log newest-first composite == 95.0",
+          abs(log["records"][0]["composite_score"] - 95.0) < 1e-6)
+
+    # Every record carries the full gate payload we persisted.
+    for row in log["records"]:
+        check("row exposes id", isinstance(row["id"], int))
+        check("row system_name matches filter",
+              row["system_name"] == history_system)
+        check("row decision is allow|warn|block",
+              row["decision"] in {"allow", "warn", "block"})
+        check("row reasons is list",
+              isinstance(row["reasons"], list) and len(row["reasons"]) >= 1)
+        check("row thresholds echoed",
+              row["thresholds"]["allow_min_composite"] == 80.0)
+
+    # Stats: latest / earliest decisions + composites.
+    stats = log["stats"]
+    check("stats latest_decision allow",
+          stats["latest_decision"] == "allow")
+    check("stats latest_composite 95.0",
+          abs(stats["latest_composite"] - 95.0) < 1e-6)
+    check("stats earliest_decision allow",
+          stats["earliest_decision"] == "allow")
+    check("stats earliest_composite 90.0",
+          abs(stats["earliest_composite"] - 90.0) < 1e-6)
+
+    # Per-decision counts: 2 allow, 1 warn, 1 block in our seed.
+    check("stats allow_count=2", stats["allow_count"] == 2)
+    check("stats warn_count=1", stats["warn_count"] == 1)
+    check("stats block_count=1", stats["block_count"] == 1)
+    check("stats allow_rate=0.5",
+          abs(stats["allow_rate"] - 0.5) < 1e-6)
+    check("stats warn_rate=0.25",
+          abs(stats["warn_rate"] - 0.25) < 1e-6)
+    check("stats block_rate=0.25",
+          abs(stats["block_rate"] - 0.25) < 1e-6)
+
+    # Composite min / max / rolling average across [90, 70, 30, 95].
+    check("stats min_composite=30.0",
+          abs(stats["min_composite"] - 30.0) < 1e-6)
+    check("stats max_composite=95.0",
+          abs(stats["max_composite"] - 95.0) < 1e-6)
+    check("stats rolling_average_composite=71.25",
+          abs(stats["rolling_average_composite"] - 71.25) < 1e-6,
+          f"got {stats['rolling_average_composite']}")
+
+    # trend_direction: older half mean = (90+70)/2 = 80, newer half mean
+    # = (30+95)/2 = 62.5 -> delta -17.5 -> degrading.
+    check("stats trend_direction=degrading",
+          stats["trend_direction"] == "degrading",
+          f"got {stats['trend_direction']}")
+
+    # decision_transitions: allow->warn, warn->block, block->allow (3 total).
+    transitions = stats["decision_transitions"]
+    check("3 decision transitions", len(transitions) == 3,
+          f"got {len(transitions)}")
+    check("transition 1: allow->warn",
+          transitions[0]["from_decision"] == "allow"
+          and transitions[0]["to_decision"] == "warn")
+    check("transition 2: warn->block",
+          transitions[1]["from_decision"] == "warn"
+          and transitions[1]["to_decision"] == "block")
+    check("transition 3: block->allow",
+          transitions[2]["from_decision"] == "block"
+          and transitions[2]["to_decision"] == "allow")
+    # Every transition echoes the composite at that moment.
+    check("transition composites are floats",
+          all(isinstance(t["composite_score"], (int, float))
+              for t in transitions))
+
+    # limit=2 cap returns the two newest rows only.
+    r = client.get(f"/policy/history?system_name={history_system}&limit=2")
+    check("audit log limit=2 200", r.status_code == 200)
+    capped = r.json()
+    check("capped records length=2", len(capped["records"]) == 2)
+    check("capped stats count=2", capped["stats"]["count"] == 2)
+    # Limited window is just [allow 95, block 30] -> only one transition.
+    check("capped transitions len=1",
+          len(capped["stats"]["decision_transitions"]) == 1)
+
+    # Unfiltered history includes at least the 4 seeded rows.
+    r = client.get("/policy/history?limit=100")
+    check("audit log unfiltered 200", r.status_code == 200)
+    all_log = r.json()
+    check("unfiltered count >= 4",
+          all_log["stats"]["count"] >= 4,
+          f"got {all_log['stats']['count']}")
+    check("unfiltered system_name is null",
+          all_log["system_name"] is None)
+
+    # Validation: limit outside [1, 500] rejected.
+    r = client.get("/policy/history?limit=0")
+    check("history limit=0 -> 422", r.status_code == 422)
+    r = client.get("/policy/history?limit=501")
+    check("history limit=501 -> 422", r.status_code == 422)
+
+    # Validation: empty system_name rejected.
+    r = client.get("/policy/history?system_name=")
+    check("history empty system_name -> 422", r.status_code == 422)
+
     # ---------- Summary ----------
     section("SUMMARY")
     passed = sum(1 for _, ok in results if ok)

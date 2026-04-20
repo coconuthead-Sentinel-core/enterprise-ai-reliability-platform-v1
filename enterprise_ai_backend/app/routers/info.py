@@ -78,5 +78,5 @@ def current_sprint() -> SprintSummary:
         current_sprint=3,
         total_sprints=5,
         release="v0.3.0",
-        branch="sprint-3/policy-gate",
+        branch="sprint-3/policy-audit-log",
     )

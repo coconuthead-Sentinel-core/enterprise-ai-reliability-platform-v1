@@ -366,6 +366,90 @@ class PolicyGateDecision(BaseModel):
     evaluated_at: datetime
 
 
+# ---------- Policy Audit Log (Sprint 3, E3-S3) ----------
+
+class PolicyEvaluationRecordOut(BaseModel):
+    """One persisted ``POST /policy/evaluate`` row."""
+
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    system_name: str
+    decision: PolicyDecision
+    composite_score: float
+    tier: str
+    thresholds: PolicyThresholds
+    reasons: List[PolicyReason] = Field(default_factory=list)
+    created_at: datetime
+
+
+class PolicyDecisionTransition(BaseModel):
+    """One decision change detected in the history stream.
+
+    Mirrors :class:`TierTransition` but for gate outcomes; shows when a
+    system crossed from one ``allow`` / ``warn`` / ``block`` state to
+    another.
+    """
+
+    from_decision: PolicyDecision
+    to_decision: PolicyDecision
+    at: datetime
+    composite_score: float = Field(
+        ...,
+        description="Composite score at the moment of the transition.",
+    )
+
+
+class PolicyTrendStats(BaseModel):
+    """Aggregate statistics computed across a policy-history window."""
+
+    count: int
+    latest_decision: Optional[PolicyDecision] = None
+    latest_composite: Optional[float] = None
+    earliest_decision: Optional[PolicyDecision] = None
+    earliest_composite: Optional[float] = None
+    allow_count: int = 0
+    warn_count: int = 0
+    block_count: int = 0
+    allow_rate: Optional[float] = Field(
+        None,
+        description="allow_count / count, 0-1.",
+    )
+    warn_rate: Optional[float] = Field(
+        None,
+        description="warn_count / count, 0-1.",
+    )
+    block_rate: Optional[float] = Field(
+        None,
+        description="block_count / count, 0-1.",
+    )
+    rolling_average_composite: Optional[float] = Field(
+        None,
+        description="Mean composite score across all returned records.",
+    )
+    min_composite: Optional[float] = None
+    max_composite: Optional[float] = None
+    trend_direction: str = Field(
+        ...,
+        description="'improving', 'degrading', 'stable', or 'insufficient_data' "
+                    "(based on composite score, matching /reliability/score/history).",
+    )
+    decision_transitions: List[PolicyDecisionTransition] = Field(
+        default_factory=list,
+        description="Every place the decision changed, chronological.",
+    )
+
+
+class PolicyHistoryOut(BaseModel):
+    """Response body for GET /policy/history."""
+
+    system_name: Optional[str] = Field(
+        None,
+        description="Filter applied (``None`` = all systems).",
+    )
+    stats: PolicyTrendStats
+    records: List[PolicyEvaluationRecordOut]
+
+
 # ---------- Hash ----------
 
 class HashInput(BaseModel):

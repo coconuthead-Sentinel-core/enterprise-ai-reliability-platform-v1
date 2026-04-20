@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from typing import List
 
 from sqlalchemy import (
-    Column, DateTime, Float, Integer, String, Text, create_engine,
+    Column, DateTime, Float, Integer, String, Text, create_engine, inspect, text,
 )
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
@@ -111,8 +111,88 @@ class ReliabilityScoreRecord(Base):
     created_at = Column(DateTime, default=_utcnow, nullable=False, index=True)
 
 
-def init_db():
-    Base.metadata.create_all(bind=engine)
+class PolicyEvaluationRecord(Base):
+    """One persisted call to ``POST /policy/evaluate`` (Sprint 3, E3-S3).
+
+    Stores the full audit trail -- request payload, thresholds applied,
+    decision, reasons -- so ``GET /policy/history`` can return a trend
+    over time and so a later review can replay the exact inputs that
+    produced any given decision.
+    """
+
+    __tablename__ = "policy_evaluation_records"
+
+    id = Column(Integer, primary_key=True)
+    system_name = Column(String(200), nullable=False, index=True)
+    decision = Column(String(20), nullable=False)  # allow / warn / block
+    composite_score = Column(Float, nullable=False)
+    tier = Column(String(20), nullable=False)
+    # Serialized request + outcome for audit / replay.
+    thresholds_json = Column(Text, nullable=False)
+    reasons_json = Column(Text, nullable=False)
+    score_input_json = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=_utcnow, nullable=False, index=True)
+
+    @property
+    def reasons(self) -> List[dict]:
+        """Deserialize ``reasons_json`` so Pydantic ``from_attributes``
+        materializes a list of ``PolicyReason`` objects."""
+        if not self.reasons_json:
+            return []
+        try:
+            return json.loads(self.reasons_json)
+        except (TypeError, ValueError):
+            return []
+
+    @property
+    def thresholds(self) -> dict:
+        """Deserialize ``thresholds_json`` so Pydantic ``from_attributes``
+        materializes a :class:`schemas.PolicyThresholds`."""
+        if not self.thresholds_json:
+            return {}
+        try:
+            return json.loads(self.thresholds_json)
+        except (TypeError, ValueError):
+            return {}
+
+
+def _apply_sqlite_compat_migrations(bind) -> None:
+    """Patch old local SQLite files forward without a full migration stack.
+
+    The repo does not yet ship Alembic migrations. For the laptop/dev flow we
+    still need older SQLite databases to survive new assessment-gate fields
+    landing in code, otherwise startup succeeds until the first ORM write reads
+    or inserts against missing columns.
+    """
+    if bind.dialect.name != "sqlite":
+        return
+
+    inspector = inspect(bind)
+    if not inspector.has_table("assessments"):
+        return
+
+    columns = {column["name"] for column in inspector.get_columns("assessments")}
+    statements = []
+    if "gate_decision" not in columns:
+        statements.append(
+            "ALTER TABLE assessments ADD COLUMN gate_decision VARCHAR(20)"
+        )
+    if "gate_reasons_json" not in columns:
+        statements.append(
+            "ALTER TABLE assessments ADD COLUMN gate_reasons_json TEXT"
+        )
+
+    if not statements:
+        return
+
+    with bind.begin() as conn:
+        for statement in statements:
+            conn.execute(text(statement))
+
+
+def init_db(bind=engine):
+    Base.metadata.create_all(bind=bind)
+    _apply_sqlite_compat_migrations(bind)
 
 
 def get_db():

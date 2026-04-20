@@ -534,12 +534,145 @@ def evaluate_policy_gate(
 
 def evaluate_policy_gate_from_input(
     payload: schemas.PolicyGateInput,
+    db: Optional[Session] = None,
 ) -> schemas.PolicyGateDecision:
-    """Compute the underlying reliability score (without persisting) and gate it."""
-    # Use db=None -- gate evaluation is side-effect free by default. A
-    # future E3-S3 story can wire persistence separately.
+    """Compute the underlying reliability score (without persisting) and gate it.
+
+    When a SQLAlchemy ``Session`` is provided (Sprint 3, E3-S3), the gate
+    decision is also persisted as a
+    :class:`database.PolicyEvaluationRecord` so ``GET /policy/history``
+    can trend decisions over time. The score itself is *not* persisted
+    here (we do not want a ``/policy/evaluate`` call to pollute the
+    reliability score history); only the gate outcome is logged.
+    """
+    # ``db=None`` on compute_reliability_score keeps the score side-effect
+    # free -- the policy audit log is a separate table.
     score = compute_reliability_score(payload.score_input, db=None)
-    return evaluate_policy_gate(score, payload.thresholds)
+    decision = evaluate_policy_gate(score, payload.thresholds)
+    if db is not None:
+        _persist_policy_evaluation(db, payload.score_input, decision)
+    return decision
+
+
+# ---------- Policy Audit Log (Sprint 3, E3-S3) ----------
+
+def _persist_policy_evaluation(
+    db: Session,
+    score_input: schemas.ReliabilityScoreInput,
+    decision: schemas.PolicyGateDecision,
+) -> database.PolicyEvaluationRecord:
+    """Store one gate decision so ``GET /policy/history`` can trend it."""
+    record = database.PolicyEvaluationRecord(
+        system_name=decision.system_name,
+        decision=decision.decision.value,
+        composite_score=decision.composite_score,
+        tier=decision.tier,
+        thresholds_json=decision.thresholds_applied.model_dump_json(),
+        reasons_json=json.dumps(
+            [r.model_dump(mode="json") for r in decision.reasons]
+        ),
+        score_input_json=score_input.model_dump_json(),
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    return record
+
+
+def list_policy_history(
+    db: Session,
+    system_name: Optional[str] = None,
+    limit: int = 50,
+) -> List[database.PolicyEvaluationRecord]:
+    """Return policy evaluation records newest-first, optionally filtered."""
+    q = db.query(database.PolicyEvaluationRecord)
+    if system_name is not None:
+        q = q.filter(database.PolicyEvaluationRecord.system_name == system_name)
+    q = q.order_by(
+        database.PolicyEvaluationRecord.created_at.desc(),
+        database.PolicyEvaluationRecord.id.desc(),
+    )
+    return q.limit(limit).all()
+
+
+def policy_trend_stats(
+    records: List[database.PolicyEvaluationRecord],
+) -> schemas.PolicyTrendStats:
+    """Compute aggregate policy-trend stats from a newest-first record list.
+
+    * Counts + rates for each ``allow`` / ``warn`` / ``block`` outcome.
+    * Composite min / max / rolling average across the window.
+    * ``trend_direction`` is classified from composite scores (reuses
+      :func:`_trend_direction`) so the same "improving / degrading /
+      stable" language carries across ``/reliability/score/history`` and
+      ``/policy/history``.
+    * ``decision_transitions`` lists every place the outcome changed,
+      in chronological order.
+    """
+    if not records:
+        return schemas.PolicyTrendStats(
+            count=0,
+            trend_direction="insufficient_data",
+            decision_transitions=[],
+        )
+
+    scores = [r.composite_score for r in records]
+    # Records are newest-first; chronological view is reversed.
+    chrono = list(reversed(records))
+
+    allow_count = sum(1 for r in records if r.decision == "allow")
+    warn_count = sum(1 for r in records if r.decision == "warn")
+    block_count = sum(1 for r in records if r.decision == "block")
+    n = len(records)
+
+    transitions: List[schemas.PolicyDecisionTransition] = []
+    for prev, curr in zip(chrono, chrono[1:]):
+        if prev.decision != curr.decision:
+            transitions.append(
+                schemas.PolicyDecisionTransition(
+                    from_decision=schemas.PolicyDecision(prev.decision),
+                    to_decision=schemas.PolicyDecision(curr.decision),
+                    at=curr.created_at,
+                    composite_score=curr.composite_score,
+                )
+            )
+
+    return schemas.PolicyTrendStats(
+        count=n,
+        latest_decision=schemas.PolicyDecision(records[0].decision),
+        latest_composite=records[0].composite_score,
+        earliest_decision=schemas.PolicyDecision(records[-1].decision),
+        earliest_composite=records[-1].composite_score,
+        allow_count=allow_count,
+        warn_count=warn_count,
+        block_count=block_count,
+        allow_rate=round(allow_count / n, 4),
+        warn_rate=round(warn_count / n, 4),
+        block_rate=round(block_count / n, 4),
+        rolling_average_composite=round(sum(scores) / n, 4),
+        min_composite=min(scores),
+        max_composite=max(scores),
+        trend_direction=_trend_direction(scores),
+        decision_transitions=transitions,
+    )
+
+
+def policy_evaluation_history(
+    db: Session,
+    system_name: Optional[str] = None,
+    limit: int = 50,
+) -> schemas.PolicyHistoryOut:
+    """End-to-end: query records + compute trend stats + wrap response."""
+    records = list_policy_history(db, system_name=system_name, limit=limit)
+    stats = policy_trend_stats(records)
+    return schemas.PolicyHistoryOut(
+        system_name=system_name,
+        stats=stats,
+        records=[
+            schemas.PolicyEvaluationRecordOut.model_validate(r)
+            for r in records
+        ],
+    )
 
 
 # ---------- Hash ----------

@@ -379,7 +379,7 @@
           "policy"
         ],
         "summary": "Evaluate",
-        "description": "Evaluate the policy gate on a reliability score input.\n\nThe request body carries the same shape as ``POST /reliability/score``\n(a ``system_name`` + list of ``ReliabilityScoreComponent``) plus an\noptional ``thresholds`` override. The response is an ``allow`` /\n``warn`` / ``block`` decision with a list of rationale ``reasons``,\nthe applied thresholds (echoed), and the resolved composite score\nand tier.",
+        "description": "Evaluate the policy gate on a reliability score input.\n\nThe request body carries the same shape as ``POST /reliability/score``\n(a ``system_name`` + list of ``ReliabilityScoreComponent``) plus an\noptional ``thresholds`` override. The response is an ``allow`` /\n``warn`` / ``block`` decision with a list of rationale ``reasons``,\nthe applied thresholds (echoed), and the resolved composite score\nand tier.\n\nSprint 3, E3-S3: every call is persisted as a\n:class:`database.PolicyEvaluationRecord` so\n``GET /policy/history`` can return a trend over time without the\ncaller having to re-submit the inputs.",
         "operationId": "evaluate_policy_evaluate_post",
         "requestBody": {
           "content": {
@@ -398,6 +398,74 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PolicyGateDecision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/policy/history": {
+      "get": {
+        "tags": [
+          "policy"
+        ],
+        "summary": "History",
+        "description": "Return the policy-evaluation audit log with trend statistics.\n\nRecords are newest-first. ``stats`` reports count, latest / earliest\ndecision + composite, per-decision counts and rates, rolling average\n/ min / max composite, a ``trend_direction`` (improving / degrading\n/ stable / insufficient_data) computed from composite scores, and a\nchronological list of every decision change in the window.",
+        "operationId": "history_policy_history_get",
+        "parameters": [
+          {
+            "name": "system_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter the history to a single system (omit for all).",
+              "title": "System Name"
+            },
+            "description": "Filter the history to a single system (omit for all)."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Maximum number of records to return (newest first).",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Maximum number of records to return (newest first)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyHistoryOut"
                 }
               }
             }
@@ -1199,6 +1267,85 @@
         "title": "PolicyDecision",
         "description": "Overall gate outcome."
       },
+      "PolicyDecisionTransition": {
+        "properties": {
+          "from_decision": {
+            "$ref": "#/components/schemas/PolicyDecision"
+          },
+          "to_decision": {
+            "$ref": "#/components/schemas/PolicyDecision"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "At"
+          },
+          "composite_score": {
+            "type": "number",
+            "title": "Composite Score",
+            "description": "Composite score at the moment of the transition."
+          }
+        },
+        "type": "object",
+        "required": [
+          "from_decision",
+          "to_decision",
+          "at",
+          "composite_score"
+        ],
+        "title": "PolicyDecisionTransition",
+        "description": "One decision change detected in the history stream.\n\nMirrors :class:`TierTransition` but for gate outcomes; shows when a\nsystem crossed from one ``allow`` / ``warn`` / ``block`` state to\nanother."
+      },
+      "PolicyEvaluationRecordOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "system_name": {
+            "type": "string",
+            "title": "System Name"
+          },
+          "decision": {
+            "$ref": "#/components/schemas/PolicyDecision"
+          },
+          "composite_score": {
+            "type": "number",
+            "title": "Composite Score"
+          },
+          "tier": {
+            "type": "string",
+            "title": "Tier"
+          },
+          "thresholds": {
+            "$ref": "#/components/schemas/PolicyThresholds"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyReason"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "system_name",
+          "decision",
+          "composite_score",
+          "tier",
+          "thresholds",
+          "created_at"
+        ],
+        "title": "PolicyEvaluationRecordOut",
+        "description": "One persisted ``POST /policy/evaluate`` row."
+      },
       "PolicyGateDecision": {
         "properties": {
           "system_name": {
@@ -1270,6 +1417,39 @@
         "title": "PolicyGateInput",
         "description": "Request body for POST /policy/evaluate."
       },
+      "PolicyHistoryOut": {
+        "properties": {
+          "system_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "System Name",
+            "description": "Filter applied (``None`` = all systems)."
+          },
+          "stats": {
+            "$ref": "#/components/schemas/PolicyTrendStats"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyEvaluationRecordOut"
+            },
+            "type": "array",
+            "title": "Records"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stats",
+          "records"
+        ],
+        "title": "PolicyHistoryOut",
+        "description": "Response body for GET /policy/history."
+      },
       "PolicyReason": {
         "properties": {
           "code": {
@@ -1335,6 +1515,161 @@
         "type": "object",
         "title": "PolicyThresholds",
         "description": "Configurable thresholds controlling the gate outcome.\n\n``allow_min_composite`` and ``warn_min_composite`` partition the\ncomposite score into allow / warn / block bands; ``min_nist_function_score``\nis a hard floor -- any per-NIST-function breakdown below it forces\n``block`` regardless of composite."
+      },
+      "PolicyTrendStats": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "latest_decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolicyDecision"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "latest_composite": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Composite"
+          },
+          "earliest_decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolicyDecision"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "earliest_composite": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Earliest Composite"
+          },
+          "allow_count": {
+            "type": "integer",
+            "title": "Allow Count",
+            "default": 0
+          },
+          "warn_count": {
+            "type": "integer",
+            "title": "Warn Count",
+            "default": 0
+          },
+          "block_count": {
+            "type": "integer",
+            "title": "Block Count",
+            "default": 0
+          },
+          "allow_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Allow Rate",
+            "description": "allow_count / count, 0-1."
+          },
+          "warn_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warn Rate",
+            "description": "warn_count / count, 0-1."
+          },
+          "block_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Block Rate",
+            "description": "block_count / count, 0-1."
+          },
+          "rolling_average_composite": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rolling Average Composite",
+            "description": "Mean composite score across all returned records."
+          },
+          "min_composite": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Composite"
+          },
+          "max_composite": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Composite"
+          },
+          "trend_direction": {
+            "type": "string",
+            "title": "Trend Direction",
+            "description": "'improving', 'degrading', 'stable', or 'insufficient_data' (based on composite score, matching /reliability/score/history)."
+          },
+          "decision_transitions": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyDecisionTransition"
+            },
+            "type": "array",
+            "title": "Decision Transitions",
+            "description": "Every place the decision changed, chronological."
+          }
+        },
+        "type": "object",
+        "required": [
+          "count",
+          "trend_direction"
+        ],
+        "title": "PolicyTrendStats",
+        "description": "Aggregate statistics computed across a policy-history window."
       },
       "ReliabilityInput": {
         "properties": {
