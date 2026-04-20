@@ -20,7 +20,6 @@ As of: 2026-04-20
 | 5 | E5 | Security and Compliance | planned |
 
 PR #8 (`sprint-3/policy-audit-log` -> `main`) is the exact Sprint 3 delivery branch.
-Its current head commit is `933f86a34a17dab4d65ce4f6edb21e569aa0bd9b`.
 The last Azure release-workflow attempt ran against `b29da3d9eaeedeae6ad64236c1a59b1961de1e8c`.
 
 ---
@@ -34,7 +33,7 @@ so urgent release blockers do not compete with future sprint work.
 
 | Bucket | Items |
 | --- | --- |
-| Do now | Keep PR #8 evidence accurate, preserve green CI on `933f86a`, remove stale temp artifacts, document the real Azure blocker |
+| Do now | Keep PR #8 evidence accurate, preserve green CI on the current branch head, remove stale temp artifacts, document the real Azure blocker |
 | Schedule next | Start Sprint 4 dashboard/reporting work on a fresh branch after Sprint 3 is merged or intentionally rolled forward |
 | Delegate / wait | Azure login, active Azure subscription access, GitHub `dev` environment secrets, Key Vault secret population |
 | Defer | Live smoke tests and public Azure URLs until Azure deployment credentials exist |
@@ -91,7 +90,7 @@ Validated locally on 2026-04-20:
 - `npm audit --audit-level=moderate`: pass, 0 vulnerabilities
 - `az bicep build --file infra/bicep/main.bicep`: pass
 
-Validated on GitHub for PR #8 head `933f86a`:
+Validated on GitHub for the current PR #8 branch head:
 
 - `ci-api`: green on Python 3.10, 3.11, 3.12
 - `ci-contracts`: green

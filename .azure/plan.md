@@ -70,7 +70,7 @@ Completed locally on 2026-04-20:
 - Frontend build path: `npm install`, `npm run typecheck`, `npm audit --audit-level=moderate`, and `npm run build` passed.
 - Bicep syntax: `az bicep build --file infra/bicep/main.bicep` passed.
 
-Completed on GitHub for branch head `933f86a34a17dab4d65ce4f6edb21e569aa0bd9b`:
+Completed on GitHub for the current PR #8 branch head:
 
 - PR CI checks are green.
 - Release workflow run `24663922506` successfully built and pushed API and web images to GHCR from `b29da3d9eaeedeae6ad64236c1a59b1961de1e8c`.

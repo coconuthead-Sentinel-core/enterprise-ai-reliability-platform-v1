@@ -2,7 +2,6 @@
 
 Date: 2026-04-20
 Candidate branch: `sprint-3/policy-audit-log`
-Candidate commit: `933f86a34a17dab4d65ce4f6edb21e569aa0bd9b`
 Candidate PR: `#8`
 
 ## Environment findings
@@ -33,7 +32,7 @@ Candidate PR: `#8`
 
 ## GitHub evidence
 
-PR #8 head commit `933f86a`:
+PR #8 current branch head:
 
 - `ci-api`: success on Python 3.10, 3.11, and 3.12
 - `ci-contracts`: success

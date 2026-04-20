@@ -66,8 +66,8 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   tagging images, which fixed image publishing for repositories with uppercase
   owner names.
 - Release evidence, go/no-go, sprint, and Azure planning docs now reflect the
-  current Sprint 3 branch head `933f86a` and the last Azure deployment attempt
-  on `b29da3d`, along with the current Azure credential blocker.
+  current PR #8 status and the last Azure deployment attempt on `b29da3d`,
+  along with the current Azure credential blocker.
 - `README.md` status and local validation evidence were updated to 286/286 assertions.
 
 ### Removed
