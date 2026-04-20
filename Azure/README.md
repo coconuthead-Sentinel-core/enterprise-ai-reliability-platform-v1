@@ -1,32 +1,45 @@
-# Azure content — navigation map
+# Azure content - navigation map
 
-Azure-related content lives in **three** places in this repo, on purpose.
+Azure-related content lives in three places in this repo, on purpose.
 This README exists so reviewers know which folder to open for which job.
 
 | Folder | Purpose | Owner |
-|--------|---------|-------|
-| `Azure/` (this folder) | **Planning and deployment walkthroughs.** Prose docs explaining the intended Azure architecture, resource naming, and a human-readable deployment guide. | Shannon + Claude, editable |
-| `.azure/` | **Live deployment status.** Machine- and CLI-adjacent notes, including `plan.md` which tracks what has actually been created in the subscription and which credentials are still missing. | Auto-updated during Azure work |
-| `infra/bicep/` | **Infrastructure-as-code.** The Bicep templates that `release.yml` actually deploys (Container Apps env, Log Analytics, App Insights, Key Vault, user-assigned identity, API + Web apps). | CI/CD, code-reviewed |
+| --- | --- | --- |
+| `Azure/` | Planning and deployment walkthroughs. Human-readable Azure design and manual deployment guidance. | Shannon + collaborators |
+| `.azure/` | Live deployment status and current credential blockers. | Updated during Azure work |
+| `infra/bicep/` | Infrastructure as code used by CI/CD. | Code-reviewed source of truth |
 
 ## Quick picks
 
-- **"What is the Azure design?"** → `Azure/Azure.txt`
-- **"How do I deploy it by hand?"** → `Azure/DEPLOYMENT.md`
-- **"What is actually live right now?"** → `.azure/plan.md`
-- **"Show me the templates CI runs."** → `infra/bicep/main.bicep` and `infra/bicep/README.md`
+- Azure design: `Azure/Azure.txt`
+- Manual deployment guide: `Azure/DEPLOYMENT.md`
+- Current live status: `.azure/plan.md`
+- Templates used by CI: `infra/bicep/main.bicep` and `infra/bicep/README.md`
 
 ## Status at a glance
 
-As of `v0.3.0`, no resources have been created in Azure yet. Deployment is
-blocked on four credential items that only Shannon can complete:
+As of 2026-04-20:
 
-1. `gh auth login`
-2. `az login`
-3. GitHub Actions secrets: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`,
-   `AZURE_SUBSCRIPTION_ID`, `AZURE_MANAGED_IDENTITY_ID`, `AZURE_KEY_VAULT_URI`
-4. Key Vault secrets: `jwt-secret`, `database-url`, `redis-url`
+- no Azure resources have been created yet,
+- PR #8 head `b29da3d` is green on GitHub CI,
+- release workflow run `24663922506` successfully built and pushed images,
+- Azure deployment is blocked at `azure/login@v2` because the required GitHub
+  `dev` environment secrets are not configured.
 
-Once items 1–4 are done, tagging a release (`v*.*.*`) triggers
-`.github/workflows/release.yml` which runs `azure/arm-deploy` against
-`infra/bicep/main.bicep` into `rg-earp-<env>-centralus`.
+## What is still needed
+
+1. Access to an active Azure subscription
+2. Azure identity values for:
+   - `AZURE_CLIENT_ID`
+   - `AZURE_TENANT_ID`
+   - `AZURE_SUBSCRIPTION_ID`
+   - `AZURE_MANAGED_IDENTITY_ID`
+   - `AZURE_KEY_VAULT_URI`
+3. Key Vault secrets:
+   - `jwt-secret`
+   - `database-url`
+   - `redis-url`
+
+An enterprise Azure subscription is not required. Azure Pay-As-You-Go is sufficient
+for this deployment path once the account has billing enabled and permission to
+create the required resources.

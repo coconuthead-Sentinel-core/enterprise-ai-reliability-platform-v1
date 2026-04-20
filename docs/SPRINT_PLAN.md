@@ -1,237 +1,142 @@
 # EARP Sprint Plan
 
-**Project:** Enterprise AI Reliability Platform v1 (EARP)
-**Release:** v0.3.0 HR-ready package
-**Owner:** Shannon Bryan Kelly (`coconuthead-Sentinel-core`)
-**Working branch:** `release/v0.3.0`
-**Framework:** 4 Drive docs + folder-as-context (Interdepartmental Memo,
-Persistent Session Reference Guidelines, "the folder is the working context",
-15_20_25_min_work_user).
+Project: Enterprise AI Reliability Platform v1 (EARP)
+Release target: v0.3.0
+Owner: Shannon Bryan Kelly (`coconuthead-Sentinel-core`)
+Working branch: `sprint-3/policy-audit-log`
+As of: 2026-04-20
 
 ---
 
-## How sprints map to the product backlog
+## Sprint status
 
-The product backlog (`product_backlog/product_backlog.txt`) has **5 epics**
-with **3 stories each**. One epic → one sprint. Each sprint ends with code
-pushed, tests green, and a CHANGELOG entry.
+| Sprint | Epic | Title | Status |
+| --- | --- | --- | --- |
+| 0 | baseline | Repo handoff and validation baseline | done |
+| 1 | E1 | Evidence Ingestion and Normalization | shim delivered; backlog epic still open |
+| 2 | E2 | Reliability Scoring Engine | done |
+| 3 | E3 | Policy Gate Evaluation | implemented on PR #8 |
+| 4 | E4 | Dashboard and Reporting | queued next |
+| 5 | E5 | Security and Compliance | planned |
 
-| Sprint | Epic | Title                                  | Status       |
-|--------|------|----------------------------------------|--------------|
-| 0      | —    | Repo handoff, remote wiring, baseline  | ✅ done       |
-| 1      | E1   | Evidence Ingestion and Normalization   | ✅ done (shim) |
-| 2      | E2   | Reliability Scoring Engine             | ✅ done       |
-| 3      | E3   | Policy Gate Evaluation                 | 🟢 in progress|
-| 4      | E4   | Dashboard and Reporting                | ⏳ planned    |
-| 5      | E5   | Security and Compliance                | ⏳ planned    |
-
----
-
-## Sprint 0 — Repo handoff and baseline (✅ done)
-
-- Added local git remote pointing at the GitHub repo.
-- Pushed local `main` to `release/v0.3.0` on GitHub (per CONTRIBUTING rule:
-  never push straight to `main`).
-- Confirmed local validation: 50/50 integration tests pass, Bicep builds
-  clean, frontend builds clean.
-- Captured operational truth vs. proposed design in the memory notes.
-
-**Exit criteria met:** code on GitHub, branch tracks `origin/release/v0.3.0`,
-framework memory saved.
+PR #8 (`sprint-3/policy-audit-log` -> `main`) is the exact Sprint 3 delivery branch.
+Its head commit is `b29da3d9eaeedeae6ad64236c1a59b1961de1e8c`.
 
 ---
 
-## Sprint 1 — Evidence Ingestion and Normalization (🟢 in progress)
+## Current routing
 
-**Epic:** E1 from the product backlog.
+This project is now being routed with an Eisenhower matrix plus the Cognitive Grid
+so urgent release blockers do not compete with future sprint work.
 
-### Goals
-1. Expose the backlog through the API so the dashboard and CI can see sprint
-   status without scraping the text file.
-2. Add `CHANGELOG.md` at the project root (required by `RELEASE.md`).
-3. Add this sprint plan document.
-4. Keep the change small, safe, and reviewable — no schema or auth changes.
+### Eisenhower matrix
 
-### Stories delivered in this sprint
-- **E1-S1**: Add `/info/epics` read-only endpoint returning the 5 epics and
-  their status.
-- **E1-S2**: Land `CHANGELOG.md` at project root with a v0.3.0 entry and an
-  Unreleased section.
-- **E1-S3**: Land `docs/SPRINT_PLAN.md` (this file).
+| Bucket | Items |
+| --- | --- |
+| Do now | Keep PR #8 evidence accurate, preserve green CI on `b29da3d`, remove stale temp artifacts, document the real Azure blocker |
+| Schedule next | Start Sprint 4 dashboard/reporting work on a fresh branch after Sprint 3 is merged or intentionally rolled forward |
+| Delegate / wait | Azure login, active Azure subscription access, GitHub `dev` environment secrets, Key Vault secret population |
+| Defer | Live smoke tests and public Azure URLs until Azure deployment credentials exist |
 
-### Definition of Done
-- [x] New endpoint added and wired into `main.py`.
-- [x] `CHANGELOG.md` present at project root.
-- [x] `docs/SPRINT_PLAN.md` present.
-- [ ] Changes committed on `release/v0.3.0` with a conventional-commit message.
-- [ ] Branch pushed to `origin/release/v0.3.0`.
-- [ ] Shannon reviews and either merges to `main` or asks for a change.
+### Cognitive Grid
 
-### Out of scope (intentionally)
-- Real file ingestion, parsing, or storage of evidence artifacts. Those
-  stories move to Sprint 1b or Sprint 2 once Shannon has completed the
-  Azure + GitHub auth handoff (see "Blockers" below).
+| Zone | Row family | Active items |
+| --- | --- | --- |
+| Green | Row 1 / immediate objective | Sprint 3 release-readiness truth, PR #8 status, CI evidence |
+| Green | Row 5 / active artifacts | `docs/SPRINT_PLAN.md`, `docs/go-no-go.md`, `docs/release-evidence.md`, `.azure/plan.md`, `Azure/README.md` |
+| Yellow | Row 2 / synthesis | Sprint 4 scope slicing and branch handoff notes |
+| Red | Row 10 / archive evidence | CI run results, release workflow evidence, exact commit hash, local validation commands |
+| Future | Row 13 / backlog horizon | Azure live deploy, smoke tests, Sprint 4 branch, Sprint 5 compliance bundle |
 
 ---
 
-## Sprint 2 — Reliability Scoring Engine (🟢 in progress)
+## Sprint 3 delivered scope
 
-**Epic:** E2. Backlog stories: `E2-S1`, `E2-S2`, `E2-S3`.
+Epic E3 is implemented on PR #8 in three stories:
 
-### Story E2-S1 — Weighted score algorithm implementation (✅ done)
+1. E3-S1: `POST /policy/evaluate`
+   - Composite policy gate with `allow`, `warn`, and `block` outcomes.
+   - Per-NIST floor enforcement and threshold override support.
 
-- `POST /reliability/score` endpoint accepts an arbitrary list of
-  reliability signals (availability, governance, security posture, etc.),
-  each with a value in `[0, 1]` and a weight.
-- Returns a weighted 0-100 composite score, a LOW/MEDIUM/HIGH tier, a
-  boolean indicating whether the input weights were normalized, and a
-  per-NIST-AI-RMF-function breakdown (govern/map/measure/manage).
-- Pure-Python math in `services.compute_reliability_score()` — no new
-  heavy dependencies.
-- 19 integration assertions cover the happy path, NIST breakdown,
-  weight normalization, three tier boundaries, and three validation
-  failures. Suite runs **81/81**.
+2. E3-S2: policy gate attached to `/assessments`
+   - Every assessment row now persists `gate_decision` and `gate_reasons`.
+   - The gate is computed from the same scores that produce `risk_tier`.
 
-### Story E2-S2 — Score explanation service (✅ done)
+3. E3-S3: policy audit log
+   - Every `/policy/evaluate` call is persisted.
+   - `GET /policy/history` returns audit history plus trend stats.
+   - SQLite compatibility migration upgrades older local databases that
+     predate the new `assessments` gate columns.
 
-- `POST /reliability/score/explain` wraps the composite score with a
-  structured `explanation` object:
-  - per-component contributions (absolute + percent-of-composite),
-    sorted highest-first,
-  - `top_driver` (largest contributor) and `top_gap` (lowest-value
-    component, i.e. biggest upside),
-  - `tier_gap` — distance in composite points to the adjacent
-    LOW / MEDIUM / HIGH tier boundaries,
-  - `weakest_nist_function` / `strongest_nist_function` from the NIST
-    AI RMF breakdown,
-  - a one-sentence plain-English `recommendation`.
-- Pure-Python layer on top of `compute_reliability_score()` — no new
-  dependencies.
-- 35 integration assertions added (happy path, sort invariants, sum-to-
-  composite, LOW / MEDIUM / HIGH tier-gap paths, single-component edge
-  case, validation). Suite runs **116/116**.
+Sprint 3 release hardening also landed on the same branch:
 
-### Story E2-S3 — Historical trend computation (✅ done)
-
-- New SQLAlchemy model `ReliabilityScoreRecord` (`reliability_score_records`
-  table) persists every composite score, indexed on `system_name` and
-  `created_at`.
-- `POST /reliability/score` and `POST /reliability/score/explain` now
-  inject a DB session and auto-persist, so history fills naturally.
-- New endpoint `GET /reliability/score/history?system_name=&limit=`
-  (newest-first) returns both the raw records and a `ScoreTrendStats`
-  object with rolling average, min/max, trend direction (`improving` /
-  `degrading` / `stable` / `insufficient_data`), and a chronological
-  list of `TierTransition`s.
-- 36 new integration assertions (empty filter, HIGH→MEDIUM→LOW trending,
-  degrading path, stable classification, explain-also-persists, global
-  history, limit clamping, validation). Suite runs **152/152**.
-
-### ✅ Epic E2 complete — ready to move to Sprint 3 (Policy Gate Evaluation).
+- `enterprise_ai_backend/scripts/export_openapi.py` now writes
+  `libs/schemas/openapi.json` in the byte shape expected by `ci-contracts`.
+- `.github/workflows/release.yml` now lowercases GHCR repository paths, which
+  allowed the image build/push job to succeed on `b29da3d`.
 
 ---
 
-## Sprint 3 — Policy Gate Evaluation (🟢 in progress)
+## Validation snapshot
 
-**Epic:** E3. Backlog stories: `E3-S1`, `E3-S2`, `E3-S3`.
+Validated locally on 2026-04-20:
 
-### Story E3-S1 — Core policy gate engine (✅ done)
+- `python tests/test_backend.py`: pass, 286/286 assertions
+- `python -m pytest -q`: pass, 2 tests
+- `python -m pip check`: pass
+- `python scripts/export_openapi.py`: pass
+- `npm run typecheck`: pass
+- `npm run build`: pass
+- `npm audit --audit-level=moderate`: pass, 0 vulnerabilities
+- `az bicep build --file infra/bicep/main.bicep`: pass
 
-- `POST /policy/evaluate` takes the same component payload as
-  `/reliability/score` (plus an optional `thresholds` override) and
-  returns a structured `PolicyGateDecision`:
-  - `decision`: `allow` / `warn` / `block`,
-  - `reasons`: machine + human-readable list (sorted worst-first),
-  - `thresholds_applied`: echoed so callers see exactly which rules ran,
-  - `composite_score`, `tier`, `evaluated_at`.
-- Default rules: composite ≥ 80 → allow, ≥ 60 → warn, else block. Any
-  tagged NIST function below 40 forces an overall block regardless of
-  composite.
-- Pure-Python on top of `compute_reliability_score()` — no new deps.
-- 32 integration assertions: allow / warn / block, NIST-floor override,
-  custom thresholds, validator (`warn_min > allow_min` → 422), empty
-  components → 422. Suite now runs **184/184**.
+Validated on GitHub for PR #8 head `b29da3d`:
 
-### Story E3-S2 — Policy gate attached to `/assessments` (✅ done)
+- `ci-api`: green on Python 3.10, 3.11, 3.12
+- `ci-contracts`: green
+- `security-scans`: green
 
-- `POST /assessments` now runs the policy gate against its own NIST-RMF
-  scores and persists the decision with the record, so `risk_tier` and
-  the gate outcome are always computed from the same numbers.
-- `database.Assessment` gained `gate_decision` and `gate_reasons_json`
-  columns; a `.gate_reasons` property deserializes the JSON so Pydantic
-  `from_attributes` can hydrate the list without extra glue.
-- `AssessmentOutput` now returns `gate_decision`
-  (`Optional[PolicyDecision]`) and `gate_reasons` (list of
-  `PolicyReason`). `GET /assessments` and `GET /assessments/{id}` carry
-  the same fields.
-- 34 new integration assertions in section 16: ALLOW (all-90), BLOCK
-  via composite band (all-30), BLOCK via NIST floor (govern=20 /
-  others=95 → overall block despite MEDIUM tier), list + single-row
-  return shape, 404 path. Suite now runs **218/218**, up from 184/184.
+Release workflow evidence for `b29da3d`:
 
-### Story E3-S3 — Policy audit log (⏳ next)
-
-- Persist each `/policy/evaluate` call and add `GET /policy/history`
-  with simple trend stats (mirrors `/reliability/score/history`).
+- `Build & push images`: success
+- `Deploy to Azure Container Apps`: failed at `azure/login@v2`
+  because Azure secrets are not configured in the GitHub `dev` environment
 
 ---
 
-## Sprint 4 — Dashboard and Reporting (⏳ planned)
+## Azure path
 
-**Epic:** E4.
+Azure is not blocked by subscription tier. An active Azure Pay-As-You-Go
+subscription is sufficient for this project as long as it can create the
+required resources and the account has billing and permission to deploy them.
 
-- Frontend cards for: reliability score, gate status, epic progress
-  (consumes `/info/epics`), recent assessments.
-- Exportable HR-review PDF built from the same data.
+What is blocked right now:
 
----
+- `az account show` on this laptop still requires `az login`
+- GitHub repository secrets are empty
+- GitHub `dev` environment secrets are empty
+- no Azure service principal / federated credential values are available for:
+  - `AZURE_CLIENT_ID`
+  - `AZURE_TENANT_ID`
+  - `AZURE_SUBSCRIPTION_ID`
+  - `AZURE_MANAGED_IDENTITY_ID`
+  - `AZURE_KEY_VAULT_URI`
 
-## Sprint 5 — Security and Compliance (⏳ planned)
+Once those values exist, the current release workflow is already far enough
+along to:
 
-**Epic:** E5.
-
-- Finalize the `security-scans` workflow: SBOM, dependency scan, secret scan.
-- Close any open OWASP Threat Dragon items.
-- Produce the NIST AI RMF evidence bundle for HR review.
-
----
-
-## Deployment path — Azure deferred (2026-04-20)
-
-Originally this section listed Azure deployment as a blocker. After
-checking his Microsoft account, Shannon confirmed he has Microsoft 365
-(Office) but **no Azure subscription**. Azure deployment is therefore
-**deferred**, not blocked:
-
-- The Bicep IaC under `infra/bicep/` is complete and reviewable.
-- The `release.yml` GitHub Actions workflow is wired for Azure Container
-  Apps and will work the moment an Azure subscription + secrets exist.
-- HR review does **not** require a live Azure URL; the GitHub repo,
-  test output (116/116), Bicep files, and architecture docs are
-  sufficient evidence of Azure-readiness.
-
-### To activate Azure deployment later
-
-Whenever a funded Azure subscription is available (Shannon's own, an
-employer's, or a free-trial), these credential-only steps unlock deploy:
-
-1. `az login` on Shannon's laptop.
-2. Create an App Registration + federated credentials for GitHub OIDC.
-3. Set 5 GitHub Actions secrets: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`,
-   `AZURE_SUBSCRIPTION_ID`, `AZURE_MANAGED_IDENTITY_ID`,
-   `AZURE_KEY_VAULT_URI`.
-4. Deploy the Bicep template → populate 3 Key Vault secrets
-   (`jwt-secret`, `database-url`, `redis-url`).
-5. Tag a release → the `release` workflow deploys automatically.
-
-None of Sprints 2–5 depend on this. They ship locally + on GitHub.
+1. build and push API and web images to GHCR,
+2. run `azure/arm-deploy@v2` against `infra/bicep/main.bicep`,
+3. surface the API and web FQDNs,
+4. enable smoke tests against live URLs.
 
 ---
 
-## Working agreement (per the 4 Drive docs)
+## Next execution slice
 
-- Every response: chunked, bulleted, emoji markers, verified vs. proposed
-  separated.
-- Edit documentation in this folder only. `_admin_archives/` is immutable.
-- Don't confuse operational truth (what runs) with conceptual design (what we
-  plan). Verify before claiming done.
+The next clean sprint move is:
+
+1. merge or intentionally roll forward PR #8,
+2. branch for Sprint 4 dashboard/reporting,
+3. build the operator dashboard on top of the now-stable E2 and E3 endpoints,
+4. return to Azure deployment only when credentials and subscription access exist.
