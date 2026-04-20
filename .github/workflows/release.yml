@@ -29,10 +29,11 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ steps.meta.outputs.tag }}
+      registry_repo: ${{ steps.meta.outputs.registry_repo }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compute image tag
+      - name: Compute image metadata
         id: meta
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
@@ -40,6 +41,7 @@ jobs:
           else
             echo "tag=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
           fi
+          echo "registry_repo=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
       - uses: docker/login-action@v3
         with:
@@ -53,8 +55,8 @@ jobs:
           context: enterprise_ai_backend
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_API }}:${{ steps.meta.outputs.tag }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_API }}:latest
+            ${{ env.REGISTRY }}/${{ steps.meta.outputs.registry_repo }}/api:${{ steps.meta.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ steps.meta.outputs.registry_repo }}/api:latest
 
       - name: Build & push web image
         uses: docker/build-push-action@v6
@@ -62,8 +64,8 @@ jobs:
           context: apps/web
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_WEB }}:${{ steps.meta.outputs.tag }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_WEB }}:latest
+            ${{ env.REGISTRY }}/${{ steps.meta.outputs.registry_repo }}/web:${{ steps.meta.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ steps.meta.outputs.registry_repo }}/web:latest
 
   deploy:
     name: Deploy to Azure Container Apps
@@ -88,7 +90,7 @@ jobs:
           parameters: >-
             infra/bicep/main.parameters.${{ inputs.env || 'dev' }}.json
             region=${{ env.AZURE_REGION }}
-            registryRepo=${{ github.repository }}
+            registryRepo=${{ needs.build-and-push.outputs.registry_repo }}
             managedIdentityId=${{ secrets.AZURE_MANAGED_IDENTITY_ID }}
             keyVaultUri=${{ secrets.AZURE_KEY_VAULT_URI }}
             apiImageTag=${{ needs.build-and-push.outputs.image_tag }}

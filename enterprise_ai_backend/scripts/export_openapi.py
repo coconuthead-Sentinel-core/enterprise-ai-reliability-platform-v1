@@ -1,4 +1,8 @@
-"""Export the FastAPI OpenAPI document to libs/schemas/openapi.json."""
+"""Export the FastAPI OpenAPI document to libs/schemas/openapi.json.
+
+The output intentionally matches the byte-for-byte format expected by the
+`ci-contracts` workflow, including the missing trailing newline.
+"""
 from __future__ import annotations
 
 import json
