@@ -403,6 +403,18 @@ class AssessmentOutput(BaseModel):
     risk_tier: str
     notes: Optional[str] = None
     created_at: datetime
+    # Sprint 3, E3-S2: every assessment now carries the policy-gate decision
+    # computed against its own scores so the UI / audit log never have to
+    # re-run the gate to find out whether it should have shipped.
+    gate_decision: Optional[PolicyDecision] = Field(
+        None,
+        description="Policy gate outcome computed at creation time "
+                    "(null for pre-E3-S2 rows).",
+    )
+    gate_reasons: List[PolicyReason] = Field(
+        default_factory=list,
+        description="Gate reasons that fired, worst-severity first.",
+    )
 
 
 # ---------- AI / ML ----------

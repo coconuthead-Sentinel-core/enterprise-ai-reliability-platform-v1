@@ -1,5 +1,7 @@
 """Real database layer - SQLAlchemy ORM."""
+import json
 from datetime import datetime, timezone
+from typing import List
 
 from sqlalchemy import (
     Column, DateTime, Float, Integer, String, Text, create_engine,
@@ -64,7 +66,24 @@ class Assessment(Base):
     overall_score = Column(Float, nullable=False)
     risk_tier = Column(String(20), nullable=False)
     notes = Column(Text, nullable=True)
+    # Sprint 3, E3-S2: policy gate decision persisted alongside the record so
+    # the risk_tier and the gate outcome never drift out of sync. Nullable
+    # for compatibility with pre-E3-S2 rows (older DBs replayed into the new
+    # schema just see ``None`` here).
+    gate_decision = Column(String(20), nullable=True)
+    gate_reasons_json = Column(Text, nullable=True)
     created_at = Column(DateTime, default=_utcnow, nullable=False)
+
+    @property
+    def gate_reasons(self) -> List[dict]:
+        """Deserialize ``gate_reasons_json`` so Pydantic ``from_attributes``
+        can pick up a list of ``PolicyReason`` objects without extra glue."""
+        if not self.gate_reasons_json:
+            return []
+        try:
+            return json.loads(self.gate_reasons_json)
+        except (TypeError, ValueError):
+            return []
 
 
 class ReliabilityScoreRecord(Base):

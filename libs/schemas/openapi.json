@@ -960,6 +960,25 @@
             "type": "string",
             "format": "date-time",
             "title": "Created At"
+          },
+          "gate_decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolicyDecision"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Policy gate outcome computed at creation time (null for pre-E3-S2 rows)."
+          },
+          "gate_reasons": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyReason"
+            },
+            "type": "array",
+            "title": "Gate Reasons",
+            "description": "Gate reasons that fired, worst-severity first."
           }
         },
         "type": "object",
@@ -2150,13 +2169,6 @@
           "type": {
             "type": "string",
             "title": "Error Type"
-          },
-          "input": {
-            "title": "Input"
-          },
-          "ctx": {
-            "type": "object",
-            "title": "Context"
           }
         },
         "type": "object",

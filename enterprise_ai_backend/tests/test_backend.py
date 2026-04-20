@@ -164,6 +164,14 @@ def main():
     asm = r.json()
     check("overall = 79.0", abs(asm["overall_score"] - 79.0) < 1e-6)
     check("tier = MEDIUM", asm["risk_tier"] == "MEDIUM")
+    # Sprint 3, E3-S2: the gate rides along with every assessment now.
+    # 79.0 is in the [60, 80) warn band and every NIST function is >= 40
+    # so overall decision must be 'warn'.
+    check("gate_decision = warn (E3-S2)",
+          asm.get("gate_decision") == "warn",
+          f"got {asm.get('gate_decision')}")
+    check("gate_reasons non-empty (E3-S2)",
+          isinstance(asm.get("gate_reasons"), list) and len(asm["gate_reasons"]) >= 1)
 
     # ---------- 8. AI: IsolationForest on real numbers ----------
     section("8. POST /ai/anomaly-detect (scikit-learn IsolationForest)")
@@ -716,6 +724,122 @@ def main():
         "score_input": {"system_name": "X", "components": []},
     })
     check("policy empty components -> 422", r.status_code == 422)
+
+    # ---------- 16. Policy gate attached to /assessments (Sprint 3, E3-S2) ----------
+    section("16. POST /assessments persists the policy gate decision (E3-S2)")
+
+    # ALLOW: all four functions at 90 -> composite 90 -> LOW tier -> allow.
+    r = client.post("/assessments", json={
+        "system_name": "Policy Gated System - Strong",
+        "owner": "Shannon Brian Kelly",
+        "govern_score": 90, "map_score": 90,
+        "measure_score": 90, "manage_score": 90,
+    }, headers=hdr)
+    check("strong assessment 201", r.status_code == 201, r.text)
+    strong = r.json()
+    check("strong overall = 90.0", abs(strong["overall_score"] - 90.0) < 1e-6)
+    check("strong tier LOW", strong["risk_tier"] == "LOW")
+    check("strong gate_decision allow",
+          strong["gate_decision"] == "allow",
+          f"got {strong['gate_decision']}")
+    check("strong gate_reasons list",
+          isinstance(strong["gate_reasons"], list))
+    check("strong gate reasons each have code/message/severity",
+          all({"code", "message", "severity"} <= set(reason.keys())
+              for reason in strong["gate_reasons"]))
+    check("strong gate reasons severities valid",
+          all(reason["severity"] in {"info", "warn", "block"}
+              for reason in strong["gate_reasons"]))
+    # An 'allow' assessment has no block reasons.
+    check("strong gate has no block reasons",
+          all(reason["severity"] != "block"
+              for reason in strong["gate_reasons"]))
+    strong_id = strong["id"]
+
+    # BLOCK (composite band): all four at 30 -> composite 30 -> HIGH -> block.
+    r = client.post("/assessments", json={
+        "system_name": "Policy Gated System - Weak",
+        "owner": "Shannon Brian Kelly",
+        "govern_score": 30, "map_score": 30,
+        "measure_score": 30, "manage_score": 30,
+    }, headers=hdr)
+    check("weak assessment 201", r.status_code == 201, r.text)
+    weak = r.json()
+    check("weak overall = 30.0", abs(weak["overall_score"] - 30.0) < 1e-6)
+    check("weak tier HIGH", weak["risk_tier"] == "HIGH")
+    check("weak gate_decision block",
+          weak["gate_decision"] == "block",
+          f"got {weak['gate_decision']}")
+    # Worst-severity first: the first reason must be a block.
+    check("weak gate first reason is block severity",
+          weak["gate_reasons"][0]["severity"] == "block")
+    weak_codes = [reason["code"] for reason in weak["gate_reasons"]]
+    check("weak gate has composite_below_warn code",
+          "composite_below_warn" in weak_codes,
+          f"got {weak_codes}")
+
+    # NIST-FLOOR BLOCK: composite could be warn-band but one function floor
+    # is violated -> overall block regardless of composite.
+    # govern 20, others 95 -> overall = 0.25*20 + 0.25*95*3 = 76.25 (warn band)
+    # but nist_govern = 20 < floor 40 -> block.
+    r = client.post("/assessments", json={
+        "system_name": "Policy Gated System - Governance Gap",
+        "owner": "Shannon Brian Kelly",
+        "govern_score": 20, "map_score": 95,
+        "measure_score": 95, "manage_score": 95,
+    }, headers=hdr)
+    check("gov-gap assessment 201", r.status_code == 201, r.text)
+    gap = r.json()
+    check("gov-gap overall ~76.25",
+          abs(gap["overall_score"] - 76.25) < 1e-6)
+    check("gov-gap tier MEDIUM", gap["risk_tier"] == "MEDIUM")
+    check("gov-gap gate_decision block (NIST floor trumps warn band)",
+          gap["gate_decision"] == "block",
+          f"got {gap['gate_decision']}")
+    gap_codes = [reason["code"] for reason in gap["gate_reasons"]]
+    check("gov-gap has nist_govern_below_floor reason",
+          "nist_govern_below_floor" in gap_codes,
+          f"got {gap_codes}")
+    check("gov-gap also carries composite warn-band reason",
+          "composite_below_allow" in gap_codes,
+          f"got {gap_codes}")
+    check("gov-gap first reason is block-severity",
+          gap["gate_reasons"][0]["severity"] == "block")
+
+    # GET /assessments (list) returns gate_decision on every row.
+    r = client.get("/assessments", headers=hdr)
+    check("list assessments 200", r.status_code == 200, r.text)
+    all_rows = r.json()
+    check("list has at least the 4 created rows",
+          len(all_rows) >= 4, f"got {len(all_rows)}")
+    check("every row exposes gate_decision key",
+          all("gate_decision" in row for row in all_rows))
+    check("every row exposes gate_reasons list",
+          all(isinstance(row.get("gate_reasons"), list) for row in all_rows))
+    # Every decision in the list must be one of the three allowed values.
+    check("every gate_decision is allow|warn|block",
+          all(row["gate_decision"] in {"allow", "warn", "block"}
+              for row in all_rows))
+    # Spot-check the strong row's decision stayed 'allow' after persistence.
+    strong_in_list = next(row for row in all_rows if row["id"] == strong_id)
+    check("persisted strong row still allow",
+          strong_in_list["gate_decision"] == "allow")
+
+    # GET /assessments/{id} returns gate_decision + gate_reasons too.
+    r = client.get(f"/assessments/{strong_id}", headers=hdr)
+    check("get single assessment 200", r.status_code == 200, r.text)
+    single = r.json()
+    check("single gate_decision preserved",
+          single["gate_decision"] == "allow")
+    check("single gate_reasons preserved",
+          isinstance(single["gate_reasons"], list))
+    check("single gate has no block reasons",
+          all(reason["severity"] != "block"
+              for reason in single["gate_reasons"]))
+
+    # 404 path still works (and doesn't leak gate_decision from another row).
+    r = client.get("/assessments/99999", headers=hdr)
+    check("missing assessment -> 404", r.status_code == 404)
 
     # ---------- Summary ----------
     section("SUMMARY")

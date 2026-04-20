@@ -567,6 +567,54 @@ def risk_tier(overall: float) -> str:
     return "HIGH"
 
 
+def _assessment_score_input(
+    payload: schemas.AssessmentInput,
+) -> schemas.ReliabilityScoreInput:
+    """Project a NIST-RMF assessment into the reliability-score engine.
+
+    Each of the four function scores (0-100 integer) becomes one
+    :class:`schemas.ReliabilityScoreComponent` on the 0.0-1.0 scale, tagged
+    with its NIST function and weighted equally (same weights used by
+    ``create_assessment`` for ``overall_score``). This keeps the gate
+    decision mathematically in sync with the assessment's own risk tier.
+    """
+    by_name = {
+        "govern": payload.govern_score,
+        "map": payload.map_score,
+        "measure": payload.measure_score,
+        "manage": payload.manage_score,
+    }
+    components = [
+        schemas.ReliabilityScoreComponent(
+            name=name,
+            value=by_name[name] / 100.0,
+            weight=FUNCTION_WEIGHTS[name],
+            nist_function=schemas.NISTFunction(name),
+        )
+        for name in ("govern", "map", "measure", "manage")
+    ]
+    return schemas.ReliabilityScoreInput(
+        system_name=payload.system_name,
+        components=components,
+    )
+
+
+def gate_assessment(
+    payload: schemas.AssessmentInput,
+) -> schemas.PolicyGateDecision:
+    """Run the default policy gate against an assessment payload.
+
+    Sprint 3, E3-S2: ``create_assessment`` calls this and persists the
+    result alongside the assessment record so ``risk_tier`` and the
+    gate decision are always computed from the same numbers.
+    """
+    score_input = _assessment_score_input(payload)
+    gate_input = schemas.PolicyGateInput(
+        score_input=score_input, thresholds=None
+    )
+    return evaluate_policy_gate_from_input(gate_input)
+
+
 def create_assessment(
     db: Session,
     payload: schemas.AssessmentInput,
@@ -577,6 +625,7 @@ def create_assessment(
         + payload.measure_score * FUNCTION_WEIGHTS["measure"]
         + payload.manage_score * FUNCTION_WEIGHTS["manage"]
     )
+    gate = gate_assessment(payload)
     record = database.Assessment(
         system_name=payload.system_name,
         owner=payload.owner,
@@ -587,6 +636,10 @@ def create_assessment(
         overall_score=round(overall, 4),
         risk_tier=risk_tier(overall),
         notes=payload.notes,
+        gate_decision=gate.decision.value,
+        gate_reasons_json=json.dumps(
+            [r.model_dump(mode="json") for r in gate.reasons]
+        ),
     )
     db.add(record)
     db.commit()

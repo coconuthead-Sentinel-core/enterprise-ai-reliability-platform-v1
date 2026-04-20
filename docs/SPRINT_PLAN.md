@@ -152,11 +152,22 @@ framework memory saved.
   custom thresholds, validator (`warn_min > allow_min` → 422), empty
   components → 422. Suite now runs **184/184**.
 
-### Story E3-S2 — Policy gate attached to `/assessments` (⏳ next)
+### Story E3-S2 — Policy gate attached to `/assessments` (✅ done)
 
-- Run the gate as part of `POST /assessments` and persist the decision
-  alongside each assessment record so risk tiers and gate decisions
-  are always in sync.
+- `POST /assessments` now runs the policy gate against its own NIST-RMF
+  scores and persists the decision with the record, so `risk_tier` and
+  the gate outcome are always computed from the same numbers.
+- `database.Assessment` gained `gate_decision` and `gate_reasons_json`
+  columns; a `.gate_reasons` property deserializes the JSON so Pydantic
+  `from_attributes` can hydrate the list without extra glue.
+- `AssessmentOutput` now returns `gate_decision`
+  (`Optional[PolicyDecision]`) and `gate_reasons` (list of
+  `PolicyReason`). `GET /assessments` and `GET /assessments/{id}` carry
+  the same fields.
+- 34 new integration assertions in section 16: ALLOW (all-90), BLOCK
+  via composite band (all-30), BLOCK via NIST floor (govern=20 /
+  others=95 → overall block despite MEDIUM tier), list + single-row
+  return shape, 404 path. Suite now runs **218/218**, up from 184/184.
 
 ### Story E3-S3 — Policy audit log (⏳ next)
 

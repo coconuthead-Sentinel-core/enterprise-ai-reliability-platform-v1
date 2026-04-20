@@ -10,6 +10,34 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+**Sprint 3 — Policy Gate Evaluation (Epic E3, story E3-S2):**
+- `POST /assessments` now runs the policy gate against its own NIST-RMF
+  scores and persists the decision alongside the assessment record, so
+  `risk_tier` and the gate outcome never drift out of sync.
+- `database.Assessment` extended with two nullable columns:
+  - `gate_decision` (`allow` / `warn` / `block`),
+  - `gate_reasons_json` (serialized `PolicyReason` list).
+  A helper `.gate_reasons` property deserializes the JSON so Pydantic's
+  `from_attributes` can materialize the list without extra glue.
+- `AssessmentOutput` schema extended with `gate_decision`
+  (`Optional[PolicyDecision]`) and `gate_reasons: List[PolicyReason]`
+  (default `[]`). `GET /assessments`, `GET /assessments/{id}`, and the
+  201 response of `POST /assessments` all carry the new fields.
+- New service helpers `_assessment_score_input()` and
+  `gate_assessment()` project the 4-function assessment payload into a
+  `ReliabilityScoreInput` (one component per NIST function, weighted
+  equally) and run it through `evaluate_policy_gate_from_input()`.
+- 34 new integration assertions (section 16) covering:
+  - ALLOW: all-90 assessment → LOW tier + `allow` + no block reasons,
+  - BLOCK (composite band): all-30 assessment → HIGH tier + `block`
+    with `composite_below_warn` reason first,
+  - BLOCK (NIST floor): govern=20 / others=95 → MEDIUM tier composite
+    but `nist_govern_below_floor` forces overall `block`,
+  - `GET /assessments` list and `GET /assessments/{id}` both return
+    `gate_decision` + `gate_reasons` on every row,
+  - 404 path for a missing assessment still works.
+  Suite now runs **218/218**, up from 184/184.
+
 **Sprint 3 — Policy Gate Evaluation (Epic E3, story E3-S1):**
 - `POST /policy/evaluate` — run a gate against a reliability score and
   return an `allow` / `warn` / `block` decision with detailed reasons.
