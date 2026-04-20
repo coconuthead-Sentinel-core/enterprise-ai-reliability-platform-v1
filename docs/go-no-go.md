@@ -17,7 +17,7 @@ Review date: 2026-04-20
 | API contract export | Pass | `.\.venv\Scripts\python.exe scripts\export_openapi.py` regenerated `libs/schemas/openapi.json`, including `GET /policy/history`, in the byte shape expected by CI. |
 | Public repo safe to publish | Pass | Ignore rules cover secrets, virtualenvs, node modules, caches, build outputs, local archives, and staging folders. |
 | Bicep validation | Pass | `az bicep build --file infra/bicep/main.bicep` passed. |
-| GitHub CI on exact Sprint 3 commit | Pass | PR #8 checks are green on `b29da3d9eaeedeae6ad64236c1a59b1961de1e8c` for `ci-api`, `ci-contracts`, and `security-scans`. |
+| GitHub CI on exact current Sprint 3 branch head | Pass | PR #8 checks are green on `933f86a34a17dab4d65ce4f6edb21e569aa0bd9b` for `ci-api`, `ci-contracts`, and `security-scans`. |
 | Release image publish | Pass | GitHub Actions run `24663922506` built and pushed API and web images successfully after the GHCR lowercase fix. |
 | Azure deployment | Blocked | The same release run failed at `azure/login@v2` because the GitHub `dev` environment does not have the required Azure secrets. |
 
@@ -41,7 +41,7 @@ Reason:
   - `AZURE_KEY_VAULT_URI`
 - Ensure the Azure account used for deployment has an active subscription and
   permission to create the required resources.
-- Re-run `release.yml` against commit `b29da3d9eaeedeae6ad64236c1a59b1961de1e8c`.
+- Re-run `release.yml` against the current branch head `933f86a34a17dab4d65ce4f6edb21e569aa0bd9b` after Azure secrets are configured.
 - Capture the resulting API and web FQDNs.
 - Run live smoke tests against those URLs.
 

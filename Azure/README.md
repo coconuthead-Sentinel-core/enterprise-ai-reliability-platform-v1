@@ -21,7 +21,7 @@ This README exists so reviewers know which folder to open for which job.
 As of 2026-04-20:
 
 - no Azure resources have been created yet,
-- PR #8 head `b29da3d` is green on GitHub CI,
+- PR #8 head `933f86a` is green on GitHub CI,
 - release workflow run `24663922506` successfully built and pushed images,
 - Azure deployment is blocked at `azure/login@v2` because the required GitHub
   `dev` environment secrets are not configured.
