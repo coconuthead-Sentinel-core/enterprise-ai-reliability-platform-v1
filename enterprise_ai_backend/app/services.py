@@ -1,5 +1,6 @@
 """Middle layer - pure business logic + persistence helpers."""
 import hashlib
+import json
 import math
 from datetime import datetime, timezone
 from typing import List, Optional, Tuple
@@ -76,6 +77,7 @@ def _weighted_avg(pairs: List[Tuple[float, float]]) -> Optional[float]:
 
 def compute_reliability_score(
     payload: schemas.ReliabilityScoreInput,
+    db: Optional[Session] = None,
 ) -> schemas.ReliabilityScoreOutput:
     """Weighted composite reliability score + NIST AI RMF breakdown.
 
@@ -84,6 +86,11 @@ def compute_reliability_score(
     * The composite is returned on a 0-100 scale (internally 0-1).
     * Components tagged with a ``nist_function`` are grouped and
       reported as a per-function weighted average in the breakdown.
+    * When a SQLAlchemy ``Session`` is provided, the result is also
+      persisted as a :class:`database.ReliabilityScoreRecord` so the
+      ``GET /reliability/score/history`` endpoint can trend over time.
+      Passing ``db=None`` keeps the function purely functional (useful
+      for unit tests).
     """
     components = payload.components
     total_weight = sum(c.weight for c in components)
@@ -115,7 +122,7 @@ def compute_reliability_score(
         manage=_weighted_avg(by_function["manage"]),
     )
 
-    return schemas.ReliabilityScoreOutput(
+    output = schemas.ReliabilityScoreOutput(
         system_name=payload.system_name,
         composite_score=composite_100,
         tier=tier,
@@ -124,6 +131,35 @@ def compute_reliability_score(
         components=components,
         computed_at=datetime.now(timezone.utc),
     )
+
+    if db is not None:
+        _persist_score_record(db, output)
+
+    return output
+
+
+def _persist_score_record(
+    db: Session,
+    output: schemas.ReliabilityScoreOutput,
+) -> database.ReliabilityScoreRecord:
+    """Store one score result so history can trend it later."""
+    record = database.ReliabilityScoreRecord(
+        system_name=output.system_name,
+        composite_score=output.composite_score,
+        tier=output.tier,
+        weights_normalized=1 if output.weights_normalized else 0,
+        components_json=json.dumps(
+            [c.model_dump(mode="json") for c in output.components]
+        ),
+        nist_govern=output.nist_breakdown.govern,
+        nist_map=output.nist_breakdown.map,
+        nist_measure=output.nist_breakdown.measure,
+        nist_manage=output.nist_breakdown.manage,
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    return record
 
 
 # ---------- Reliability Score Explanation (Sprint 2, E2-S2) ----------
@@ -193,6 +229,7 @@ def _recommendation(
 
 def explain_reliability_score(
     payload: schemas.ReliabilityScoreInput,
+    db: Optional[Session] = None,
 ) -> schemas.ReliabilityScoreWithExplanation:
     """Composite reliability score + per-component explanation.
 
@@ -208,8 +245,12 @@ def explain_reliability_score(
     * ``weakest_nist_function`` / ``strongest_nist_function`` - the NIST AI RMF
       functions with the lowest and highest per-function breakdown scores.
     * ``recommendation`` - a short, plain-English suggestion.
+
+    When a ``Session`` is provided the underlying score is persisted
+    exactly once (via ``compute_reliability_score``) so the explain
+    endpoint also feeds ``GET /reliability/score/history``.
     """
-    base = compute_reliability_score(payload)
+    base = compute_reliability_score(payload, db=db)
 
     total_weight = sum(c.weight for c in payload.components)
     # ``compute_reliability_score`` already guarded against zero totals, but
@@ -284,6 +325,103 @@ def explain_reliability_score(
         components=base.components,
         computed_at=base.computed_at,
         explanation=explanation,
+    )
+
+
+# ---------- Reliability Score History (Sprint 2, E2-S3) ----------
+
+def list_score_history(
+    db: Session,
+    system_name: Optional[str] = None,
+    limit: int = 50,
+) -> List[database.ReliabilityScoreRecord]:
+    """Return score records newest-first, optionally filtered by system."""
+    q = db.query(database.ReliabilityScoreRecord)
+    if system_name is not None:
+        q = q.filter(database.ReliabilityScoreRecord.system_name == system_name)
+    q = q.order_by(database.ReliabilityScoreRecord.created_at.desc(),
+                   database.ReliabilityScoreRecord.id.desc())
+    return q.limit(limit).all()
+
+
+def _trend_direction(scores_newest_first: List[float]) -> str:
+    """Classify a trend as improving / degrading / stable.
+
+    Compares the mean of the newer half against the mean of the older
+    half. Anything under 2 data points is ``insufficient_data``.
+    """
+    n = len(scores_newest_first)
+    if n < 2:
+        return "insufficient_data"
+
+    # Chronological order (oldest first) for readability.
+    chrono = list(reversed(scores_newest_first))
+    mid = n // 2
+    older = chrono[:mid] if mid > 0 else chrono[:1]
+    newer = chrono[mid:] if n - mid > 0 else chrono[-1:]
+    older_mean = sum(older) / len(older)
+    newer_mean = sum(newer) / len(newer)
+    delta = newer_mean - older_mean
+
+    # A swing of less than ~1 composite point reads as noise.
+    if abs(delta) < 1.0:
+        return "stable"
+    return "improving" if delta > 0 else "degrading"
+
+
+def score_trend_stats(
+    records: List[database.ReliabilityScoreRecord],
+) -> schemas.ScoreTrendStats:
+    """Compute aggregate trend stats from a newest-first record list."""
+    if not records:
+        return schemas.ScoreTrendStats(
+            count=0,
+            trend_direction="insufficient_data",
+            tier_transitions=[],
+        )
+
+    scores = [r.composite_score for r in records]
+    # Records are newest-first; chronological view is reversed.
+    chrono = list(reversed(records))
+
+    transitions: List[schemas.TierTransition] = []
+    for prev, curr in zip(chrono, chrono[1:]):
+        if prev.tier != curr.tier:
+            transitions.append(
+                schemas.TierTransition(
+                    from_tier=prev.tier,
+                    to_tier=curr.tier,
+                    at=curr.created_at,
+                    composite_score=curr.composite_score,
+                )
+            )
+
+    return schemas.ScoreTrendStats(
+        count=len(records),
+        latest_score=records[0].composite_score,
+        latest_tier=records[0].tier,
+        earliest_score=records[-1].composite_score,
+        earliest_tier=records[-1].tier,
+        rolling_average=round(sum(scores) / len(scores), 4),
+        min_score=min(scores),
+        max_score=max(scores),
+        trend_direction=_trend_direction(scores),
+        tier_transitions=transitions,
+    )
+
+
+def reliability_score_history(
+    db: Session,
+    system_name: Optional[str] = None,
+    limit: int = 50,
+) -> schemas.ReliabilityScoreHistoryOut:
+    """End-to-end: query records + compute trend stats + wrap response."""
+    records = list_score_history(db, system_name=system_name, limit=limit)
+    stats = score_trend_stats(records)
+    return schemas.ReliabilityScoreHistoryOut(
+        system_name=system_name,
+        stats=stats,
+        records=[schemas.ReliabilityScoreRecordOut.model_validate(r) for r in records],
     )
 
 

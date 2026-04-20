@@ -67,6 +67,31 @@ class Assessment(Base):
     created_at = Column(DateTime, default=_utcnow, nullable=False)
 
 
+class ReliabilityScoreRecord(Base):
+    """One persisted weighted composite reliability score.
+
+    Populated automatically by ``POST /reliability/score`` and
+    ``POST /reliability/score/explain`` (Sprint 2, E2-S3) so
+    ``GET /reliability/score/history`` can return a trend over time
+    without the caller having to re-submit the inputs.
+    """
+
+    __tablename__ = "reliability_score_records"
+
+    id = Column(Integer, primary_key=True)
+    system_name = Column(String(200), nullable=False, index=True)
+    composite_score = Column(Float, nullable=False)
+    tier = Column(String(20), nullable=False)
+    weights_normalized = Column(Integer, nullable=False)  # 0/1 boolean
+    # Serialized list[ReliabilityScoreComponent] for audit / replay.
+    components_json = Column(Text, nullable=False)
+    nist_govern = Column(Float, nullable=True)
+    nist_map = Column(Float, nullable=True)
+    nist_measure = Column(Float, nullable=True)
+    nist_manage = Column(Float, nullable=True)
+    created_at = Column(DateTime, default=_utcnow, nullable=False, index=True)
+
+
 def init_db():
     Base.metadata.create_all(bind=engine)
 

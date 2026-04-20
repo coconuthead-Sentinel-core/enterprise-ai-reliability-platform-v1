@@ -219,6 +219,68 @@ class ReliabilityScoreWithExplanation(ReliabilityScoreOutput):
     explanation: ScoreExplanation
 
 
+# ---------- Reliability Score History (Sprint 2, E2-S3) ----------
+
+class ReliabilityScoreRecordOut(BaseModel):
+    """One persisted reliability score row."""
+
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    system_name: str
+    composite_score: float
+    tier: str
+    weights_normalized: bool
+    nist_govern: Optional[float] = None
+    nist_map: Optional[float] = None
+    nist_measure: Optional[float] = None
+    nist_manage: Optional[float] = None
+    created_at: datetime
+
+
+class TierTransition(BaseModel):
+    """One tier change detected in the history stream."""
+
+    from_tier: str
+    to_tier: str
+    at: datetime
+    composite_score: float = Field(
+        ...,
+        description="Composite score at the moment of the transition.",
+    )
+
+
+class ScoreTrendStats(BaseModel):
+    """Aggregate statistics computed across a history window."""
+
+    count: int
+    latest_score: Optional[float] = None
+    latest_tier: Optional[str] = None
+    earliest_score: Optional[float] = None
+    earliest_tier: Optional[str] = None
+    rolling_average: Optional[float] = Field(
+        None,
+        description="Mean composite score across all returned records.",
+    )
+    min_score: Optional[float] = None
+    max_score: Optional[float] = None
+    trend_direction: str = Field(
+        ...,
+        description="'improving', 'degrading', 'stable', or 'insufficient_data'.",
+    )
+    tier_transitions: List[TierTransition] = Field(default_factory=list)
+
+
+class ReliabilityScoreHistoryOut(BaseModel):
+    """Response body for GET /reliability/score/history."""
+
+    system_name: Optional[str] = Field(
+        None,
+        description="Filter applied (``None`` = all systems).",
+    )
+    stats: ScoreTrendStats
+    records: List[ReliabilityScoreRecordOut]
+
+
 # ---------- Hash ----------
 
 class HashInput(BaseModel):
