@@ -47,6 +47,7 @@ Key Vault secrets required:
 - API: `enterprise_ai_backend/Dockerfile`, port `8000`, health probe `/health`
 - Web: `apps/web/Dockerfile`, port `80`, runtime API configuration through `API_BASE_URL`
 - Contracts: `libs/schemas/openapi.json`
+- Reporting: `/dashboard/summary`, `/reports/executive-summary`, `/reports/executive-summary.pdf`
 
 ## 6. Validation plan
 
@@ -63,7 +64,7 @@ Run before deployment:
 
 Completed locally on 2026-04-20:
 
-- Backend integration: `.\.venv\Scripts\python.exe tests\test_backend.py` passed with 286/286 assertions.
+- Backend integration: `.\.venv\Scripts\python.exe tests\test_backend.py` passed with 313/313 assertions.
 - Backend pytest: `.\.venv\Scripts\python.exe -m pytest -q` passed with 2 tests.
 - Backend dependencies: `.\.venv\Scripts\python.exe -m pip check` reported no broken requirements.
 - Contract export: `.\.venv\Scripts\python.exe scripts\export_openapi.py` regenerated `libs/schemas/openapi.json`.

@@ -38,19 +38,19 @@ _EPICS: List[Epic] = [
     Epic(
         id="E3",
         title="Policy Gate Evaluation",
-        status="in_progress",
+        status="done",
         sprint=3,
     ),
     Epic(
         id="E4",
         title="Dashboard and Reporting",
-        status="not_started",
+        status="in_progress",
         sprint=4,
     ),
     Epic(
         id="E5",
         title="Security and Compliance",
-        status="not_started",
+        status="in_progress",
         sprint=5,
     ),
 ]
@@ -75,7 +75,7 @@ class SprintSummary(BaseModel):
 def current_sprint() -> SprintSummary:
     """Return the current sprint summary."""
     return SprintSummary(
-        current_sprint=3,
+        current_sprint=4,
         total_sprints=5,
         release="v0.3.0",
         branch="sprint-3/policy-audit-log",

@@ -6,6 +6,7 @@ real scikit-learn IsolationForest. No mocks.
 Run:   python test_backend.py     (from the enterprise_ai_backend/ folder)
 """
 import hashlib
+import io
 import json
 import math
 import os
@@ -21,6 +22,7 @@ os.environ["DATABASE_URL"] = f"sqlite:///{_TMP_DB}"
 os.environ["JWT_SECRET"] = "test-secret-" + "z" * 48
 
 from fastapi.testclient import TestClient  # noqa: E402
+from pypdf import PdfReader  # noqa: E402
 
 from app.database import Base, engine, init_db  # noqa: E402
 from app.main import app  # noqa: E402
@@ -238,7 +240,9 @@ def main():
     check("first epic is E1", epics[0]["id"] == "E1")
     check("E1 in_progress", epics[0]["status"] == "in_progress")
     check("E2 done (Sprint 2 complete)", epics[1]["status"] == "done")
-    check("E3 in_progress (Sprint 3 active)", epics[2]["status"] == "in_progress")
+    check("E3 done (Sprint 3 delivered)", epics[2]["status"] == "done")
+    check("E4 in_progress (Sprint 4 local build)", epics[3]["status"] == "in_progress")
+    check("E5 in_progress (Sprint 5 evidence slice)", epics[4]["status"] == "in_progress")
     check("every epic has title", all(e.get("title") for e in epics))
     check("every epic has int sprint", all(isinstance(e["sprint"], int) for e in epics))
     check("epic statuses are valid",
@@ -247,13 +251,13 @@ def main():
     r = client.get("/info/sprint")
     check("info/sprint 200", r.status_code == 200)
     s = r.json()
-    check("current_sprint is 3", s["current_sprint"] == 3)
+    check("current_sprint is 4", s["current_sprint"] == 4)
     check("total_sprints is 5", s["total_sprints"] == 5)
     check("release is v0.3.0", s["release"] == "v0.3.0")
     check("E2 is done (Epic E2 shipped in Sprint 2)",
           next(e for e in epics if e["id"] == "E2")["status"] == "done")
-    check("E3 is in_progress (Sprint 3 active)",
-          next(e for e in epics if e["id"] == "E3")["status"] == "in_progress")
+    check("E3 is done (Sprint 3 delivered)",
+          next(e for e in epics if e["id"] == "E3")["status"] == "done")
 
     # ---------- 12. Reliability composite score (Sprint 2, E2-S1) ----------
     section("12. POST /reliability/score (weighted composite + NIST breakdown)")
@@ -993,6 +997,66 @@ def main():
     # Validation: empty system_name rejected.
     r = client.get("/policy/history?system_name=")
     check("history empty system_name -> 422", r.status_code == 422)
+
+    # ---------- 18. Dashboard + executive reporting (Sprint 4 / Sprint 5 slice) ----------
+    section("18. GET /dashboard/summary and /reports/executive-summary(.pdf)")
+
+    r = client.get("/dashboard/summary")
+    check("dashboard summary requires auth -> 401", r.status_code == 401)
+
+    r = client.get("/dashboard/summary", headers=hdr)
+    check("dashboard summary 200", r.status_code == 200, r.text)
+    dash = r.json()
+    check("dashboard viewer_role user", dash["viewer_role"] == "user")
+    check("dashboard has metric cards", len(dash["metrics"]) >= 4)
+    check("dashboard has epic rows", len(dash["epics"]) == 5)
+    check("dashboard embeds score history", "score_history" in dash)
+    check("dashboard embeds policy history", "policy_history" in dash)
+    check("dashboard embeds assessment summary", "assessment_summary" in dash)
+    check("dashboard recent assessments list present",
+          isinstance(dash["recent_assessments"], list))
+    check("dashboard completion percent in range",
+          0.0 <= dash["epic_completion_percent"] <= 100.0)
+
+    r = client.get("/reports/executive-summary")
+    check("executive summary requires auth -> 401", r.status_code == 401)
+
+    r = client.get("/reports/executive-summary", headers=hdr)
+    check("executive summary 200", r.status_code == 200, r.text)
+    report = r.json()
+    check("executive summary includes dashboard",
+          "dashboard" in report and "compliance" in report)
+    check("executive summary carries current branch",
+          report["branch"] == "sprint-3/policy-audit-log")
+    check("compliance controls present",
+          len(report["compliance"]["controls"]) >= 5)
+    check("compliance has outstanding gaps",
+          len(report["compliance"]["outstanding_gaps"]) >= 1)
+    check("compliance overall_status partial",
+          report["compliance"]["overall_status"] == "partial")
+    check("ci security control present",
+          any(c["control_id"] == "CTRL-02" for c in report["compliance"]["controls"]))
+
+    r = client.get("/reports/executive-summary.pdf", headers=hdr)
+    check(
+        "executive summary pdf 200",
+        r.status_code == 200,
+        r.headers.get("content-type", ""),
+    )
+    check("executive summary pdf content-type application/pdf",
+          r.headers["content-type"].startswith("application/pdf"))
+    check("executive summary pdf disposition header",
+          "attachment; filename=\"earp-executive-summary.pdf\""
+          in r.headers.get("content-disposition", ""))
+    check("executive summary pdf starts with %PDF",
+          r.content.startswith(b"%PDF"))
+    pdf = PdfReader(io.BytesIO(r.content))
+    check("executive summary pdf has >= 1 page", len(pdf.pages) >= 1)
+    pdf_text = "\n".join(page.extract_text() or "" for page in pdf.pages)
+    check("executive pdf mentions platform name",
+          "Enterprise AI Reliability Platform" in pdf_text)
+    check("executive pdf mentions compliance bundle",
+          "Compliance Evidence Bundle" in pdf_text or "Security and compliance controls" in pdf_text)
 
     # ---------- Summary ----------
     section("SUMMARY")

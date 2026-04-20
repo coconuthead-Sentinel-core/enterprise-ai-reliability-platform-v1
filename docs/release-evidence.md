@@ -4,6 +4,10 @@ Date: 2026-04-20
 Candidate branch: `sprint-3/policy-audit-log`
 Candidate PR: `#8`
 
+Note: the branch has been rolled forward locally beyond the original Sprint 3
+delta and now includes Sprint 4 dashboard/reporting work plus the Sprint 5
+local evidence-bundle slice.
+
 ## Environment findings
 
 - `git` is installed and the local repo tracks GitHub successfully.
@@ -20,7 +24,7 @@ Candidate PR: `#8`
 | Evidence | Command | Status |
 | --- | --- | --- |
 | Backend install | `.\.venv\Scripts\python.exe -m pip install -r requirements.txt` | Pass |
-| Backend tests | `.\.venv\Scripts\python.exe tests\test_backend.py` | Pass: 286/286 assertions |
+| Backend tests | `.\.venv\Scripts\python.exe tests\test_backend.py` | Pass: 313/313 assertions |
 | Backend pytest | `.\.venv\Scripts\python.exe -m pytest -q` | Pass: 2 tests, 2 FastAPI deprecation warnings |
 | Backend dependency check | `.\.venv\Scripts\python.exe -m pip check` | Pass |
 | OpenAPI export | `.\.venv\Scripts\python.exe scripts\export_openapi.py` | Pass |
@@ -29,6 +33,12 @@ Candidate PR: `#8`
 | Frontend build | `npm run build` | Pass |
 | Frontend audit | `npm audit --audit-level=moderate` | Pass: 0 vulnerabilities |
 | Bicep validation | `az bicep build --file infra/bicep/main.bicep` | Pass |
+
+Local product additions validated in the same pass:
+
+- `GET /dashboard/summary`
+- `GET /reports/executive-summary`
+- `GET /reports/executive-summary.pdf`
 
 ## GitHub evidence
 

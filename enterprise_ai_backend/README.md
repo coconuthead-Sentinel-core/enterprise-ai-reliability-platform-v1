@@ -1,45 +1,12 @@
-# enterprise_ai_backend — Full Build (v0.2.0)
+# enterprise_ai_backend - FastAPI backend (v0.3.0)
 
-FastAPI backend for the Enterprise AI Reliability Platform v1.
-Includes persistence, NIST AI RMF assessment scoring, a minimal front end,
-integration tests with real numbers, and Docker deployment.
+FastAPI backend for the Enterprise AI Reliability Platform v1. Includes auth,
+reliability scoring, policy gating, assessment storage, anomaly detection,
+dashboard/reporting endpoints, and PDF export.
 
-## Folder layout
+## Setup
 
-```
-enterprise_ai_backend/
-├── app/                         # Python package - the real application
-│   ├── __init__.py
-│   ├── main.py                  # FastAPI app + CORS + startup
-│   ├── config.py                # Loads .env into typed settings
-│   ├── database.py              # SQLAlchemy engine + models
-│   ├── schemas.py               # Pydantic request / response schemas
-│   ├── services.py              # Middle layer - business logic
-│   └── routers/
-│       ├── health.py            # GET  /health
-│       ├── reliability.py       # POST /reliability/compute, GET /history
-│       ├── assessments.py       # CRUD on NIST AI RMF assessments
-│       └── hash.py              # POST /hash/sha256
-├── tests/
-│   └── test_backend.py          # Real integration test (no mocks)
-├── frontend/                    # Minimal vanilla-JS dashboard
-│   ├── index.html               # served at  /ui
-│   ├── app.js
-│   └── styles.css
-├── data/                        # SQLite DB lives here (gitignored)
-├── main.py                      # Back-compat re-export
-├── run.py                       # python run.py  -> starts uvicorn
-├── test_backend.py              # python test_backend.py  shim
-├── requirements.txt
-├── Dockerfile
-├── docker-compose.yml
-├── .env                         # Local secrets (gitignored)
-├── .env.example                 # Template
-├── .gitignore
-└── README.md
-```
-
-## Setup (Windows PowerShell)
+### Windows PowerShell
 
 ```powershell
 cd "<path-to>\enterprise_ai_backend"
@@ -48,7 +15,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Setup (macOS / Linux)
+### macOS / Linux
 
 ```bash
 cd <path-to>/enterprise_ai_backend
@@ -57,28 +24,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Run the real backend test (real numbers, no mocks)
-
-```bash
-python test_backend.py
-```
-
-Exercises every endpoint against a real SQLite database and real math:
-
-| Check | What it verifies |
-|-------|------------------|
-| `GET /health` | Real uptime, real Python version, real DB round-trip |
-| `POST /reliability/compute` (MTBF=1000, MTTR=4, mission=720) | availability 0.996016, reliability 0.486752, failure rate 0.001/hr, 0.72 expected failures — byte-exact against `math.exp(-720/1000)` |
-| Second compute (MTBF=50000, MTTR=2, mission=8760) | Datacenter-grade annual reliability |
-| `GET /reliability/history` | Real DB read-back of both computations |
-| `POST /assessments` (scores 85/78/72/81) | overall = 79.0, tier = MEDIUM |
-| Low-risk sample (95/90/88/92) | overall ≥ 80 → LOW |
-| High-risk sample (40/55/50/45) | overall < 60 → HIGH |
-| `GET /assessments/{id}` / 404 on missing | Real lookup + error paths |
-| `POST /hash/sha256` | Matches Python's own `hashlib.sha256` |
-| Validation errors | Negative MTBF, empty strings, scores > 100 all return 422 |
-
-## Run the server
+## Run locally
 
 ```bash
 python run.py
@@ -86,50 +32,50 @@ python run.py
 
 Then open:
 
-- **Swagger UI** — <http://localhost:8000/docs>
-- **Front-end dashboard** — <http://localhost:8000/ui>
-- **Root** — <http://localhost:8000/>
+- `http://127.0.0.1:8000/docs`
+- `http://127.0.0.1:8000/health`
 
-## Endpoints
+## Primary endpoints
 
 | Method | Path | Description |
-|--------|------|-------------|
-| GET | `/` | App info |
-| GET | `/health` | Real health + uptime + DB status |
-| POST | `/reliability/compute` | MTBF/MTTR reliability math, persisted |
-| GET | `/reliability/history` | List prior computations |
-| POST | `/assessments` | Create NIST AI RMF assessment |
-| GET | `/assessments` | List assessments |
-| GET | `/assessments/{id}` | Retrieve one (404 if missing) |
-| POST | `/hash/sha256` | SHA-256 of a real string |
-| GET | `/docs` | Swagger UI |
-| GET | `/ui` | Frontend dashboard |
+| --- | --- | --- |
+| GET | `/` | app metadata |
+| GET | `/health` | health + uptime + DB status |
+| POST | `/auth/register` | create user |
+| POST | `/auth/login` | issue JWT |
+| GET | `/auth/me` | current user |
+| POST | `/reliability/compute` | MTBF/MTTR reliability math |
+| POST | `/reliability/score` | weighted composite reliability score |
+| POST | `/reliability/score/explain` | score explanation |
+| GET | `/reliability/score/history` | score history + trend stats |
+| POST | `/policy/evaluate` | policy gate decision |
+| GET | `/policy/history` | policy audit log + stats |
+| POST | `/assessments` | create NIST AI RMF assessment |
+| GET | `/assessments` | list assessments |
+| GET | `/assessments/{id}` | get single assessment |
+| POST | `/ai/anomaly-detect` | `IsolationForest` on records |
+| GET | `/ai/anomaly-detect/from-history` | `IsolationForest` on stored history |
+| GET | `/dashboard/summary` | dashboard summary payload |
+| GET | `/reports/executive-summary` | structured executive summary |
+| GET | `/reports/executive-summary.pdf` | PDF export |
+| POST | `/hash/sha256` | SHA-256 utility |
 
-## Deploy with Docker
+## Tests
 
 ```bash
-docker compose up --build
+python tests/test_backend.py
+python -m pytest -q
+python -m pip check
+python scripts/export_openapi.py
 ```
 
-The `data/` folder is bind-mounted so the SQLite DB survives restarts.
+Current local validation:
 
-## NIST AI RMF scoring rules
+- `tests/test_backend.py`: 313/313 assertions passing
+- `pytest -q`: 2 tests passing
 
-Each assessment records four scores (0–100) for GOVERN, MAP, MEASURE, MANAGE.
-`overall_score` is a weighted average (equal weights by default). Risk tier:
+## Notes
 
-| Overall | Tier |
-|---------|------|
-| ≥ 80 | LOW |
-| 60–79.99 | MEDIUM |
-| < 60 | HIGH |
-
-## Azure deployment (next step)
-
-The Dockerfile and docker-compose.yml are ready for:
-
-- **Azure App Service for Containers** — push the image, set env vars
-- **Azure Container Apps** — single-container, auto-scale
-- **Azure Key Vault** — replace `.env` with Key Vault secrets in production
-
-See the companion Azure course notes in the parent repo for the exact deploy steps.
+- SQLite is the local default.
+- The code is PostgreSQL-ready through SQLAlchemy.
+- Azure deployment is blocked by credentials, not by the subscription tier.

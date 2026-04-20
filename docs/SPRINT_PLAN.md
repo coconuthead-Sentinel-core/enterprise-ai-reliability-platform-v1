@@ -15,51 +15,56 @@ As of: 2026-04-20
 | 0 | baseline | Repo handoff and validation baseline | done |
 | 1 | E1 | Evidence Ingestion and Normalization | shim delivered; backlog epic still open |
 | 2 | E2 | Reliability Scoring Engine | done |
-| 3 | E3 | Policy Gate Evaluation | implemented on PR #8 |
-| 4 | E4 | Dashboard and Reporting | queued next |
-| 5 | E5 | Security and Compliance | planned |
+| 3 | E3 | Policy Gate Evaluation | done on the current branch head |
+| 4 | E4 | Dashboard and Reporting | implemented locally; pending push/CI on the rolled-forward branch head |
+| 5 | E5 | Security and Compliance | partial local implementation; cloud-only controls still blocked by Azure credentials |
 
-PR #8 (`sprint-3/policy-audit-log` -> `main`) is the exact Sprint 3 delivery branch.
-The last Azure release-workflow attempt ran against `b29da3d9eaeedeae6ad64236c1a59b1961de1e8c`.
+PR #8 originally represented the exact Sprint 3 delivery branch. The same branch
+now carries rolled-forward local Sprint 4 and Sprint 5 work.
+
+The last Azure release-workflow attempt still ran against
+`b29da3d9eaeedeae6ad64236c1a59b1961de1e8c`.
 
 ---
 
 ## Current routing
 
-This project is now being routed with an Eisenhower matrix plus the Cognitive Grid
-so urgent release blockers do not compete with future sprint work.
+This project is being routed with an Eisenhower matrix plus the Cognitive Grid
+so local product work, release evidence, and Azure blockers stay separated.
 
 ### Eisenhower matrix
 
 | Bucket | Items |
 | --- | --- |
-| Do now | Keep PR #8 evidence accurate, preserve green CI on the current branch head, remove stale temp artifacts, document the real Azure blocker |
-| Schedule next | Start Sprint 4 dashboard/reporting work on a fresh branch after Sprint 3 is merged or intentionally rolled forward |
-| Delegate / wait | Azure login, active Azure subscription access, GitHub `dev` environment secrets, Key Vault secret population |
+| Do now | Finish local dashboard/reporting work, keep backend and frontend validation green, publish accurate release evidence for the rolled-forward branch head |
+| Schedule next | Push the current branch head, rerun GitHub CI on the same head, decide whether to keep extending PR #8 or cut a new PR after review |
+| Delegate / wait | Azure login, active Azure subscription access, GitHub `dev` environment secrets, Key Vault secret population, live FQDN discovery |
 | Defer | Live smoke tests and public Azure URLs until Azure deployment credentials exist |
 
 ### Cognitive Grid
 
 | Zone | Row family | Active items |
 | --- | --- | --- |
-| Green | Row 1 / immediate objective | Sprint 3 release-readiness truth, PR #8 status, CI evidence |
-| Green | Row 5 / active artifacts | `docs/SPRINT_PLAN.md`, `docs/go-no-go.md`, `docs/release-evidence.md`, `.azure/plan.md`, `Azure/README.md` |
-| Yellow | Row 2 / synthesis | Sprint 4 scope slicing and branch handoff notes |
-| Red | Row 10 / archive evidence | CI run results, release workflow evidence, exact commit hash, local validation commands |
-| Future | Row 13 / backlog horizon | Azure live deploy, smoke tests, Sprint 4 branch, Sprint 5 compliance bundle |
+| Green | Row 1 / immediate objective | Local Sprint 4 dashboard/reporting build, local Sprint 5 evidence bundle, clean validation |
+| Green | Row 5 / active artifacts | `apps/web/src/App.tsx`, `apps/web/src/api.ts`, `enterprise_ai_backend/app/reporting.py`, `docs/SPRINT_PLAN.md`, `docs/go-no-go.md`, `docs/release-evidence.md` |
+| Yellow | Row 2 / synthesis | Branch strategy after the rolled-forward local implementation, release evidence refresh |
+| Red | Row 10 / archive evidence | CI run results, last Azure workflow result, validation command history, exact blocked secret list |
+| Future | Row 13 / backlog horizon | Azure deploy, FQDN capture, live smoke tests, stronger approval separation, tamper-evident audit storage, retention/legal-hold automation |
 
 ---
 
-## Sprint 3 delivered scope
+## Delivered scope
 
-Epic E3 is implemented on PR #8 in three stories:
+### Sprint 3 delivered scope
+
+Epic E3 is complete on the current branch head:
 
 1. E3-S1: `POST /policy/evaluate`
    - Composite policy gate with `allow`, `warn`, and `block` outcomes.
    - Per-NIST floor enforcement and threshold override support.
 
 2. E3-S2: policy gate attached to `/assessments`
-   - Every assessment row now persists `gate_decision` and `gate_reasons`.
+   - Every assessment row persists `gate_decision` and `gate_reasons`.
    - The gate is computed from the same scores that produce `risk_tier`.
 
 3. E3-S3: policy audit log
@@ -68,12 +73,41 @@ Epic E3 is implemented on PR #8 in three stories:
    - SQLite compatibility migration upgrades older local databases that
      predate the new `assessments` gate columns.
 
-Sprint 3 release hardening also landed on the same branch:
+### Sprint 4 local scope
 
-- `enterprise_ai_backend/scripts/export_openapi.py` now writes
-  `libs/schemas/openapi.json` in the byte shape expected by `ci-contracts`.
-- `.github/workflows/release.yml` now lowercases GHCR repository paths, which
-  allowed the image build/push job to succeed on `b29da3d`.
+Epic E4 is now implemented locally on the same branch:
+
+1. `GET /dashboard/summary`
+   - Role-aware dashboard payload with KPI cards, epic status, assessment
+     posture, reliability score history, and policy history.
+
+2. `GET /reports/executive-summary`
+   - Structured executive summary combining the dashboard payload and the
+     compliance evidence bundle.
+
+3. `GET /reports/executive-summary.pdf`
+   - ReportLab-generated PDF export for review and handoff workflows.
+
+4. React dashboard workspace
+   - Release, Security, and Executive views.
+   - Local sample-data seeding flow.
+   - PDF export button wired to the report endpoint.
+
+### Sprint 5 local scope
+
+Epic E5 now has a local evidence-bundle slice:
+
+1. Compliance evidence bundle
+   - Five controls covering auth, CI security scanning, audit traceability,
+     release governance, and retention/legal-hold.
+
+2. Outstanding gaps
+   - Approval separation, immutable audit storage, retention/legal-hold
+     automation, and Azure smoke-test completion remain open.
+
+3. Recommended next steps
+   - The report endpoints and dashboard now surface the exact local status and
+     the remaining blockers.
 
 ---
 
@@ -81,7 +115,7 @@ Sprint 3 release hardening also landed on the same branch:
 
 Validated locally on 2026-04-20:
 
-- `python tests/test_backend.py`: pass, 286/286 assertions
+- `python tests/test_backend.py`: pass, 313/313 assertions
 - `python -m pytest -q`: pass, 2 tests
 - `python -m pip check`: pass
 - `python scripts/export_openapi.py`: pass
@@ -90,7 +124,7 @@ Validated locally on 2026-04-20:
 - `npm audit --audit-level=moderate`: pass, 0 vulnerabilities
 - `az bicep build --file infra/bicep/main.bicep`: pass
 
-Validated on GitHub for the current PR #8 branch head:
+Validated on GitHub for the earlier PR #8 branch head:
 
 - `ci-api`: green on Python 3.10, 3.11, 3.12
 - `ci-contracts`: green
@@ -108,7 +142,7 @@ Release workflow evidence for `b29da3d`:
 
 Azure is not blocked by subscription tier. An active Azure Pay-As-You-Go
 subscription is sufficient for this project as long as it can create the
-required resources and the account has billing and permission to deploy them.
+required resources and the account has permission to deploy them.
 
 What is blocked right now:
 
@@ -134,9 +168,10 @@ along to:
 
 ## Next execution slice
 
-The next clean sprint move is:
+The next clean move is:
 
-1. merge or intentionally roll forward PR #8,
-2. branch for Sprint 4 dashboard/reporting,
-3. build the operator dashboard on top of the now-stable E2 and E3 endpoints,
-4. return to Azure deployment only when credentials and subscription access exist.
+1. push the current rolled-forward branch head,
+2. rerun GitHub CI against that exact head,
+3. keep Azure deployment paused until credentials exist,
+4. once secrets exist, rerun `release.yml`, collect the API and web FQDNs,
+   and run smoke tests against the live URLs.

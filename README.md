@@ -1,44 +1,30 @@
-# Enterprise AI Reliability Platform — v1 (EARP)
+# Enterprise AI Reliability Platform - v1 (EARP)
 
-Production-grade platform for scoring and monitoring AI systems against
-the NIST AI Risk Management Framework (GOVERN, MAP, MEASURE, MANAGE),
-with reliability engineering math (MTBF/MTTR/availability/reliability)
-and real ML-based anomaly detection.
+Production-grade platform for scoring and monitoring AI systems against the
+NIST AI Risk Management Framework (GOVERN, MAP, MEASURE, MANAGE), with
+reliability engineering math, policy gating, audit history, dashboard/reporting
+surfaces, and local compliance evidence export.
 
-**Status:** v0.3.0, full build validated locally. Real FastAPI, real bcrypt + JWT,
-real scikit-learn IsolationForest, real SQLite in dev / PostgreSQL-ready in
-prod. 286/286 integration assertions pass on the current laptop branch.
+**Status:** `v0.3.0`, full local build validated. Real FastAPI, real bcrypt +
+JWT, real SQLite, real scikit-learn `IsolationForest`, and 313/313 integration
+assertions passing on the current laptop branch.
 
 ## Monorepo layout
 
-```
+```text
 enterprise-ai-reliability-platform-v1/
-├─ apps/
-│  ├─ api/               Signpost → enterprise_ai_backend/ (live FastAPI)
-│  └─ web/               React 18 + TypeScript + Vite frontend
-│
-├─ enterprise_ai_backend/   The actual backend source tree
-│  ├─ app/                  FastAPI app (auth, assessments, ai, reliability)
-│  ├─ tests/                Integration test suite (286 assertions)
-│  └─ requirements.txt
-│
-├─ libs/
-│  ├─ schemas/            OpenAPI 3.1 contract (exported from FastAPI)
-│  └─ policy/             NIST AI RMF scoring policy (Python, auditable)
-│
-├─ infra/
-│  ├─ docker/             docker-compose dev stack (api + web + pg + redis)
-│  └─ bicep/              Azure Container Apps deployment
-│
-├─ .github/
-│  ├─ workflows/          ci-api, ci-web, ci-contracts, security-scans, release
-│  ├─ CODEOWNERS
-│  ├─ PULL_REQUEST_TEMPLATE.md
-│  └─ ISSUE_TEMPLATE/
-│
-├─ docs/                  Developer docs
-└─ ...                    SDLC paperwork folders (project_charter, risk_register,
-                          test_strategy_and_test_plan, etc.)
+|- apps/
+|  |- api/                 Signpost -> enterprise_ai_backend/
+|  `- web/                 React 18 + TypeScript + Vite dashboard UI
+|- enterprise_ai_backend/  FastAPI app, persistence, reporting, tests
+|- libs/
+|  |- schemas/             OpenAPI 3.1 contract exported from FastAPI
+|  `- policy/              NIST AI RMF scoring policy
+|- infra/
+|  |- docker/              Local compose stack
+|  `- bicep/               Azure Container Apps deployment
+|- docs/                   Engineering and release docs
+`- ...                     SDLC, architecture, risk, and compliance folders
 ```
 
 ## Quickstart
@@ -48,72 +34,74 @@ enterprise-ai-reliability-platform-v1/
 ```bash
 cd enterprise_ai_backend
 pip install -r requirements.txt
-uvicorn app.main:app --reload                # http://127.0.0.1:8000/docs
-python tests/test_backend.py                  # 286/286 assertions
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+python tests/test_backend.py
 ```
 
-For an HR-facing verification path, see `docs/hr-review-guide.md`.
+Key local endpoints:
+
+- `/docs`
+- `/policy/evaluate`
+- `/policy/history`
+- `/dashboard/summary`
+- `/reports/executive-summary`
+- `/reports/executive-summary.pdf`
 
 ### Frontend
 
 ```bash
 cd apps/web
 npm install
-npm run dev                                   # http://127.0.0.1:5173
+npm run dev
 ```
 
-### Full local stack
+The local web app opens at `http://127.0.0.1:5173` and expects the backend at
+`http://127.0.0.1:8000`.
 
-```bash
-docker compose -f infra/docker/docker-compose.yml up --build
-```
+## Current product surface
 
-## What's real, not mocked
+- Reliability scoring with weighted composite output and NIST breakdown
+- Policy evaluation with allow/warn/block decisions and audit history
+- Authenticated NIST AI RMF assessments with persisted gate outcomes
+- Dashboard workspace with Release, Security, and Executive views
+- JSON and PDF executive summary export
+- Local compliance evidence bundle with control coverage, gaps, and next steps
 
-| Piece | Library | Evidence |
-|-------|---------|----------|
-| Password hashing | `bcrypt` 4.x | `enterprise_ai_backend/app/security.py` |
-| Tokens | `python-jose` HS256 JWT | same file |
-| Database | SQLAlchemy 2.0 → SQLite / Postgres | `app/database.py` |
-| ML | scikit-learn `IsolationForest` | `app/ml.py` — test outlier flagged `-1` |
-| Reliability math | `math.exp(-t/MTBF)` etc. | `app/services.py`, verified to 1e-6 |
-| SHA-256 | `hashlib` | `app/routers/hash.py`, verified byte-for-byte |
+## Validation snapshot
+
+Validated locally on 2026-04-20:
+
+- `python tests/test_backend.py`: pass, 313/313 assertions
+- `python -m pytest -q`: pass, 2 tests
+- `python -m pip check`: pass
+- `python scripts/export_openapi.py`: pass
+- `npm run typecheck`: pass
+- `npm run build`: pass
+- `npm audit --audit-level=moderate`: pass, 0 vulnerabilities
+- `az bicep build --file infra/bicep/main.bicep`: pass
 
 ## CI/CD
 
-Five GitHub Actions workflows:
+GitHub Actions workflows:
 
-1. `ci-api.yml` — runs the full integration test on py3.10/3.11/3.12 + builds Docker image
-2. `ci-web.yml` — TypeScript typecheck + Vite build + Docker image
-3. `ci-contracts.yml` — fails the PR if `libs/schemas/openapi.json` drifts or policy breaks
-4. `security-scans.yml` — pip-audit, npm audit, gitleaks, CodeQL
-5. `release.yml` — on tag `v*.*.*`: builds + pushes to GHCR, deploys Bicep to Azure
+1. `ci-api.yml`
+2. `ci-web.yml`
+3. `ci-contracts.yml`
+4. `security-scans.yml`
+5. `release.yml`
 
-## Governance paperwork
+The last Azure release attempt built and pushed both images successfully, then
+stopped at `azure/login@v2` because the GitHub `dev` environment does not yet
+have the required Azure secrets.
 
-The SDLC paperwork lives in the top-level folders (`project_charter/`,
-`risk_register/`, `test_strategy_and_test_plan/`, `release_plan/`,
-`security_and_compliance_plan/`, etc.). See `docs/README.md` for the
-index, and `Project software development life cycle..txt` for the
-canonical SDLC.
+## Azure note
 
-## HR review status
+An Azure Pay-As-You-Go subscription is sufficient for this project. The current
+deployment blocker is credential setup, not subscription tier.
 
-The codebase is structured for public review and live deployment. Current release evidence is tracked in:
+## More docs
 
-- `docs/hr-review-guide.md`
+- `docs/README.md`
+- `docs/SPRINT_PLAN.md`
 - `docs/go-no-go.md`
 - `docs/release-evidence.md`
-
-The public Azure URL must be added after Azure CLI validation and deployment complete.
-
-## Deploy to Azure
-
-See `infra/bicep/README.md` and `Azure/Azure.txt` — resource naming
-`rg-earp-<env>-<region>`, Key Vault-backed secrets, managed identity,
-auto-scale 1–5 API replicas.
-
-## Licence
-
-Internal / pre-commercial. See `LICENSE` at the project root for the full
-notice and `SECURITY.md` for vulnerability reporting.

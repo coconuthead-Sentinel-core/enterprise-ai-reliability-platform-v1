@@ -809,6 +809,85 @@
         }
       }
     },
+    "/dashboard/summary": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Summary",
+        "description": "Return the role-aware dashboard summary for the current user.",
+        "operationId": "summary_dashboard_summary_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardSummaryOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/reports/executive-summary": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Executive Summary",
+        "description": "Return the structured executive summary and evidence bundle.",
+        "operationId": "executive_summary_reports_executive_summary_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutiveSummaryOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/reports/executive-summary.pdf": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Executive Summary Pdf",
+        "description": "Render the executive summary as a downloadable PDF.",
+        "operationId": "executive_summary_pdf_reports_executive_summary_pdf_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/": {
       "get": {
         "summary": "Root",
@@ -1064,6 +1143,286 @@
         ],
         "title": "AssessmentOutput"
       },
+      "AssessmentSummaryOut": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "default": 0
+          },
+          "low_risk": {
+            "type": "integer",
+            "title": "Low Risk",
+            "default": 0
+          },
+          "medium_risk": {
+            "type": "integer",
+            "title": "Medium Risk",
+            "default": 0
+          },
+          "high_risk": {
+            "type": "integer",
+            "title": "High Risk",
+            "default": 0
+          },
+          "allow_count": {
+            "type": "integer",
+            "title": "Allow Count",
+            "default": 0
+          },
+          "warn_count": {
+            "type": "integer",
+            "title": "Warn Count",
+            "default": 0
+          },
+          "block_count": {
+            "type": "integer",
+            "title": "Block Count",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "AssessmentSummaryOut",
+        "description": "Aggregate counts across stored assessments."
+      },
+      "ComplianceControlOut": {
+        "properties": {
+          "control_id": {
+            "type": "string",
+            "title": "Control Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "'implemented', 'partial', 'planned', or 'blocked'."
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "gaps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Gaps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "control_id",
+          "title",
+          "status",
+          "summary"
+        ],
+        "title": "ComplianceControlOut",
+        "description": "One control row in the security/compliance evidence bundle."
+      },
+      "ComplianceEvidenceBundleOut": {
+        "properties": {
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "overall_status": {
+            "type": "string",
+            "title": "Overall Status"
+          },
+          "controls": {
+            "items": {
+              "$ref": "#/components/schemas/ComplianceControlOut"
+            },
+            "type": "array",
+            "title": "Controls"
+          },
+          "outstanding_gaps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Outstanding Gaps"
+          },
+          "recommended_next_steps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Recommended Next Steps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "generated_at",
+          "overall_status"
+        ],
+        "title": "ComplianceEvidenceBundleOut",
+        "description": "Security/compliance evidence bundle assembled from repo-backed facts."
+      },
+      "DashboardEpic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "sprint": {
+            "type": "integer",
+            "title": "Sprint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "status",
+          "sprint"
+        ],
+        "title": "DashboardEpic",
+        "description": "One backlog epic exposed to the dashboard."
+      },
+      "DashboardMetric": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "'good', 'attention', 'blocked', or 'empty'."
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "value",
+          "status",
+          "detail"
+        ],
+        "title": "DashboardMetric",
+        "description": "Small KPI card used by the dashboard and executive export."
+      },
+      "DashboardSummaryOut": {
+        "properties": {
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "viewer_role": {
+            "type": "string",
+            "title": "Viewer Role"
+          },
+          "release": {
+            "type": "string",
+            "title": "Release"
+          },
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          },
+          "current_sprint": {
+            "type": "integer",
+            "title": "Current Sprint"
+          },
+          "total_sprints": {
+            "type": "integer",
+            "title": "Total Sprints"
+          },
+          "epics": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardEpic"
+            },
+            "type": "array",
+            "title": "Epics"
+          },
+          "epic_completion_percent": {
+            "type": "number",
+            "title": "Epic Completion Percent",
+            "default": 0.0
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardMetric"
+            },
+            "type": "array",
+            "title": "Metrics"
+          },
+          "assessment_summary": {
+            "$ref": "#/components/schemas/AssessmentSummaryOut"
+          },
+          "recent_assessments": {
+            "items": {
+              "$ref": "#/components/schemas/AssessmentOutput"
+            },
+            "type": "array",
+            "title": "Recent Assessments"
+          },
+          "score_history": {
+            "$ref": "#/components/schemas/ReliabilityScoreHistoryOut"
+          },
+          "policy_history": {
+            "$ref": "#/components/schemas/PolicyHistoryOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "generated_at",
+          "viewer_role",
+          "release",
+          "branch",
+          "current_sprint",
+          "total_sprints",
+          "assessment_summary",
+          "score_history",
+          "policy_history"
+        ],
+        "title": "DashboardSummaryOut",
+        "description": "Role-aware dashboard summary for the Sprint 4 web UI."
+      },
       "Epic": {
         "properties": {
           "id": {
@@ -1092,6 +1451,54 @@
         ],
         "title": "Epic",
         "description": "A product backlog epic and its current delivery status."
+      },
+      "ExecutiveSummaryOut": {
+        "properties": {
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "viewer_role": {
+            "type": "string",
+            "title": "Viewer Role"
+          },
+          "release": {
+            "type": "string",
+            "title": "Release"
+          },
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          },
+          "current_sprint": {
+            "type": "integer",
+            "title": "Current Sprint"
+          },
+          "total_sprints": {
+            "type": "integer",
+            "title": "Total Sprints"
+          },
+          "dashboard": {
+            "$ref": "#/components/schemas/DashboardSummaryOut"
+          },
+          "compliance": {
+            "$ref": "#/components/schemas/ComplianceEvidenceBundleOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "generated_at",
+          "viewer_role",
+          "release",
+          "branch",
+          "current_sprint",
+          "total_sprints",
+          "dashboard",
+          "compliance"
+        ],
+        "title": "ExecutiveSummaryOut",
+        "description": "Unified executive summary used by the JSON and PDF exports."
       },
       "HTTPValidationError": {
         "properties": {

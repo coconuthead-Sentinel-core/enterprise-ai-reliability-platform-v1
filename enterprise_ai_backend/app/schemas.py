@@ -450,6 +450,98 @@ class PolicyHistoryOut(BaseModel):
     records: List[PolicyEvaluationRecordOut]
 
 
+# ---------- Dashboard / Reporting (Sprint 4 + Sprint 5 slice) ----------
+
+class DashboardEpic(BaseModel):
+    """One backlog epic exposed to the dashboard."""
+
+    id: str
+    title: str
+    status: str
+    sprint: int
+
+
+class DashboardMetric(BaseModel):
+    """Small KPI card used by the dashboard and executive export."""
+
+    key: str
+    label: str
+    value: str
+    target: Optional[str] = None
+    status: str = Field(
+        ...,
+        description="'good', 'attention', 'blocked', or 'empty'.",
+    )
+    detail: str
+
+
+class AssessmentSummaryOut(BaseModel):
+    """Aggregate counts across stored assessments."""
+
+    total: int = 0
+    low_risk: int = 0
+    medium_risk: int = 0
+    high_risk: int = 0
+    allow_count: int = 0
+    warn_count: int = 0
+    block_count: int = 0
+
+
+class ComplianceControlOut(BaseModel):
+    """One control row in the security/compliance evidence bundle."""
+
+    control_id: str
+    title: str
+    status: str = Field(
+        ...,
+        description="'implemented', 'partial', 'planned', or 'blocked'.",
+    )
+    summary: str
+    evidence: List[str] = Field(default_factory=list)
+    gaps: List[str] = Field(default_factory=list)
+
+
+class ComplianceEvidenceBundleOut(BaseModel):
+    """Security/compliance evidence bundle assembled from repo-backed facts."""
+
+    generated_at: datetime
+    overall_status: str
+    controls: List[ComplianceControlOut] = Field(default_factory=list)
+    outstanding_gaps: List[str] = Field(default_factory=list)
+    recommended_next_steps: List[str] = Field(default_factory=list)
+
+
+class DashboardSummaryOut(BaseModel):
+    """Role-aware dashboard summary for the Sprint 4 web UI."""
+
+    generated_at: datetime
+    viewer_role: str
+    release: str
+    branch: str
+    current_sprint: int
+    total_sprints: int
+    epics: List[DashboardEpic] = Field(default_factory=list)
+    epic_completion_percent: float = 0.0
+    metrics: List[DashboardMetric] = Field(default_factory=list)
+    assessment_summary: AssessmentSummaryOut
+    recent_assessments: List["AssessmentOutput"] = Field(default_factory=list)
+    score_history: ReliabilityScoreHistoryOut
+    policy_history: PolicyHistoryOut
+
+
+class ExecutiveSummaryOut(BaseModel):
+    """Unified executive summary used by the JSON and PDF exports."""
+
+    generated_at: datetime
+    viewer_role: str
+    release: str
+    branch: str
+    current_sprint: int
+    total_sprints: int
+    dashboard: DashboardSummaryOut
+    compliance: ComplianceEvidenceBundleOut
+
+
 # ---------- Hash ----------
 
 class HashInput(BaseModel):

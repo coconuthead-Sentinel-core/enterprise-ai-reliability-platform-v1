@@ -10,6 +10,25 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+**Sprint 5 - Security and Compliance (Epic E5, local slice):**
+- Added a repo-backed compliance evidence bundle with five control rows for
+  auth boundaries, CI security scanning, audit traceability, release
+  governance, and retention/legal hold.
+- Added outstanding-gap and recommended-next-step reporting to the executive
+  summary surface.
+- Backend validation now passes 313/313 assertions.
+
+**Sprint 4 - Dashboard and Reporting (Epic E4):**
+- Added `GET /dashboard/summary` for role-aware dashboard metrics, epic
+  progress, assessment posture, reliability score history, and policy history.
+- Added `GET /reports/executive-summary` for a structured JSON executive
+  summary.
+- Added `GET /reports/executive-summary.pdf` for ReportLab-based PDF export.
+- Added frontend dashboard views for Release, Security, and Executive
+  workflows, plus local sample-data seeding and PDF export.
+- Added backend reporting helpers that assemble dashboard payloads and render
+  executive-summary PDFs.
+
 **Sprint 3 - Policy Gate Evaluation (Epic E3, story E3-S3):**
 - `POST /policy/evaluate` now persists each evaluation in a dedicated policy
   audit table.
@@ -19,7 +38,6 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   tables that do not yet have `gate_decision` and `gate_reasons_json`.
 - Added `test_sqlite_compat.py` to verify local upgrade behavior against a
   legacy SQLite database shape.
-- Backend validation now passes 286/286 assertions.
 
 **Sprint 3 - Policy Gate Evaluation (Epic E3, story E3-S2):**
 - `POST /assessments` now runs the policy gate against its own NIST-RMF
@@ -59,6 +77,8 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 
+- `enterprise_ai_backend/app/routers/info.py` now reports Sprint 3 as done and
+  exposes Sprint 4 / Sprint 5 as active local work on the current branch head.
 - `enterprise_ai_backend/scripts/export_openapi.py` now writes
   `libs/schemas/openapi.json` without the trailing newline that caused
   byte-for-byte drift in `ci-contracts`.
@@ -66,9 +86,10 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   tagging images, which fixed image publishing for repositories with uppercase
   owner names.
 - Release evidence, go/no-go, sprint, and Azure planning docs now reflect the
-  current PR #8 status and the last Azure deployment attempt on `b29da3d`,
-  along with the current Azure credential blocker.
-- `README.md` status and local validation evidence were updated to 286/286 assertions.
+  rolled-forward local Sprint 4 / Sprint 5 work, the last Azure deployment
+  attempt on `b29da3d`, and the current Azure credential blocker.
+- Readmes and docs were refreshed to cover the dashboard/reporting endpoints,
+  PDF export, and the current 313/313 validation result.
 
 ### Removed
 

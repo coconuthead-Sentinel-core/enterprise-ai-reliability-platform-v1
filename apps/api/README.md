@@ -1,31 +1,37 @@
-# apps/api — EARP FastAPI backend
+# apps/api - EARP FastAPI backend signpost
 
 The live, tested backend lives at:
 
-    ../../enterprise_ai_backend/
+```text
+../../enterprise_ai_backend/
+```
 
-That's the canonical source of truth for the API (real FastAPI app, real
-SQLAlchemy models, real bcrypt + JWT, real scikit-learn IsolationForest).
-This folder is a signpost in the monorepo layout called out in
-`GitHub documentation/GitHub documentation.txt`.
+That is the canonical source of truth for the API.
 
 ## Endpoints (v0.3.0)
 
 | Method | Path | Auth | Purpose |
-|--------|------|------|---------|
-| GET  | `/`                                | public | metadata |
-| GET  | `/health`                           | public | uptime + db ping |
-| POST | `/auth/register`                    | public | create user (bcrypt) |
-| POST | `/auth/login`                       | public | JWT access token |
-| GET  | `/auth/me`                          | bearer | current user |
-| POST | `/reliability/compute`              | public | MTBF/MTTR → availability, reliability |
-| GET  | `/reliability/history`              | public | last computations |
-| POST | `/assessments`                      | bearer | NIST AI RMF scoring |
-| GET  | `/assessments`                      | bearer | list assessments |
-| GET  | `/assessments/{id}`                 | bearer | single assessment |
-| POST | `/ai/anomaly-detect`                | bearer | IsolationForest on records |
-| GET  | `/ai/anomaly-detect/from-history`   | bearer | IsolationForest on stored history |
-| POST | `/hash/sha256`                      | public | SHA-256 echo |
+| --- | --- | --- | --- |
+| GET | `/` | public | metadata |
+| GET | `/health` | public | uptime + DB ping |
+| POST | `/auth/register` | public | create user |
+| POST | `/auth/login` | public | JWT access token |
+| GET | `/auth/me` | bearer | current user |
+| POST | `/reliability/compute` | public | MTBF/MTTR reliability math |
+| POST | `/reliability/score` | public | weighted composite score |
+| POST | `/reliability/score/explain` | public | score explanation |
+| GET | `/reliability/score/history` | public | score history |
+| POST | `/policy/evaluate` | public | policy gate |
+| GET | `/policy/history` | public | policy audit history |
+| POST | `/assessments` | bearer | NIST AI RMF assessment |
+| GET | `/assessments` | bearer | list assessments |
+| GET | `/assessments/{id}` | bearer | single assessment |
+| POST | `/ai/anomaly-detect` | bearer | `IsolationForest` on records |
+| GET | `/ai/anomaly-detect/from-history` | bearer | `IsolationForest` on stored history |
+| GET | `/dashboard/summary` | bearer | dashboard summary |
+| GET | `/reports/executive-summary` | bearer | executive summary JSON |
+| GET | `/reports/executive-summary.pdf` | bearer | executive summary PDF |
+| POST | `/hash/sha256` | public | SHA-256 echo |
 
 ## Run locally
 
@@ -40,5 +46,6 @@ uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```bash
 cd ../../enterprise_ai_backend
 python tests/test_backend.py
-# -> 50/50 assertions passed
 ```
+
+Current full integration result: `313/313` assertions passing.
