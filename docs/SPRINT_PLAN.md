@@ -150,21 +150,35 @@ framework memory saved.
 
 ---
 
-## Blockers that Shannon must clear (outside Claude's control)
+## Deployment path — Azure deferred (2026-04-20)
 
-These are credential-only steps. Claude cannot log in for Shannon.
+Originally this section listed Azure deployment as a blocker. After
+checking his Microsoft account, Shannon confirmed he has Microsoft 365
+(Office) but **no Azure subscription**. Azure deployment is therefore
+**deferred**, not blocked:
 
-1. `gh auth login` — so PRs can be opened from the terminal.
-2. `az login` — so Azure resources in `rg-earp-dev-centralus` can be created.
-3. Set 5 GitHub Actions secrets:
-   - `AZURE_CLIENT_ID`
-   - `AZURE_TENANT_ID`
-   - `AZURE_SUBSCRIPTION_ID`
-   - `AZURE_MANAGED_IDENTITY_ID`
-   - `AZURE_KEY_VAULT_URI`
-4. Set 3 Key Vault secrets: `jwt-secret`, `database-url`, `redis-url`.
+- The Bicep IaC under `infra/bicep/` is complete and reviewable.
+- The `release.yml` GitHub Actions workflow is wired for Azure Container
+  Apps and will work the moment an Azure subscription + secrets exist.
+- HR review does **not** require a live Azure URL; the GitHub repo,
+  test output (116/116), Bicep files, and architecture docs are
+  sufficient evidence of Azure-readiness.
 
-Once items 1–4 are done, Sprint 2 can start deploying to Azure.
+### To activate Azure deployment later
+
+Whenever a funded Azure subscription is available (Shannon's own, an
+employer's, or a free-trial), these credential-only steps unlock deploy:
+
+1. `az login` on Shannon's laptop.
+2. Create an App Registration + federated credentials for GitHub OIDC.
+3. Set 5 GitHub Actions secrets: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`,
+   `AZURE_SUBSCRIPTION_ID`, `AZURE_MANAGED_IDENTITY_ID`,
+   `AZURE_KEY_VAULT_URI`.
+4. Deploy the Bicep template → populate 3 Key Vault secrets
+   (`jwt-secret`, `database-url`, `redis-url`).
+5. Tag a release → the `release` workflow deploys automatically.
+
+None of Sprints 2–5 depend on this. They ship locally + on GitHub.
 
 ---
 
