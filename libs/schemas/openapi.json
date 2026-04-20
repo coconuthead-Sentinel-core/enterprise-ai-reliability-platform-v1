@@ -373,6 +373,48 @@
         }
       }
     },
+    "/policy/evaluate": {
+      "post": {
+        "tags": [
+          "policy"
+        ],
+        "summary": "Evaluate",
+        "description": "Evaluate the policy gate on a reliability score input.\n\nThe request body carries the same shape as ``POST /reliability/score``\n(a ``system_name`` + list of ``ReliabilityScoreComponent``) plus an\noptional ``thresholds`` override. The response is an ``allow`` /\n``warn`` / ``block`` decision with a list of rationale ``reasons``,\nthe applied thresholds (echoed), and the resolved composite score\nand tier.",
+        "operationId": "evaluate_policy_evaluate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyGateInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyGateDecision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/assessments": {
       "post": {
         "tags": [
@@ -1127,6 +1169,153 @@
         ],
         "title": "NISTFunction",
         "description": "NIST AI RMF 1.0 functions."
+      },
+      "PolicyDecision": {
+        "type": "string",
+        "enum": [
+          "allow",
+          "warn",
+          "block"
+        ],
+        "title": "PolicyDecision",
+        "description": "Overall gate outcome."
+      },
+      "PolicyGateDecision": {
+        "properties": {
+          "system_name": {
+            "type": "string",
+            "title": "System Name"
+          },
+          "decision": {
+            "$ref": "#/components/schemas/PolicyDecision"
+          },
+          "composite_score": {
+            "type": "number",
+            "title": "Composite Score"
+          },
+          "tier": {
+            "type": "string",
+            "title": "Tier"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyReason"
+            },
+            "type": "array",
+            "title": "Reasons",
+            "description": "All rules that fired, worst severity first."
+          },
+          "thresholds_applied": {
+            "$ref": "#/components/schemas/PolicyThresholds"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Evaluated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "system_name",
+          "decision",
+          "composite_score",
+          "tier",
+          "reasons",
+          "thresholds_applied",
+          "evaluated_at"
+        ],
+        "title": "PolicyGateDecision",
+        "description": "Response body for POST /policy/evaluate."
+      },
+      "PolicyGateInput": {
+        "properties": {
+          "score_input": {
+            "$ref": "#/components/schemas/ReliabilityScoreInput"
+          },
+          "thresholds": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolicyThresholds"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Override the default thresholds; omit to use defaults."
+          }
+        },
+        "type": "object",
+        "required": [
+          "score_input"
+        ],
+        "title": "PolicyGateInput",
+        "description": "Request body for POST /policy/evaluate."
+      },
+      "PolicyReason": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Short stable identifier for the rule."
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Plain-English explanation."
+          },
+          "severity": {
+            "$ref": "#/components/schemas/PolicySeverity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "severity"
+        ],
+        "title": "PolicyReason",
+        "description": "One machine-readable + human-readable rationale for the decision."
+      },
+      "PolicySeverity": {
+        "type": "string",
+        "enum": [
+          "info",
+          "warn",
+          "block"
+        ],
+        "title": "PolicySeverity",
+        "description": "Severity classification for a single policy reason."
+      },
+      "PolicyThresholds": {
+        "properties": {
+          "allow_min_composite": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Allow Min Composite",
+            "description": "Composite score >= this value maps to 'allow'.",
+            "default": 80.0
+          },
+          "warn_min_composite": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Warn Min Composite",
+            "description": "Composite score >= this (and < allow threshold) maps to 'warn'.",
+            "default": 60.0
+          },
+          "min_nist_function_score": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Min Nist Function Score",
+            "description": "Per-function score floor; any tagged NIST function below this value forces 'block'.",
+            "default": 40.0
+          }
+        },
+        "type": "object",
+        "title": "PolicyThresholds",
+        "description": "Configurable thresholds controlling the gate outcome.\n\n``allow_min_composite`` and ``warn_min_composite`` partition the\ncomposite score into allow / warn / block bands; ``min_nist_function_score``\nis a hard floor -- any per-NIST-function breakdown below it forces\n``block`` regardless of composite."
       },
       "ReliabilityInput": {
         "properties": {

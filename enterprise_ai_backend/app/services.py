@@ -425,6 +425,123 @@ def reliability_score_history(
     )
 
 
+# ---------- Policy Gate (Sprint 3, E3-S1) ----------
+
+_SEVERITY_ORDER = {
+    schemas.PolicySeverity.block: 0,
+    schemas.PolicySeverity.warn: 1,
+    schemas.PolicySeverity.info: 2,
+}
+
+
+def _overall_decision(
+    reasons: List[schemas.PolicyReason],
+) -> schemas.PolicyDecision:
+    """Worst severity wins: any block -> block, else any warn -> warn, else allow."""
+    severities = {r.severity for r in reasons}
+    if schemas.PolicySeverity.block in severities:
+        return schemas.PolicyDecision.block
+    if schemas.PolicySeverity.warn in severities:
+        return schemas.PolicyDecision.warn
+    return schemas.PolicyDecision.allow
+
+
+def evaluate_policy_gate(
+    score: schemas.ReliabilityScoreOutput,
+    thresholds: Optional[schemas.PolicyThresholds] = None,
+) -> schemas.PolicyGateDecision:
+    """Run the gate rules on an already-computed score.
+
+    Rules (in order):
+    1. Composite-score band (allow / warn / block)
+    2. Per-NIST-function floor (``min_nist_function_score``)
+
+    Any rule whose severity is ``block`` forces the overall decision to
+    ``block``. Multiple reasons can fire in a single evaluation.
+    """
+    thresholds = thresholds or schemas.PolicyThresholds()
+    reasons: List[schemas.PolicyReason] = []
+
+    # --- Composite band ----------------------------------------------------
+    c = score.composite_score
+    if c >= thresholds.allow_min_composite:
+        reasons.append(
+            schemas.PolicyReason(
+                code="composite_meets_allow",
+                message=(
+                    f"Composite score {c} meets the allow threshold "
+                    f"({thresholds.allow_min_composite})."
+                ),
+                severity=schemas.PolicySeverity.info,
+            )
+        )
+    elif c >= thresholds.warn_min_composite:
+        reasons.append(
+            schemas.PolicyReason(
+                code="composite_below_allow",
+                message=(
+                    f"Composite score {c} is below the allow threshold "
+                    f"({thresholds.allow_min_composite}); warn band."
+                ),
+                severity=schemas.PolicySeverity.warn,
+            )
+        )
+    else:
+        reasons.append(
+            schemas.PolicyReason(
+                code="composite_below_warn",
+                message=(
+                    f"Composite score {c} is below the warn threshold "
+                    f"({thresholds.warn_min_composite}); block."
+                ),
+                severity=schemas.PolicySeverity.block,
+            )
+        )
+
+    # --- NIST function floor ----------------------------------------------
+    for fn in ("govern", "map", "measure", "manage"):
+        val = getattr(score.nist_breakdown, fn)
+        if val is None:
+            continue
+        if val < thresholds.min_nist_function_score:
+            reasons.append(
+                schemas.PolicyReason(
+                    code=f"nist_{fn}_below_floor",
+                    message=(
+                        f"NIST {fn} score {val} is below the required "
+                        f"minimum ({thresholds.min_nist_function_score})."
+                    ),
+                    severity=schemas.PolicySeverity.block,
+                )
+            )
+
+    # Sort reasons by severity (block first, then warn, then info) so the
+    # UI can render them top-to-bottom without re-sorting.
+    reasons.sort(key=lambda r: _SEVERITY_ORDER[r.severity])
+
+    decision = _overall_decision(reasons)
+
+    return schemas.PolicyGateDecision(
+        system_name=score.system_name,
+        decision=decision,
+        composite_score=score.composite_score,
+        tier=score.tier,
+        reasons=reasons,
+        thresholds_applied=thresholds,
+        evaluated_at=datetime.now(timezone.utc),
+    )
+
+
+def evaluate_policy_gate_from_input(
+    payload: schemas.PolicyGateInput,
+) -> schemas.PolicyGateDecision:
+    """Compute the underlying reliability score (without persisting) and gate it."""
+    # Use db=None -- gate evaluation is side-effect free by default. A
+    # future E3-S3 story can wire persistence separately.
+    score = compute_reliability_score(payload.score_input, db=None)
+    return evaluate_policy_gate(score, payload.thresholds)
+
+
 # ---------- Hash ----------
 
 def sha256_of(text: str) -> str:
