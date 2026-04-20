@@ -9,6 +9,21 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 
 ### Added
+
+**Sprint 2 — Reliability Scoring Engine (Epic E2, story E2-S1):**
+- `POST /reliability/score` — weighted composite reliability score endpoint.
+  Accepts a list of `ReliabilityScoreComponent` (name, value 0-1, weight 0-1,
+  optional `nist_function`), returns a 0-100 composite, a LOW/MEDIUM/HIGH
+  tier, the normalization flag, and a per-NIST-function weighted breakdown.
+- `NISTFunction` enum for the four NIST AI RMF 1.0 functions (`govern`,
+  `map`, `measure`, `manage`).
+- `compute_reliability_score()` service with a pure-Python weighted-average
+  implementation and automatic weight normalization.
+- 19 new integration assertions for the scoring engine (happy path, NIST
+  breakdown, weight normalization, three tier boundaries, three validation
+  errors). Suite now runs **81/81**, up from 62/62.
+
+**Sprint 1 (earlier):**
 - `GET /info/epics` endpoint exposing the 5 product backlog epics and their
   current status, so the dashboard and CI can surface sprint progress without
   reading the backlog file directly.
@@ -21,12 +36,12 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   replaced with a standard OSS or commercial license at v1.0.0.
 - `Azure/README.md` explaining the three-way Azure layout (`Azure/` for
   planning prose, `.azure/` for live deployment status, `infra/bicep/` for IaC).
-- Integration tests for the new `/info/epics` and `/info/sprint` endpoints
-  (12 new assertions — suite now runs **62/62**, up from 50/50).
 
 ### Changed
 - Registered the new `info` router in `enterprise_ai_backend/app/main.py`.
 - `README.md` updated from "50/50 integration assertions" to the new count.
+- `/info/epics` now reports Epic E2 as `in_progress` (Sprint 2 is active).
+- `/info/sprint` now reports `current_sprint=2`.
 
 ### Removed
 - Untracked four stale legacy draft folders from git (files remain on the

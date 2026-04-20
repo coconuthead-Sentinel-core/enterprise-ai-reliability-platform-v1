@@ -229,7 +229,7 @@ def main():
     check("5 epics returned", len(epics) == 5, f"got {len(epics)}")
     check("first epic is E1", epics[0]["id"] == "E1")
     check("E1 in_progress", epics[0]["status"] == "in_progress")
-    check("E2 not_started", epics[1]["status"] == "not_started")
+    check("E2 in_progress (Sprint 2 active)", epics[1]["status"] == "in_progress")
     check("every epic has title", all(e.get("title") for e in epics))
     check("every epic has int sprint", all(isinstance(e["sprint"], int) for e in epics))
     check("epic statuses are valid",
@@ -238,9 +238,87 @@ def main():
     r = client.get("/info/sprint")
     check("info/sprint 200", r.status_code == 200)
     s = r.json()
-    check("current_sprint is 1", s["current_sprint"] == 1)
+    check("current_sprint is 2", s["current_sprint"] == 2)
     check("total_sprints is 5", s["total_sprints"] == 5)
     check("release is v0.3.0", s["release"] == "v0.3.0")
+    check("E2 is now in_progress", next(e for e in epics if e["id"] == "E2")["status"] == "in_progress")
+
+    # ---------- 12. Reliability composite score (Sprint 2, E2-S1) ----------
+    section("12. POST /reliability/score (weighted composite + NIST breakdown)")
+
+    # Happy path: 3 components, weights sum to 1.0
+    r = client.post("/reliability/score", json={
+        "system_name": "Claims Triage Model",
+        "components": [
+            {"name": "availability", "value": 0.996, "weight": 0.4,
+             "nist_function": "measure"},
+            {"name": "governance", "value": 0.85, "weight": 0.3,
+             "nist_function": "govern"},
+            {"name": "security_posture", "value": 0.75, "weight": 0.3,
+             "nist_function": "manage"},
+        ],
+    })
+    check("score 200", r.status_code == 200, r.text)
+    body = r.json()
+    check("system_name echoed", body["system_name"] == "Claims Triage Model")
+    # 0.996*0.4 + 0.85*0.3 + 0.75*0.3 = 0.3984 + 0.255 + 0.225 = 0.8784 -> 87.84
+    check("composite_score ~87.84",
+          abs(body["composite_score"] - 87.84) < 0.01,
+          f"got {body['composite_score']}")
+    check("tier LOW (>=80)", body["tier"] == "LOW")
+    check("weights_normalized False (weights sum to 1.0)",
+          body["weights_normalized"] is False)
+    check("nist govern = 85.0",
+          abs(body["nist_breakdown"]["govern"] - 85.0) < 0.01)
+    check("nist measure = 99.6",
+          abs(body["nist_breakdown"]["measure"] - 99.6) < 0.01)
+    check("nist manage = 75.0",
+          abs(body["nist_breakdown"]["manage"] - 75.0) < 0.01)
+    check("nist map is null (no components tagged)",
+          body["nist_breakdown"]["map"] is None)
+    check("components echoed", len(body["components"]) == 3)
+
+    # Unnormalized weights - should be normalized automatically
+    r = client.post("/reliability/score", json={
+        "system_name": "Unnormalized",
+        "components": [
+            {"name": "a", "value": 1.0, "weight": 1.0},
+            {"name": "b", "value": 0.5, "weight": 1.0},
+        ],
+    })
+    check("unnormalized weights 200", r.status_code == 200)
+    body = r.json()
+    check("weights_normalized True", body["weights_normalized"] is True)
+    # (1.0*1.0 + 0.5*1.0) / 2.0 = 0.75 -> 75.0
+    check("composite normalized = 75.0",
+          abs(body["composite_score"] - 75.0) < 0.01)
+    check("tier MEDIUM", body["tier"] == "MEDIUM")
+
+    # Tier HIGH (low composite)
+    r = client.post("/reliability/score", json={
+        "system_name": "Low",
+        "components": [{"name": "bad", "value": 0.3, "weight": 1.0}],
+    })
+    check("low score tier HIGH", r.json()["tier"] == "HIGH")
+
+    # Validation: empty component list -> 422
+    r = client.post("/reliability/score",
+                    json={"system_name": "E", "components": []})
+    check("empty components -> 422", r.status_code == 422)
+
+    # Validation: value > 1.0 -> 422
+    r = client.post("/reliability/score", json={
+        "system_name": "E",
+        "components": [{"name": "x", "value": 1.5, "weight": 1.0}],
+    })
+    check("value > 1.0 -> 422", r.status_code == 422)
+
+    # Validation: weight = 0 -> 422
+    r = client.post("/reliability/score", json={
+        "system_name": "E",
+        "components": [{"name": "x", "value": 0.5, "weight": 0.0}],
+    })
+    check("weight = 0 -> 422", r.status_code == 422)
 
     # ---------- Summary ----------
     section("SUMMARY")
