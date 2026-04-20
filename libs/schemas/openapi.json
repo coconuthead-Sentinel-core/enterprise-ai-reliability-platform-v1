@@ -141,6 +141,7 @@
           "reliability"
         ],
         "summary": "Compute",
+        "description": "MTBF/MTTR/mission-time \u2192 availability, reliability, failure rate.",
         "operationId": "compute_reliability_compute_post",
         "requestBody": {
           "content": {
@@ -182,6 +183,7 @@
           "reliability"
         ],
         "summary": "History",
+        "description": "Recent reliability computations, newest first.",
         "operationId": "history_reliability_history_get",
         "parameters": [
           {
@@ -206,6 +208,90 @@
                     "$ref": "#/components/schemas/ReliabilityOutput"
                   },
                   "title": "Response History Reliability History Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reliability/score": {
+      "post": {
+        "tags": [
+          "reliability"
+        ],
+        "summary": "Score",
+        "description": "Weighted composite reliability score across multiple signals.\n\nEach component has a ``value`` in [0, 1] and a ``weight``. Components\nare combined into a single 0-100 composite score, placed into a tier\n(LOW/MEDIUM/HIGH), and optionally rolled up per NIST AI RMF function.",
+        "operationId": "score_reliability_score_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReliabilityScoreInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReliabilityScoreOutput"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reliability/score/explain": {
+      "post": {
+        "tags": [
+          "reliability"
+        ],
+        "summary": "Score Explain",
+        "description": "Composite reliability score + per-component explanation.\n\nExtends ``POST /reliability/score`` with an ``explanation`` object that\nidentifies:\n\n* ``top_driver`` and ``top_gap`` components,\n* per-component contributions (absolute and percent of the composite),\n* distance to adjacent tier boundaries (``tier_gap``),\n* weakest / strongest NIST AI RMF function, and\n* a one-sentence plain-English recommendation.",
+        "operationId": "score_explain_reliability_score_explain_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReliabilityScoreInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReliabilityScoreWithExplanation"
                 }
               }
             }
@@ -501,6 +587,54 @@
         }
       }
     },
+    "/info/epics": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "List Epics",
+        "description": "Return the product backlog epics and their status.",
+        "operationId": "list_epics_info_epics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Epic"
+                  },
+                  "type": "array",
+                  "title": "Response List Epics Info Epics Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/info/sprint": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Current Sprint",
+        "description": "Return the current sprint summary.",
+        "operationId": "current_sprint_info_sprint_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SprintSummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/": {
       "get": {
         "summary": "Root",
@@ -737,6 +871,35 @@
         ],
         "title": "AssessmentOutput"
       },
+      "Epic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "sprint": {
+            "type": "integer",
+            "title": "Sprint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "status",
+          "sprint"
+        ],
+        "title": "Epic",
+        "description": "A product backlog epic and its current delivery status."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -839,6 +1002,68 @@
         ],
         "title": "HealthResponse"
       },
+      "NISTBreakdown": {
+        "properties": {
+          "govern": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Govern"
+          },
+          "map": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Map"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "manage": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manage"
+          }
+        },
+        "type": "object",
+        "title": "NISTBreakdown",
+        "description": "Per-function weighted-average score, 0-100. None if no components\nin the request were tagged for that function."
+      },
+      "NISTFunction": {
+        "type": "string",
+        "enum": [
+          "govern",
+          "map",
+          "measure",
+          "manage"
+        ],
+        "title": "NISTFunction",
+        "description": "NIST AI RMF 1.0 functions."
+      },
       "ReliabilityInput": {
         "properties": {
           "mtbf_hours": {
@@ -924,6 +1149,385 @@
           "created_at"
         ],
         "title": "ReliabilityOutput"
+      },
+      "ReliabilityScoreComponent": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "value": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Value",
+            "description": "Normalized component value between 0.0 and 1.0."
+          },
+          "weight": {
+            "type": "number",
+            "maximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Weight",
+            "description": "Component weight; weights are normalized if they do not sum to 1.0."
+          },
+          "nist_function": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NISTFunction"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional NIST AI RMF function this component maps to."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "value",
+          "weight"
+        ],
+        "title": "ReliabilityScoreComponent",
+        "description": "One input signal to the weighted reliability score."
+      },
+      "ReliabilityScoreInput": {
+        "properties": {
+          "system_name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "System Name"
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ReliabilityScoreComponent"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Components"
+          }
+        },
+        "type": "object",
+        "required": [
+          "system_name",
+          "components"
+        ],
+        "title": "ReliabilityScoreInput",
+        "description": "Request body for POST /reliability/score."
+      },
+      "ReliabilityScoreOutput": {
+        "properties": {
+          "system_name": {
+            "type": "string",
+            "title": "System Name"
+          },
+          "composite_score": {
+            "type": "number",
+            "title": "Composite Score",
+            "description": "Weighted composite score, 0-100."
+          },
+          "tier": {
+            "type": "string",
+            "title": "Tier",
+            "description": "LOW (>=80), MEDIUM (>=60), or HIGH (<60)."
+          },
+          "weights_normalized": {
+            "type": "boolean",
+            "title": "Weights Normalized",
+            "description": "True if input weights did not sum to 1.0 and were normalized."
+          },
+          "nist_breakdown": {
+            "$ref": "#/components/schemas/NISTBreakdown"
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ReliabilityScoreComponent"
+            },
+            "type": "array",
+            "title": "Components"
+          },
+          "computed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Computed At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "system_name",
+          "composite_score",
+          "tier",
+          "weights_normalized",
+          "nist_breakdown",
+          "components",
+          "computed_at"
+        ],
+        "title": "ReliabilityScoreOutput",
+        "description": "Response body for POST /reliability/score."
+      },
+      "ReliabilityScoreWithExplanation": {
+        "properties": {
+          "system_name": {
+            "type": "string",
+            "title": "System Name"
+          },
+          "composite_score": {
+            "type": "number",
+            "title": "Composite Score",
+            "description": "Weighted composite score, 0-100."
+          },
+          "tier": {
+            "type": "string",
+            "title": "Tier",
+            "description": "LOW (>=80), MEDIUM (>=60), or HIGH (<60)."
+          },
+          "weights_normalized": {
+            "type": "boolean",
+            "title": "Weights Normalized",
+            "description": "True if input weights did not sum to 1.0 and were normalized."
+          },
+          "nist_breakdown": {
+            "$ref": "#/components/schemas/NISTBreakdown"
+          },
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ReliabilityScoreComponent"
+            },
+            "type": "array",
+            "title": "Components"
+          },
+          "computed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Computed At"
+          },
+          "explanation": {
+            "$ref": "#/components/schemas/ScoreExplanation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "system_name",
+          "composite_score",
+          "tier",
+          "weights_normalized",
+          "nist_breakdown",
+          "components",
+          "computed_at",
+          "explanation"
+        ],
+        "title": "ReliabilityScoreWithExplanation",
+        "description": "Response body for POST /reliability/score/explain.\n\nExtends the base score response with a detailed ``explanation`` object\nthat tells the caller *why* the composite landed where it did and what\nto do about it."
+      },
+      "ScoreContribution": {
+        "properties": {
+          "component_name": {
+            "type": "string",
+            "title": "Component Name"
+          },
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "weight": {
+            "type": "number",
+            "title": "Weight"
+          },
+          "contribution": {
+            "type": "number",
+            "title": "Contribution",
+            "description": "Component's share of the composite score on a 0-100 scale (normalized weight * value * 100)."
+          },
+          "contribution_percent": {
+            "type": "number",
+            "title": "Contribution Percent",
+            "description": "Percent of the composite score attributable to this component (sums to 100 across all components when composite > 0)."
+          },
+          "nist_function": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NISTFunction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "component_name",
+          "value",
+          "weight",
+          "contribution",
+          "contribution_percent"
+        ],
+        "title": "ScoreContribution",
+        "description": "One component's contribution to the composite score."
+      },
+      "ScoreExplanation": {
+        "properties": {
+          "top_driver": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScoreContribution"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Component contributing most to the composite score."
+          },
+          "top_gap": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScoreContribution"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Component with the lowest value (largest improvement opportunity)."
+          },
+          "contributions": {
+            "items": {
+              "$ref": "#/components/schemas/ScoreContribution"
+            },
+            "type": "array",
+            "title": "Contributions",
+            "description": "Per-component contributions, sorted highest first."
+          },
+          "tier_gap": {
+            "$ref": "#/components/schemas/TierGap"
+          },
+          "weakest_nist_function": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NISTFunction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "strongest_nist_function": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NISTFunction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "recommendation": {
+            "type": "string",
+            "title": "Recommendation",
+            "description": "One-sentence plain-English suggestion for the owner."
+          }
+        },
+        "type": "object",
+        "required": [
+          "contributions",
+          "tier_gap",
+          "recommendation"
+        ],
+        "title": "ScoreExplanation",
+        "description": "Human- and machine-readable rationale for a composite score."
+      },
+      "SprintSummary": {
+        "properties": {
+          "current_sprint": {
+            "type": "integer",
+            "title": "Current Sprint"
+          },
+          "total_sprints": {
+            "type": "integer",
+            "title": "Total Sprints"
+          },
+          "release": {
+            "type": "string",
+            "title": "Release"
+          },
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          }
+        },
+        "type": "object",
+        "required": [
+          "current_sprint",
+          "total_sprints",
+          "release",
+          "branch"
+        ],
+        "title": "SprintSummary",
+        "description": "High-level roadmap status for the frontend."
+      },
+      "TierGap": {
+        "properties": {
+          "current_tier": {
+            "type": "string",
+            "title": "Current Tier"
+          },
+          "next_tier_up": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Tier Up",
+            "description": "Tier label above the current one, or null if already at LOW."
+          },
+          "points_needed_up": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Points Needed Up",
+            "description": "Composite points needed to jump to the next tier up."
+          },
+          "next_tier_down": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Tier Down",
+            "description": "Tier label below the current one, or null if already at HIGH."
+          },
+          "points_buffer_down": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Points Buffer Down",
+            "description": "Composite points of headroom before falling to the next tier down."
+          }
+        },
+        "type": "object",
+        "required": [
+          "current_tier"
+        ],
+        "title": "TierGap",
+        "description": "How close the current composite is to adjacent tiers."
       },
       "TokenOut": {
         "properties": {
