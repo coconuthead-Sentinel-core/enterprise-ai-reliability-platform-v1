@@ -231,7 +231,7 @@
           "reliability"
         ],
         "summary": "Score",
-        "description": "Weighted composite reliability score across multiple signals.\n\nEach component has a ``value`` in [0, 1] and a ``weight``. Components\nare combined into a single 0-100 composite score, placed into a tier\n(LOW/MEDIUM/HIGH), and optionally rolled up per NIST AI RMF function.",
+        "description": "Weighted composite reliability score across multiple signals.\n\nEach component has a ``value`` in [0, 1] and a ``weight``. Components\nare combined into a single 0-100 composite score, placed into a tier\n(LOW/MEDIUM/HIGH), and optionally rolled up per NIST AI RMF function.\n\nEach call is persisted (Sprint 2 E2-S3) so\n``GET /reliability/score/history`` can trend it over time.",
         "operationId": "score_reliability_score_post",
         "requestBody": {
           "content": {
@@ -273,7 +273,7 @@
           "reliability"
         ],
         "summary": "Score Explain",
-        "description": "Composite reliability score + per-component explanation.\n\nExtends ``POST /reliability/score`` with an ``explanation`` object that\nidentifies:\n\n* ``top_driver`` and ``top_gap`` components,\n* per-component contributions (absolute and percent of the composite),\n* distance to adjacent tier boundaries (``tier_gap``),\n* weakest / strongest NIST AI RMF function, and\n* a one-sentence plain-English recommendation.",
+        "description": "Composite reliability score + per-component explanation.\n\nExtends ``POST /reliability/score`` with an ``explanation`` object that\nidentifies:\n\n* ``top_driver`` and ``top_gap`` components,\n* per-component contributions (absolute and percent of the composite),\n* distance to adjacent tier boundaries (``tier_gap``),\n* weakest / strongest NIST AI RMF function, and\n* a one-sentence plain-English recommendation.\n\nAlso persists the underlying score record (Sprint 2 E2-S3).",
         "operationId": "score_explain_reliability_score_explain_post",
         "requestBody": {
           "content": {
@@ -292,6 +292,70 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReliabilityScoreWithExplanation"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reliability/score/history": {
+      "get": {
+        "tags": [
+          "reliability"
+        ],
+        "summary": "Score History",
+        "description": "Return recent composite scores (newest first) plus trend stats.\n\nPopulated automatically by every ``POST /reliability/score`` and\n``POST /reliability/score/explain`` call. The ``stats`` object\nincludes rolling average, min/max, a simple improving / degrading /\nstable trend classification, and any tier transitions.",
+        "operationId": "score_history_reliability_score_history_get",
+        "parameters": [
+          {
+            "name": "system_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by system name (exact match). Omit for all systems.",
+              "title": "System Name"
+            },
+            "description": "Filter by system name (exact match). Omit for all systems."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReliabilityScoreHistoryOut"
                 }
               }
             }
@@ -1193,6 +1257,39 @@
         "title": "ReliabilityScoreComponent",
         "description": "One input signal to the weighted reliability score."
       },
+      "ReliabilityScoreHistoryOut": {
+        "properties": {
+          "system_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "System Name",
+            "description": "Filter applied (``None`` = all systems)."
+          },
+          "stats": {
+            "$ref": "#/components/schemas/ScoreTrendStats"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/ReliabilityScoreRecordOut"
+            },
+            "type": "array",
+            "title": "Records"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stats",
+          "records"
+        ],
+        "title": "ReliabilityScoreHistoryOut",
+        "description": "Response body for GET /reliability/score/history."
+      },
       "ReliabilityScoreInput": {
         "properties": {
           "system_name": {
@@ -1267,6 +1364,90 @@
         ],
         "title": "ReliabilityScoreOutput",
         "description": "Response body for POST /reliability/score."
+      },
+      "ReliabilityScoreRecordOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "system_name": {
+            "type": "string",
+            "title": "System Name"
+          },
+          "composite_score": {
+            "type": "number",
+            "title": "Composite Score"
+          },
+          "tier": {
+            "type": "string",
+            "title": "Tier"
+          },
+          "weights_normalized": {
+            "type": "boolean",
+            "title": "Weights Normalized"
+          },
+          "nist_govern": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nist Govern"
+          },
+          "nist_map": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nist Map"
+          },
+          "nist_measure": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nist Measure"
+          },
+          "nist_manage": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nist Manage"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "system_name",
+          "composite_score",
+          "tier",
+          "weights_normalized",
+          "created_at"
+        ],
+        "title": "ReliabilityScoreRecordOut",
+        "description": "One persisted reliability score row."
       },
       "ReliabilityScoreWithExplanation": {
         "properties": {
@@ -1438,6 +1619,111 @@
         "title": "ScoreExplanation",
         "description": "Human- and machine-readable rationale for a composite score."
       },
+      "ScoreTrendStats": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "latest_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Score"
+          },
+          "latest_tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Tier"
+          },
+          "earliest_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Earliest Score"
+          },
+          "earliest_tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Earliest Tier"
+          },
+          "rolling_average": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rolling Average",
+            "description": "Mean composite score across all returned records."
+          },
+          "min_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Score"
+          },
+          "max_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Score"
+          },
+          "trend_direction": {
+            "type": "string",
+            "title": "Trend Direction",
+            "description": "'improving', 'degrading', 'stable', or 'insufficient_data'."
+          },
+          "tier_transitions": {
+            "items": {
+              "$ref": "#/components/schemas/TierTransition"
+            },
+            "type": "array",
+            "title": "Tier Transitions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "count",
+          "trend_direction"
+        ],
+        "title": "ScoreTrendStats",
+        "description": "Aggregate statistics computed across a history window."
+      },
       "SprintSummary": {
         "properties": {
           "current_sprint": {
@@ -1528,6 +1814,37 @@
         ],
         "title": "TierGap",
         "description": "How close the current composite is to adjacent tiers."
+      },
+      "TierTransition": {
+        "properties": {
+          "from_tier": {
+            "type": "string",
+            "title": "From Tier"
+          },
+          "to_tier": {
+            "type": "string",
+            "title": "To Tier"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "At"
+          },
+          "composite_score": {
+            "type": "number",
+            "title": "Composite Score",
+            "description": "Composite score at the moment of the transition."
+          }
+        },
+        "type": "object",
+        "required": [
+          "from_tier",
+          "to_tier",
+          "at",
+          "composite_score"
+        ],
+        "title": "TierTransition",
+        "description": "One tier change detected in the history stream."
       },
       "TokenOut": {
         "properties": {

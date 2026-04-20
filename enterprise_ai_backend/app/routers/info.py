@@ -32,7 +32,7 @@ _EPICS: List[Epic] = [
     Epic(
         id="E2",
         title="Reliability Scoring Engine",
-        status="in_progress",
+        status="done",
         sprint=2,
     ),
     Epic(

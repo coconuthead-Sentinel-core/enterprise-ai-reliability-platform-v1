@@ -10,6 +10,27 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+**Sprint 2 — Reliability Scoring Engine (Epic E2, story E2-S3):**
+- `GET /reliability/score/history` — persisted score history + trend stats.
+  Optional `system_name` filter and `limit` (1–500, default 50).
+- `ReliabilityScoreRecord` SQLAlchemy model (`reliability_score_records`
+  table, indexed on `system_name` and `created_at`) — stores every
+  composite score produced by `POST /reliability/score` and
+  `POST /reliability/score/explain`.
+- `ScoreTrendStats` response model with `count`, `latest_score`,
+  `latest_tier`, `earliest_score`, `earliest_tier`, `rolling_average`,
+  `min_score`, `max_score`, `trend_direction` (`improving` /
+  `degrading` / `stable` / `insufficient_data`), and a chronological
+  list of `TierTransition`s (LOW ↔ MEDIUM ↔ HIGH crossings).
+- `reliability_score_history()`, `list_score_history()`, and
+  `score_trend_stats()` service helpers.
+- Existing POST routes now inject a DB session and persist automatically,
+  so history is populated without a separate write call.
+- 36 new integration assertions: empty-filter, HIGH→MEDIUM→LOW
+  trending, degrading path, stable classification, explain-also-persists,
+  global history, `limit` clamping, and `limit` validation. Suite now
+  runs **152/152**, up from 116/116.
+
 **Sprint 2 — Reliability Scoring Engine (Epic E2, story E2-S2):**
 - `POST /reliability/score/explain` — composite score plus a structured
   explanation object. The response includes:

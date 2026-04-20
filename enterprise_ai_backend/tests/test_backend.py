@@ -229,7 +229,7 @@ def main():
     check("5 epics returned", len(epics) == 5, f"got {len(epics)}")
     check("first epic is E1", epics[0]["id"] == "E1")
     check("E1 in_progress", epics[0]["status"] == "in_progress")
-    check("E2 in_progress (Sprint 2 active)", epics[1]["status"] == "in_progress")
+    check("E2 done (Sprint 2 complete)", epics[1]["status"] == "done")
     check("every epic has title", all(e.get("title") for e in epics))
     check("every epic has int sprint", all(isinstance(e["sprint"], int) for e in epics))
     check("epic statuses are valid",
@@ -241,7 +241,8 @@ def main():
     check("current_sprint is 2", s["current_sprint"] == 2)
     check("total_sprints is 5", s["total_sprints"] == 5)
     check("release is v0.3.0", s["release"] == "v0.3.0")
-    check("E2 is now in_progress", next(e for e in epics if e["id"] == "E2")["status"] == "in_progress")
+    check("E2 is done (Epic E2 shipped in Sprint 2)",
+          next(e for e in epics if e["id"] == "E2")["status"] == "done")
 
     # ---------- 12. Reliability composite score (Sprint 2, E2-S1) ----------
     section("12. POST /reliability/score (weighted composite + NIST breakdown)")
@@ -442,6 +443,134 @@ def main():
     r = client.post("/reliability/score/explain",
                     json={"system_name": "E", "components": []})
     check("explain empty components -> 422", r.status_code == 422)
+
+    # ---------- 14. Reliability score history (Sprint 2, E2-S3) ----------
+    section("14. GET /reliability/score/history (persistence + trend stats)")
+
+    # Every /reliability/score and /reliability/score/explain call above
+    # already persists a record. Empty-system filter should see zero.
+    r = client.get("/reliability/score/history?system_name=NoSuchSystem")
+    check("filter no match 200", r.status_code == 200)
+    body = r.json()
+    check("no-match returns empty records", body["records"] == [])
+    check("no-match count is 0", body["stats"]["count"] == 0)
+    check("no-match trend is insufficient_data",
+          body["stats"]["trend_direction"] == "insufficient_data")
+    check("no-match transitions empty",
+          body["stats"]["tier_transitions"] == [])
+
+    # Post a controlled history for "Trending System": HIGH -> MEDIUM -> LOW.
+    for components in [
+        [{"name": "bad", "value": 0.3, "weight": 1.0}],               # 30 -> HIGH
+        [{"name": "meh", "value": 0.65, "weight": 1.0}],              # 65 -> MEDIUM
+        [{"name": "good", "value": 0.9, "weight": 1.0}],              # 90 -> LOW
+    ]:
+        rr = client.post("/reliability/score", json={
+            "system_name": "Trending System",
+            "components": components,
+        })
+        check(f"seed value={components[0]['value']}", rr.status_code == 200)
+
+    r = client.get("/reliability/score/history?system_name=Trending%20System")
+    check("trending history 200", r.status_code == 200)
+    body = r.json()
+    check("trending filter echoed",
+          body["system_name"] == "Trending System")
+    check("trending count = 3", body["stats"]["count"] == 3,
+          f"got {body['stats']['count']}")
+    check("trending records length 3", len(body["records"]) == 3)
+    # Newest-first: record[0] should be the LOW (90) score.
+    check("trending newest-first (90 first)",
+          abs(body["records"][0]["composite_score"] - 90.0) < 0.01,
+          f"got {body['records'][0]['composite_score']}")
+    check("trending newest tier LOW",
+          body["records"][0]["tier"] == "LOW")
+    check("trending oldest (30) last",
+          abs(body["records"][-1]["composite_score"] - 30.0) < 0.01)
+
+    stats = body["stats"]
+    check("trending latest_score = 90",
+          abs(stats["latest_score"] - 90.0) < 0.01)
+    check("trending latest_tier LOW", stats["latest_tier"] == "LOW")
+    check("trending earliest_score = 30",
+          abs(stats["earliest_score"] - 30.0) < 0.01)
+    check("trending earliest_tier HIGH", stats["earliest_tier"] == "HIGH")
+    # Rolling average = (30 + 65 + 90) / 3 = 61.666...
+    check("trending rolling_average ~61.67",
+          abs(stats["rolling_average"] - 61.6667) < 0.01,
+          f"got {stats['rolling_average']}")
+    check("trending min_score = 30",
+          abs(stats["min_score"] - 30.0) < 0.01)
+    check("trending max_score = 90",
+          abs(stats["max_score"] - 90.0) < 0.01)
+    # Monotonically increasing scores -> improving.
+    check("trending direction improving",
+          stats["trend_direction"] == "improving",
+          f"got {stats['trend_direction']}")
+    # HIGH -> MEDIUM and MEDIUM -> LOW are the two transitions.
+    check("trending 2 transitions",
+          len(stats["tier_transitions"]) == 2,
+          f"got {len(stats['tier_transitions'])}")
+    transitions = stats["tier_transitions"]
+    # Transitions are in chronological order.
+    check("first transition HIGH -> MEDIUM",
+          transitions[0]["from_tier"] == "HIGH"
+          and transitions[0]["to_tier"] == "MEDIUM")
+    check("second transition MEDIUM -> LOW",
+          transitions[1]["from_tier"] == "MEDIUM"
+          and transitions[1]["to_tier"] == "LOW")
+
+    # Degrading system.
+    for v in [0.95, 0.7, 0.4]:
+        client.post("/reliability/score", json={
+            "system_name": "Degrading System",
+            "components": [{"name": "x", "value": v, "weight": 1.0}],
+        })
+    r = client.get("/reliability/score/history?system_name=Degrading%20System")
+    check("degrading direction degrading",
+          r.json()["stats"]["trend_direction"] == "degrading")
+
+    # Stable system (all within 1 composite point).
+    for v in [0.85, 0.855, 0.852]:
+        client.post("/reliability/score", json={
+            "system_name": "Stable System",
+            "components": [{"name": "x", "value": v, "weight": 1.0}],
+        })
+    r = client.get("/reliability/score/history?system_name=Stable%20System")
+    check("stable direction stable",
+          r.json()["stats"]["trend_direction"] == "stable")
+    check("stable 0 transitions",
+          len(r.json()["stats"]["tier_transitions"]) == 0)
+
+    # /reliability/score/explain ALSO persists (one call per payload).
+    before = client.get("/reliability/score/history"
+                        "?system_name=Explain%20Persist").json()["stats"]["count"]
+    client.post("/reliability/score/explain", json={
+        "system_name": "Explain Persist",
+        "components": [{"name": "x", "value": 0.8, "weight": 1.0}],
+    })
+    after = client.get("/reliability/score/history"
+                       "?system_name=Explain%20Persist").json()["stats"]["count"]
+    check("score/explain persists a row", after == before + 1,
+          f"before={before} after={after}")
+
+    # No-filter global history returns at least all the systems we seeded.
+    r = client.get("/reliability/score/history?limit=200")
+    check("global history 200", r.status_code == 200)
+    body = r.json()
+    check("global system_name null", body["system_name"] is None)
+    check("global count >= 10", body["stats"]["count"] >= 10,
+          f"got {body['stats']['count']}")
+
+    # Limit param clamps the response.
+    r = client.get("/reliability/score/history?limit=2")
+    check("limit=2 returns 2 records", len(r.json()["records"]) == 2)
+
+    # Validation: limit outside [1, 500] rejected.
+    r = client.get("/reliability/score/history?limit=0")
+    check("limit=0 -> 422", r.status_code == 422)
+    r = client.get("/reliability/score/history?limit=501")
+    check("limit=501 -> 422", r.status_code == 422)
 
     # ---------- Summary ----------
     section("SUMMARY")

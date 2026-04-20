@@ -20,7 +20,7 @@ pushed, tests green, and a CHANGELOG entry.
 |--------|------|----------------------------------------|--------------|
 | 0      | —    | Repo handoff, remote wiring, baseline  | ✅ done       |
 | 1      | E1   | Evidence Ingestion and Normalization   | ✅ done (shim) |
-| 2      | E2   | Reliability Scoring Engine             | 🟢 in progress|
+| 2      | E2   | Reliability Scoring Engine             | ✅ done       |
 | 3      | E3   | Policy Gate Evaluation                 | ⏳ planned    |
 | 4      | E4   | Dashboard and Reporting                | ⏳ planned    |
 | 5      | E5   | Security and Compliance                | ⏳ planned    |
@@ -111,11 +111,23 @@ framework memory saved.
   composite, LOW / MEDIUM / HIGH tier-gap paths, single-component edge
   case, validation). Suite runs **116/116**.
 
-### Story E2-S3 — Historical trend computation (⏳ next)
+### Story E2-S3 — Historical trend computation (✅ done)
 
-- Persist each scoring call (similar to the `ReliabilityComputation`
-  table) and expose a `GET /reliability/score/history` endpoint with
-  simple trend stats (rolling average, tier transitions).
+- New SQLAlchemy model `ReliabilityScoreRecord` (`reliability_score_records`
+  table) persists every composite score, indexed on `system_name` and
+  `created_at`.
+- `POST /reliability/score` and `POST /reliability/score/explain` now
+  inject a DB session and auto-persist, so history fills naturally.
+- New endpoint `GET /reliability/score/history?system_name=&limit=`
+  (newest-first) returns both the raw records and a `ScoreTrendStats`
+  object with rolling average, min/max, trend direction (`improving` /
+  `degrading` / `stable` / `insufficient_data`), and a chronological
+  list of `TierTransition`s.
+- 36 new integration assertions (empty filter, HIGH→MEDIUM→LOW trending,
+  degrading path, stable classification, explain-also-persists, global
+  history, limit clamping, validation). Suite runs **152/152**.
+
+### ✅ Epic E2 complete — ready to move to Sprint 3 (Policy Gate Evaluation).
 
 ---
 
