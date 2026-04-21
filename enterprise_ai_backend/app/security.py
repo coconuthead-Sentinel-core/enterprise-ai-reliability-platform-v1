@@ -7,7 +7,7 @@ as we pre-encode; we pre-truncate defensively to make the behaviour
 explicit and deterministic.
 """
 from datetime import datetime, timedelta, timezone
-from typing import Optional
+from typing import Callable, Optional
 
 import bcrypt
 from fastapi import Depends, HTTPException, status
@@ -75,3 +75,17 @@ def require_admin(current: User = Depends(get_current_user)) -> User:
     if current.role != "admin":
         raise HTTPException(status_code=403, detail="Admin role required")
     return current
+
+
+def require_roles(*roles: str) -> Callable[..., User]:
+    allowed = set(roles)
+
+    def _dependency(current: User = Depends(get_current_user)) -> User:
+        if current.role not in allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"One of these roles is required: {', '.join(sorted(allowed))}",
+            )
+        return current
+
+    return _dependency

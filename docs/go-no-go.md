@@ -9,12 +9,12 @@ Review date: 2026-04-20
 | --- | --- | --- |
 | Source repository initialized | Pass | Public GitHub repo exists at `coconuthead-Sentinel-core/enterprise-ai-reliability-platform-v1`; PR #8 is open from `sprint-3/policy-audit-log` into `main`. |
 | Backend dependencies installed | Pass | Backend virtualenv is installed from `enterprise_ai_backend/requirements.txt`. |
-| Backend integration tests | Pass | `.\.venv\Scripts\python.exe tests\test_backend.py` passed 313/313 assertions on 2026-04-20. |
+| Backend integration tests | Pass | `.\.venv\Scripts\python.exe tests\test_backend.py` passed 378/378 assertions on 2026-04-20. |
 | Backend pytest | Pass | `.\.venv\Scripts\python.exe -m pytest -q` passed 2 tests on 2026-04-20. |
 | Frontend dependencies installed | Pass | `npm install` completed for `apps/web`. |
 | Frontend typecheck/build | Pass | `npm run typecheck` and `npm run build` passed on 2026-04-20. |
 | Dependency audit | Pass | `pip check` passed; `npm audit --audit-level=moderate` found 0 vulnerabilities. |
-| API contract export | Pass | `.\.venv\Scripts\python.exe scripts\export_openapi.py` regenerated `libs/schemas/openapi.json`, including the dashboard and executive-report endpoints, in the byte shape expected by CI. |
+| API contract export | Pass | `.\.venv\Scripts\python.exe scripts\export_openapi.py` regenerated `libs/schemas/openapi.json`, including the audit, compliance, dashboard, and executive-report endpoints, in the byte shape expected by CI. |
 | Public repo safe to publish | Pass | Ignore rules cover secrets, virtualenvs, node modules, caches, build outputs, local archives, and staging folders. |
 | Bicep validation | Pass | `az bicep build --file infra/bicep/main.bicep` passed. |
 | GitHub CI on exact current Sprint 3 branch head | Pass | PR #8 checks are green on the current branch head for `ci-api`, `ci-contracts`, and `security-scans`. |

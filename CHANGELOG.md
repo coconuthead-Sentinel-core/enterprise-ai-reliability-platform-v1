@@ -14,9 +14,15 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a repo-backed compliance evidence bundle with five control rows for
   auth boundaries, CI security scanning, audit traceability, release
   governance, and retention/legal hold.
+- Added a release-approval workflow with separated `security_lead` and
+  `compliance_lead` approval lanes, including self-approval blocking.
+- Added an append-only, hash-chained audit ledger plus restricted
+  `/audit/history` and `/audit/verify` endpoints.
+- Added local retention-policy and legal-hold controls under
+  `/compliance/retention/*` and `/compliance/legal-holds`.
 - Added outstanding-gap and recommended-next-step reporting to the executive
   summary surface.
-- Backend validation now passes 313/313 assertions.
+- Backend validation now passes 378/378 assertions.
 
 **Sprint 4 - Dashboard and Reporting (Epic E4):**
 - Added `GET /dashboard/summary` for role-aware dashboard metrics, epic
@@ -89,7 +95,8 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   rolled-forward local Sprint 4 / Sprint 5 work, the last Azure deployment
   attempt on `b29da3d`, and the current Azure credential blocker.
 - Readmes and docs were refreshed to cover the dashboard/reporting endpoints,
-  PDF export, and the current 313/313 validation result.
+  PDF export, release approvals, audit-ledger/compliance endpoints, and the
+  current 378/378 validation result.
 
 ### Removed
 

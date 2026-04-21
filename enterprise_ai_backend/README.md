@@ -2,7 +2,7 @@
 
 FastAPI backend for the Enterprise AI Reliability Platform v1. Includes auth,
 reliability scoring, policy gating, assessment storage, anomaly detection,
-dashboard/reporting endpoints, and PDF export.
+dashboard/reporting endpoints, an append-only audit ledger, and PDF export.
 
 ## Setup
 
@@ -50,6 +50,16 @@ Then open:
 | GET | `/reliability/score/history` | score history + trend stats |
 | POST | `/policy/evaluate` | policy gate decision |
 | GET | `/policy/history` | policy audit log + stats |
+| GET | `/audit/history` | restricted audit ledger history |
+| GET | `/audit/verify` | restricted audit-chain verification |
+| GET | `/compliance/retention/policy` | restricted retention policy |
+| POST | `/compliance/retention/policy` | configure retention policy |
+| GET | `/compliance/retention/status` | retention/legal-hold status |
+| POST | `/compliance/legal-holds` | create legal hold |
+| POST | `/compliance/legal-holds/{id}/release` | release legal hold |
+| GET | `/release/approvals/current` | current release approval summary |
+| POST | `/release/approvals/request` | request Security + Compliance approvals |
+| POST | `/release/approvals/{id}/approve` | approve as the matching lead role |
 | POST | `/assessments` | create NIST AI RMF assessment |
 | GET | `/assessments` | list assessments |
 | GET | `/assessments/{id}` | get single assessment |
@@ -71,7 +81,7 @@ python scripts/export_openapi.py
 
 Current local validation:
 
-- `tests/test_backend.py`: 313/313 assertions passing
+- `tests/test_backend.py`: 378/378 assertions passing
 - `pytest -q`: 2 tests passing
 
 ## Notes

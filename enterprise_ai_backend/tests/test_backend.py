@@ -23,8 +23,17 @@ os.environ["JWT_SECRET"] = "test-secret-" + "z" * 48
 
 from fastapi.testclient import TestClient  # noqa: E402
 from pypdf import PdfReader  # noqa: E402
+from sqlalchemy import text  # noqa: E402
 
-from app.database import Base, engine, init_db  # noqa: E402
+from app.database import (  # noqa: E402
+    AuditLogRecord,
+    Base,
+    ReleaseApproval,
+    SessionLocal,
+    User,
+    engine,
+    init_db,
+)
 from app.main import app  # noqa: E402
 
 init_db()
@@ -48,10 +57,49 @@ def section(title):
     print("-" * 72)
 
 
+def set_role(email: str, role: str):
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter_by(email=email).first()
+        assert user is not None, f"User not found for role update: {email}"
+        user.role = role
+        db.add(user)
+        db.commit()
+    finally:
+        db.close()
+
+
+def clear_release_approvals():
+    db = SessionLocal()
+    try:
+        db.query(ReleaseApproval).delete()
+        db.commit()
+    finally:
+        db.close()
+
+
+def force_tamper_audit_record(record_id: int):
+    with engine.begin() as conn:
+        conn.execute(text("DROP TRIGGER IF EXISTS audit_log_records_no_update"))
+        conn.execute(text("DROP TRIGGER IF EXISTS audit_log_records_no_delete"))
+        conn.execute(
+            text(
+                "UPDATE audit_log_records "
+                "SET payload_json = :payload "
+                "WHERE id = :record_id"
+            ),
+            {
+                "payload": json.dumps({"tampered": True}, sort_keys=True),
+                "record_id": record_id,
+            },
+        )
+    init_db()
+
+
 def main():
     results.clear()
     Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
+    init_db()
 
     print("=" * 72)
     print("EARP FULL BUILD INTEGRATION TEST (v0.3.0)")
@@ -998,8 +1046,145 @@ def main():
     r = client.get("/policy/history?system_name=")
     check("history empty system_name -> 422", r.status_code == 422)
 
-    # ---------- 18. Dashboard + executive reporting (Sprint 4 / Sprint 5 slice) ----------
-    section("18. GET /dashboard/summary and /reports/executive-summary(.pdf)")
+    # ---------- 18. Release approvals (Sprint 5, E5-S1) ----------
+    section("18. Release approval workflow with separated approvers (Sprint 5, E5-S1)")
+
+    r = client.get("/release/approvals/current")
+    check("release approvals current requires auth -> 401", r.status_code == 401)
+
+    for email in (
+        "security.lead@example.com",
+        "compliance.lead@example.com",
+        "security.self@example.com",
+    ):
+        r = client.post("/auth/register", json={
+            "email": email,
+            "password": "correcthorsebatterystaple",
+        })
+        check(f"register {email} 201", r.status_code == 201, r.text)
+
+    set_role("security.lead@example.com", "security_lead")
+    set_role("compliance.lead@example.com", "compliance_lead")
+    set_role("security.self@example.com", "security_lead")
+
+    r = client.post("/auth/login", json={
+        "email": "security.lead@example.com",
+        "password": "correcthorsebatterystaple",
+    })
+    check("security lead login 200", r.status_code == 200, r.text)
+    security_hdr = {"Authorization": f"Bearer {r.json()['access_token']}"}
+
+    r = client.post("/auth/login", json={
+        "email": "compliance.lead@example.com",
+        "password": "correcthorsebatterystaple",
+    })
+    check("compliance lead login 200", r.status_code == 200, r.text)
+    compliance_hdr = {"Authorization": f"Bearer {r.json()['access_token']}"}
+
+    r = client.post("/auth/login", json={
+        "email": "security.self@example.com",
+        "password": "correcthorsebatterystaple",
+    })
+    check("security self login 200", r.status_code == 200, r.text)
+    self_security_hdr = {"Authorization": f"Bearer {r.json()['access_token']}"}
+
+    r = client.post(
+        "/release/approvals/request",
+        headers=self_security_hdr,
+        json={"request_notes": "Self-requested release candidate"},
+    )
+    check("self requester approval request 200", r.status_code == 200, r.text)
+    self_summary = r.json()
+    check("self requester creates 2 approval records",
+          len(self_summary["approvals"]) == 2)
+    self_security_id = next(
+        row["id"] for row in self_summary["approvals"]
+        if row["approval_type"] == "security_lead"
+    )
+
+    r = client.post(
+        f"/release/approvals/{self_security_id}/approve",
+        headers=self_security_hdr,
+        json={"approval_notes": "Trying to self-approve"},
+    )
+    check("self approval blocked 403", r.status_code == 403, r.text)
+
+    clear_release_approvals()
+
+    r = client.post(
+        "/release/approvals/request",
+        headers=hdr,
+        json={"request_notes": "Release candidate ready for review"},
+    )
+    check("user approval request 200", r.status_code == 200, r.text)
+    approval_summary = r.json()
+    check("release not ready before approvals",
+          approval_summary["ready_for_release"] is False)
+    check("2 release approvals created",
+          len(approval_summary["approvals"]) == 2)
+    check("2 approval types pending",
+          len(approval_summary["pending_approval_types"]) == 2)
+    security_id = next(
+        row["id"] for row in approval_summary["approvals"]
+        if row["approval_type"] == "security_lead"
+    )
+    compliance_id = next(
+        row["id"] for row in approval_summary["approvals"]
+        if row["approval_type"] == "compliance_lead"
+    )
+
+    r = client.post(
+        f"/release/approvals/{security_id}/approve",
+        headers=compliance_hdr,
+        json={"approval_notes": "Wrong lane"},
+    )
+    check("wrong approver role blocked 403", r.status_code == 403, r.text)
+
+    r = client.post(
+        f"/release/approvals/{security_id}/approve",
+        headers=security_hdr,
+        json={"approval_notes": "Security review complete"},
+    )
+    check("security approval 200", r.status_code == 200, r.text)
+    approved_security = r.json()
+    check("security approval status approved",
+          approved_security["status"] == "approved")
+    check("security approval by correct user",
+          approved_security["approved_by_email"] == "security.lead@example.com")
+
+    r = client.post(
+        f"/release/approvals/{security_id}/approve",
+        headers=security_hdr,
+        json={"approval_notes": "Duplicate"},
+    )
+    check("duplicate approval blocked 409", r.status_code == 409, r.text)
+
+    r = client.get("/release/approvals/current", headers=hdr)
+    check("release approvals current 200", r.status_code == 200, r.text)
+    mid_summary = r.json()
+    check("one approval still pending after first approval",
+          len(mid_summary["pending_approval_types"]) == 1)
+
+    r = client.post(
+        f"/release/approvals/{compliance_id}/approve",
+        headers=compliance_hdr,
+        json={"approval_notes": "Compliance review complete"},
+    )
+    check("compliance approval 200", r.status_code == 200, r.text)
+    approved_compliance = r.json()
+    check("compliance approval status approved",
+          approved_compliance["status"] == "approved")
+
+    r = client.get("/release/approvals/current", headers=hdr)
+    check("release approvals ready summary 200", r.status_code == 200, r.text)
+    ready_summary = r.json()
+    check("release ready after both approvals",
+          ready_summary["ready_for_release"] is True)
+    check("no approval types pending",
+          ready_summary["pending_approval_types"] == [])
+
+    # ---------- 19. Dashboard + executive reporting (Sprint 4 / Sprint 5 slice) ----------
+    section("19. GET /dashboard/summary and /reports/executive-summary(.pdf)")
 
     r = client.get("/dashboard/summary")
     check("dashboard summary requires auth -> 401", r.status_code == 401)
@@ -1057,6 +1242,167 @@ def main():
           "Enterprise AI Reliability Platform" in pdf_text)
     check("executive pdf mentions compliance bundle",
           "Compliance Evidence Bundle" in pdf_text or "Security and compliance controls" in pdf_text)
+
+    # ---------- 20. Audit ledger history + verification (Sprint 5, E5-S2 local slice) ----------
+    section("20. GET /audit/history and /audit/verify (append-only hash chain)")
+
+    audit_system = "AuditChainSystem"
+    for name, value in [
+        ("allow_seed", 0.90),
+        ("warn_seed", 0.70),
+        ("block_seed", 0.30),
+    ]:
+        r = client.post("/policy/evaluate", json={
+            "score_input": {
+                "system_name": audit_system,
+                "components": [{"name": name, "value": value, "weight": 1.0}],
+            },
+        })
+        check(f"audit seed {name} 200", r.status_code == 200, r.text)
+
+    r = client.get("/audit/history", headers=hdr)
+    check("audit history regular user blocked 403", r.status_code == 403, r.text)
+
+    r = client.get(
+        f"/audit/history?entity_type=policy_evaluation&entity_key={audit_system}",
+        headers=security_hdr,
+    )
+    check("audit history security lead 200", r.status_code == 200, r.text)
+    audit_history = r.json()
+    check("audit history filter echoed entity_type",
+          audit_history["entity_type"] == "policy_evaluation")
+    check("audit history filter echoed entity_key",
+          audit_history["entity_key"] == audit_system)
+    check("audit history count=3",
+          audit_history["stats"]["count"] == 3,
+          f"got {audit_history['stats']['count']}")
+    check("audit history records length=3",
+          len(audit_history["records"]) == 3)
+    check("audit history newest-first block decision",
+          audit_history["records"][0]["payload"]["decision"] == "block")
+    check("audit history latest_hash present",
+          isinstance(audit_history["stats"]["latest_hash"], str)
+          and len(audit_history["stats"]["latest_hash"]) == 64)
+    check("audit history rows expose record hash",
+          all(len(row["record_hash"]) == 64 for row in audit_history["records"]))
+    check("audit history rows expose previous hash key",
+          all("previous_hash" in row for row in audit_history["records"]))
+
+    r = client.get("/audit/verify", headers=compliance_hdr)
+    check("audit verify compliance lead 200", r.status_code == 200, r.text)
+    audit_verify = r.json()
+    check("audit chain valid before tamper",
+          audit_verify["chain_valid"] is True,
+          str(audit_verify["issues"]))
+    check("audit verify checked_records >= filtered count",
+          audit_verify["checked_records"] >= audit_history["stats"]["count"])
+
+    r = client.get("/compliance/retention/status", headers=hdr)
+    check("retention status regular user blocked 403", r.status_code == 403, r.text)
+
+    r = client.get("/compliance/retention/policy", headers=security_hdr)
+    check("retention policy default 200", r.status_code == 200, r.text)
+    default_policy = r.json()
+    check("default retention is seven years",
+          default_policy["retention_days"] == 2555)
+
+    r = client.post(
+        "/compliance/retention/policy",
+        headers=compliance_hdr,
+        json={"retention_days": 0, "notes": "Local validation review window"},
+    )
+    check("set retention policy 200", r.status_code == 200, r.text)
+    policy = r.json()
+    check("retention policy set to 0 days",
+          policy["retention_days"] == 0)
+    check("retention policy actor captured",
+          policy["configured_by_email"] == "compliance.lead@example.com")
+
+    r = client.post(
+        "/compliance/legal-holds",
+        headers=security_hdr,
+        json={
+            "entity_type": "policy_evaluation",
+            "entity_key": audit_system,
+            "reason": "Hold audit chain validation sample",
+        },
+    )
+    check("create legal hold 200", r.status_code == 200, r.text)
+    hold = r.json()
+    check("legal hold active", hold["active"] is True)
+    check("legal hold targets audit system",
+          hold["entity_key"] == audit_system)
+
+    r = client.post(
+        "/compliance/legal-holds",
+        headers=security_hdr,
+        json={
+            "entity_type": "policy_evaluation",
+            "entity_key": audit_system,
+            "reason": "Duplicate hold",
+        },
+    )
+    check("duplicate legal hold blocked 409", r.status_code == 409, r.text)
+
+    r = client.get("/compliance/retention/status", headers=compliance_hdr)
+    check("retention status compliance lead 200", r.status_code == 200, r.text)
+    retention = r.json()
+    check("retention status uses configured policy",
+          retention["retention_days"] == 0)
+    check("retention status sees active legal hold",
+          retention["active_legal_holds"] >= 1)
+    check("retention status holds audit sample records",
+          retention["held_record_count"] >= 3,
+          str(retention["held_record_ids"]))
+    check("retention status has eligible records",
+          retention["eligible_record_count"] > 0)
+
+    r = client.post(
+        f"/compliance/legal-holds/{hold['id']}/release",
+        headers=compliance_hdr,
+        json={"release_notes": "Validation complete"},
+    )
+    check("release legal hold 200", r.status_code == 200, r.text)
+    released = r.json()
+    check("legal hold inactive after release", released["active"] is False)
+    check("legal hold released by compliance lead",
+          released["released_by_email"] == "compliance.lead@example.com")
+
+    r = client.post(
+        f"/compliance/legal-holds/{hold['id']}/release",
+        headers=compliance_hdr,
+        json={"release_notes": "Duplicate release"},
+    )
+    check("duplicate legal hold release blocked 409", r.status_code == 409, r.text)
+
+    tamper_id = audit_history["records"][0]["id"]
+    db = SessionLocal()
+    try:
+        blocked = False
+        row = db.query(AuditLogRecord).filter_by(id=tamper_id).first()
+        row.actor_email = "mutator@example.com"
+        db.add(row)
+        try:
+            db.commit()
+        except Exception:
+            blocked = True
+            db.rollback()
+    finally:
+        db.close()
+    check("audit row update blocked by append-only trigger", blocked)
+
+    force_tamper_audit_record(tamper_id)
+
+    r = client.get("/audit/verify", headers=security_hdr)
+    check("audit verify after tamper 200", r.status_code == 200, r.text)
+    tampered_verify = r.json()
+    check("audit chain invalid after tamper",
+          tampered_verify["chain_valid"] is False,
+          str(tampered_verify["issues"]))
+    check("audit verify surfaces record_hash_mismatch",
+          any(issue["issue"] == "record_hash_mismatch"
+              for issue in tampered_verify["issues"]),
+          str(tampered_verify["issues"]))
 
     # ---------- Summary ----------
     section("SUMMARY")

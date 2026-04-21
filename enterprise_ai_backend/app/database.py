@@ -156,6 +156,85 @@ class PolicyEvaluationRecord(Base):
             return {}
 
 
+class ReleaseApproval(Base):
+    """One required release approval for the current branch/release candidate.
+
+    Sprint 5, E5-S1: approval separation for release decisions requires
+    independent Security Lead and Compliance Lead sign-off before promotion.
+    """
+
+    __tablename__ = "release_approvals"
+
+    id = Column(Integer, primary_key=True)
+    release = Column(String(50), nullable=False, index=True)
+    branch = Column(String(200), nullable=False, index=True)
+    approval_type = Column(String(50), nullable=False, index=True)
+    status = Column(String(20), nullable=False, default="pending")
+    requested_by_email = Column(String(200), nullable=False)
+    approved_by_email = Column(String(200), nullable=True)
+    request_notes = Column(Text, nullable=True)
+    approval_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=_utcnow, nullable=False)
+    approved_at = Column(DateTime, nullable=True)
+
+
+class AuditLogRecord(Base):
+    """Append-only audit ledger row with a hash pointer to the prior row."""
+
+    __tablename__ = "audit_log_records"
+
+    id = Column(Integer, primary_key=True)
+    event_type = Column(String(100), nullable=False, index=True)
+    entity_type = Column(String(100), nullable=False, index=True)
+    entity_key = Column(String(200), nullable=True, index=True)
+    actor_email = Column(String(200), nullable=True)
+    payload_json = Column(Text, nullable=False)
+    previous_hash = Column(String(64), nullable=True)
+    record_hash = Column(String(64), nullable=False, index=True)
+    created_at = Column(DateTime, default=_utcnow, nullable=False, index=True)
+
+    @property
+    def payload(self) -> dict:
+        if not self.payload_json:
+            return {}
+        try:
+            return json.loads(self.payload_json)
+        except (TypeError, ValueError):
+            return {}
+
+
+class RetentionPolicy(Base):
+    """Runtime retention policy for local compliance review."""
+
+    __tablename__ = "retention_policies"
+
+    id = Column(Integer, primary_key=True)
+    retention_days = Column(Integer, nullable=False)
+    configured_by_email = Column(String(200), nullable=False)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=_utcnow, nullable=False, index=True)
+
+
+class LegalHold(Base):
+    """Legal hold for one audited entity key."""
+
+    __tablename__ = "legal_holds"
+
+    id = Column(Integer, primary_key=True)
+    entity_type = Column(String(100), nullable=False, index=True)
+    entity_key = Column(String(200), nullable=False, index=True)
+    reason = Column(Text, nullable=False)
+    created_by_email = Column(String(200), nullable=False)
+    released_by_email = Column(String(200), nullable=True)
+    release_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=_utcnow, nullable=False, index=True)
+    released_at = Column(DateTime, nullable=True, index=True)
+
+    @property
+    def active(self) -> bool:
+        return self.released_at is None
+
+
 def _apply_sqlite_compat_migrations(bind) -> None:
     """Patch old local SQLite files forward without a full migration stack.
 
@@ -190,9 +269,41 @@ def _apply_sqlite_compat_migrations(bind) -> None:
             conn.execute(text(statement))
 
 
+def _ensure_sqlite_audit_triggers(bind) -> None:
+    """Block UPDATE and DELETE on the audit ledger for append-only safety."""
+    if bind.dialect.name != "sqlite":
+        return
+
+    inspector = inspect(bind)
+    if not inspector.has_table("audit_log_records"):
+        return
+
+    statements = [
+        """
+        CREATE TRIGGER IF NOT EXISTS audit_log_records_no_update
+        BEFORE UPDATE ON audit_log_records
+        BEGIN
+            SELECT RAISE(ABORT, 'audit_log_records is append-only');
+        END
+        """,
+        """
+        CREATE TRIGGER IF NOT EXISTS audit_log_records_no_delete
+        BEFORE DELETE ON audit_log_records
+        BEGIN
+            SELECT RAISE(ABORT, 'audit_log_records is append-only');
+        END
+        """,
+    ]
+
+    with bind.begin() as conn:
+        for statement in statements:
+            conn.execute(text(statement))
+
+
 def init_db(bind=engine):
     Base.metadata.create_all(bind=bind)
     _apply_sqlite_compat_migrations(bind)
+    _ensure_sqlite_audit_triggers(bind)
 
 
 def get_db():

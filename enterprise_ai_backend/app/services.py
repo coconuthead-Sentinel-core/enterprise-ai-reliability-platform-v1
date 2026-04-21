@@ -576,6 +576,19 @@ def _persist_policy_evaluation(
     db.add(record)
     db.commit()
     db.refresh(record)
+    append_audit_event(
+        db,
+        event_type="policy.evaluate",
+        entity_type="policy_evaluation",
+        entity_key=decision.system_name,
+        payload={
+            "policy_evaluation_id": record.id,
+            "system_name": decision.system_name,
+            "decision": decision.decision.value,
+            "composite_score": decision.composite_score,
+            "tier": decision.tier,
+        },
+    )
     return record
 
 
@@ -673,6 +686,506 @@ def policy_evaluation_history(
             for r in records
         ],
     )
+
+
+# ---------- Audit Ledger (Sprint 5, E5-S2 local slice) ----------
+
+def _canonical_json(value: object) -> str:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def _audit_created_at_token(created_at: datetime) -> str:
+    if created_at.tzinfo is not None:
+        created_at = created_at.astimezone(timezone.utc).replace(tzinfo=None)
+    return created_at.isoformat(timespec="microseconds")
+
+
+def _audit_record_hash(
+    *,
+    previous_hash: Optional[str],
+    event_type: str,
+    entity_type: str,
+    entity_key: Optional[str],
+    actor_email: Optional[str],
+    payload_json: str,
+    created_at: datetime,
+) -> str:
+    return sha256_of(
+        _canonical_json(
+            {
+                "previous_hash": previous_hash or "",
+                "event_type": event_type,
+                "entity_type": entity_type,
+                "entity_key": entity_key or "",
+                "actor_email": actor_email or "",
+                "payload_json": payload_json,
+                "created_at": _audit_created_at_token(created_at),
+            }
+        )
+    )
+
+
+def append_audit_event(
+    db: Session,
+    *,
+    event_type: str,
+    entity_type: str,
+    entity_key: Optional[str],
+    actor_email: Optional[str] = None,
+    payload: Optional[dict] = None,
+) -> database.AuditLogRecord:
+    """Append one audit ledger row with a pointer to the prior row hash."""
+    latest = (
+        db.query(database.AuditLogRecord)
+        .order_by(database.AuditLogRecord.id.desc())
+        .first()
+    )
+    previous_hash = latest.record_hash if latest is not None else None
+    created_at = datetime.now(timezone.utc)
+    payload_json = _canonical_json(payload or {})
+    record_hash = _audit_record_hash(
+        previous_hash=previous_hash,
+        event_type=event_type,
+        entity_type=entity_type,
+        entity_key=entity_key,
+        actor_email=actor_email,
+        payload_json=payload_json,
+        created_at=created_at,
+    )
+    record = database.AuditLogRecord(
+        event_type=event_type,
+        entity_type=entity_type,
+        entity_key=entity_key,
+        actor_email=actor_email,
+        payload_json=payload_json,
+        previous_hash=previous_hash,
+        record_hash=record_hash,
+        created_at=created_at,
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    return record
+
+
+def list_audit_history(
+    db: Session,
+    *,
+    event_type: Optional[str] = None,
+    entity_type: Optional[str] = None,
+    entity_key: Optional[str] = None,
+    limit: int = 50,
+) -> List[database.AuditLogRecord]:
+    q = db.query(database.AuditLogRecord)
+    if event_type is not None:
+        q = q.filter(database.AuditLogRecord.event_type == event_type)
+    if entity_type is not None:
+        q = q.filter(database.AuditLogRecord.entity_type == entity_type)
+    if entity_key is not None:
+        q = q.filter(database.AuditLogRecord.entity_key == entity_key)
+    q = q.order_by(
+        database.AuditLogRecord.created_at.desc(),
+        database.AuditLogRecord.id.desc(),
+    )
+    return q.limit(limit).all()
+
+
+def audit_log_history(
+    db: Session,
+    *,
+    event_type: Optional[str] = None,
+    entity_type: Optional[str] = None,
+    entity_key: Optional[str] = None,
+    limit: int = 50,
+) -> schemas.AuditLogHistoryOut:
+    records = list_audit_history(
+        db,
+        event_type=event_type,
+        entity_type=entity_type,
+        entity_key=entity_key,
+        limit=limit,
+    )
+    return schemas.AuditLogHistoryOut(
+        event_type=event_type,
+        entity_type=entity_type,
+        entity_key=entity_key,
+        stats=schemas.AuditLogStats(
+            count=len(records),
+            latest_hash=records[0].record_hash if records else None,
+            oldest_hash=records[-1].record_hash if records else None,
+        ),
+        records=[
+            schemas.AuditLogRecordOut.model_validate(row)
+            for row in records
+        ],
+    )
+
+
+def verify_audit_chain(db: Session) -> schemas.AuditChainVerificationOut:
+    rows = (
+        db.query(database.AuditLogRecord)
+        .order_by(database.AuditLogRecord.id.asc())
+        .all()
+    )
+    issues: List[schemas.AuditChainIssueOut] = []
+    previous_hash = None
+    for row in rows:
+        if row.previous_hash != previous_hash:
+            issues.append(
+                schemas.AuditChainIssueOut(
+                    record_id=row.id,
+                    issue="previous_hash_mismatch",
+                    expected=previous_hash,
+                    actual=row.previous_hash,
+                )
+            )
+
+        expected_hash = _audit_record_hash(
+            previous_hash=row.previous_hash,
+            event_type=row.event_type,
+            entity_type=row.entity_type,
+            entity_key=row.entity_key,
+            actor_email=row.actor_email,
+            payload_json=row.payload_json,
+            created_at=row.created_at,
+        )
+        if row.record_hash != expected_hash:
+            issues.append(
+                schemas.AuditChainIssueOut(
+                    record_id=row.id,
+                    issue="record_hash_mismatch",
+                    expected=expected_hash,
+                    actual=row.record_hash,
+                )
+            )
+        previous_hash = row.record_hash
+
+    return schemas.AuditChainVerificationOut(
+        chain_valid=len(issues) == 0,
+        checked_records=len(rows),
+        latest_hash=rows[-1].record_hash if rows else None,
+        issues=issues,
+    )
+
+
+# ---------- Retention and Legal Hold (Sprint 5, E5-S3 local slice) ----------
+
+DEFAULT_RETENTION_DAYS = 2555  # seven years
+
+
+def current_retention_policy(db: Session) -> schemas.RetentionPolicyOut:
+    policy = (
+        db.query(database.RetentionPolicy)
+        .order_by(database.RetentionPolicy.created_at.desc(),
+                  database.RetentionPolicy.id.desc())
+        .first()
+    )
+    if policy is not None:
+        return schemas.RetentionPolicyOut.model_validate(policy)
+
+    return schemas.RetentionPolicyOut(
+        id=None,
+        retention_days=DEFAULT_RETENTION_DAYS,
+        configured_by_email="system",
+        notes="Default local audit-retention policy.",
+        created_at=datetime.now(timezone.utc),
+    )
+
+
+def set_retention_policy(
+    db: Session,
+    *,
+    retention_days: int,
+    configured_by_email: str,
+    notes: Optional[str] = None,
+) -> schemas.RetentionPolicyOut:
+    record = database.RetentionPolicy(
+        retention_days=retention_days,
+        configured_by_email=configured_by_email,
+        notes=notes,
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    append_audit_event(
+        db,
+        event_type="retention.policy.set",
+        entity_type="retention_policy",
+        entity_key="audit_log_records",
+        actor_email=configured_by_email,
+        payload={
+            "retention_policy_id": record.id,
+            "retention_days": retention_days,
+            "notes": notes,
+        },
+    )
+    return schemas.RetentionPolicyOut.model_validate(record)
+
+
+def create_legal_hold(
+    db: Session,
+    *,
+    entity_type: str,
+    entity_key: str,
+    reason: str,
+    created_by_email: str,
+) -> database.LegalHold:
+    existing = (
+        db.query(database.LegalHold)
+        .filter_by(entity_type=entity_type, entity_key=entity_key, released_at=None)
+        .first()
+    )
+    if existing is not None:
+        raise ValueError("active_hold_exists")
+
+    record = database.LegalHold(
+        entity_type=entity_type,
+        entity_key=entity_key,
+        reason=reason,
+        created_by_email=created_by_email,
+    )
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    append_audit_event(
+        db,
+        event_type="legal_hold.create",
+        entity_type="legal_hold",
+        entity_key=f"{entity_type}:{entity_key}",
+        actor_email=created_by_email,
+        payload={
+            "legal_hold_id": record.id,
+            "entity_type": entity_type,
+            "entity_key": entity_key,
+            "reason": reason,
+        },
+    )
+    return record
+
+
+def release_legal_hold(
+    db: Session,
+    *,
+    hold_id: int,
+    released_by_email: str,
+    release_notes: Optional[str] = None,
+) -> database.LegalHold:
+    record = db.query(database.LegalHold).filter_by(id=hold_id).first()
+    if record is None:
+        raise ValueError("not_found")
+    if record.released_at is not None:
+        raise ValueError("already_released")
+
+    record.released_at = datetime.now(timezone.utc)
+    record.released_by_email = released_by_email
+    record.release_notes = release_notes
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    append_audit_event(
+        db,
+        event_type="legal_hold.release",
+        entity_type="legal_hold",
+        entity_key=f"{record.entity_type}:{record.entity_key}",
+        actor_email=released_by_email,
+        payload={
+            "legal_hold_id": record.id,
+            "entity_type": record.entity_type,
+            "entity_key": record.entity_key,
+            "release_notes": release_notes,
+        },
+    )
+    return record
+
+
+def retention_status(db: Session) -> schemas.RetentionStatusOut:
+    policy = current_retention_policy(db)
+    now = datetime.now(timezone.utc)
+    cutoff = now.timestamp() - (policy.retention_days * 86400)
+
+    active_holds = (
+        db.query(database.LegalHold)
+        .filter(database.LegalHold.released_at.is_(None))
+        .all()
+    )
+    hold_keys = {(row.entity_type, row.entity_key) for row in active_holds}
+
+    audit_rows = (
+        db.query(database.AuditLogRecord)
+        .order_by(database.AuditLogRecord.id.asc())
+        .all()
+    )
+
+    held_ids: List[int] = []
+    eligible_ids: List[int] = []
+    for row in audit_rows:
+        row_created = row.created_at
+        if row_created.tzinfo is None:
+            row_created = row_created.replace(tzinfo=timezone.utc)
+        is_held = (row.entity_type, row.entity_key) in hold_keys
+        if is_held:
+            held_ids.append(row.id)
+            continue
+        if row_created.timestamp() <= cutoff:
+            eligible_ids.append(row.id)
+
+    return schemas.RetentionStatusOut(
+        generated_at=now,
+        retention_days=policy.retention_days,
+        total_audit_records=len(audit_rows),
+        active_legal_holds=len(active_holds),
+        held_record_count=len(held_ids),
+        eligible_record_count=len(eligible_ids),
+        held_record_ids=held_ids,
+        eligible_record_ids=eligible_ids,
+    )
+
+
+# ---------- Release Approvals (Sprint 5, E5-S1) ----------
+
+REQUIRED_RELEASE_APPROVAL_TYPES = (
+    schemas.ReleaseApprovalType.security_lead,
+    schemas.ReleaseApprovalType.compliance_lead,
+)
+
+
+def list_release_approvals(
+    db: Session,
+    *,
+    release: str,
+    branch: str,
+) -> List[database.ReleaseApproval]:
+    return (
+        db.query(database.ReleaseApproval)
+        .filter_by(release=release, branch=branch)
+        .order_by(
+            database.ReleaseApproval.created_at.asc(),
+            database.ReleaseApproval.id.asc(),
+        )
+        .all()
+    )
+
+
+def release_approval_summary(
+    db: Session,
+    *,
+    release: str,
+    branch: str,
+) -> schemas.ReleaseApprovalSummaryOut:
+    approvals = list_release_approvals(db, release=release, branch=branch)
+    latest_by_type = {}
+    for row in approvals:
+        latest_by_type[row.approval_type] = row
+
+    pending_types = [
+        approval_type
+        for approval_type in REQUIRED_RELEASE_APPROVAL_TYPES
+        if latest_by_type.get(approval_type.value) is None
+        or latest_by_type[approval_type.value].status != "approved"
+    ]
+
+    return schemas.ReleaseApprovalSummaryOut(
+        release=release,
+        branch=branch,
+        ready_for_release=len(pending_types) == 0,
+        pending_approval_types=pending_types,
+        approvals=[
+            schemas.ReleaseApprovalOut.model_validate(row) for row in approvals
+        ],
+    )
+
+
+def request_release_approvals(
+    db: Session,
+    *,
+    release: str,
+    branch: str,
+    requested_by_email: str,
+    request_notes: Optional[str] = None,
+) -> schemas.ReleaseApprovalSummaryOut:
+    existing = {
+        row.approval_type: row
+        for row in list_release_approvals(db, release=release, branch=branch)
+    }
+
+    created = False
+    created_types: List[str] = []
+    for approval_type in REQUIRED_RELEASE_APPROVAL_TYPES:
+        if approval_type.value in existing:
+            continue
+        db.add(
+            database.ReleaseApproval(
+                release=release,
+                branch=branch,
+                approval_type=approval_type.value,
+                status=schemas.ReleaseApprovalStatus.pending.value,
+                requested_by_email=requested_by_email,
+                request_notes=request_notes,
+            )
+        )
+        created = True
+        created_types.append(approval_type.value)
+
+    if created:
+        db.commit()
+        append_audit_event(
+            db,
+            event_type="release.approvals.request",
+            entity_type="release",
+            entity_key=f"{release}:{branch}",
+            actor_email=requested_by_email,
+            payload={
+                "release": release,
+                "branch": branch,
+                "requested_by_email": requested_by_email,
+                "approval_types_created": created_types,
+            },
+        )
+
+    return release_approval_summary(db, release=release, branch=branch)
+
+
+def approve_release_approval(
+    db: Session,
+    *,
+    approval_id: int,
+    approver_email: str,
+    approver_role: str,
+    approval_notes: Optional[str] = None,
+) -> database.ReleaseApproval:
+    record = db.query(database.ReleaseApproval).filter_by(id=approval_id).first()
+    if record is None:
+        raise ValueError("not_found")
+    if record.status == schemas.ReleaseApprovalStatus.approved.value:
+        raise ValueError("already_approved")
+    if approver_email == record.requested_by_email:
+        raise ValueError("self_approval_forbidden")
+    if approver_role not in {record.approval_type, "admin"}:
+        raise ValueError("wrong_role")
+
+    record.status = schemas.ReleaseApprovalStatus.approved.value
+    record.approved_by_email = approver_email
+    record.approval_notes = approval_notes
+    record.approved_at = datetime.now(timezone.utc)
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+    append_audit_event(
+        db,
+        event_type="release.approvals.approve",
+        entity_type="release",
+        entity_key=f"{record.release}:{record.branch}",
+        actor_email=approver_email,
+        payload={
+            "approval_id": record.id,
+            "release": record.release,
+            "branch": record.branch,
+            "approval_type": record.approval_type,
+            "approved_by_email": approver_email,
+            "status": record.status,
+        },
+    )
+    return record
 
 
 # ---------- Hash ----------

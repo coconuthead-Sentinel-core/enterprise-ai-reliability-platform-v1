@@ -48,6 +48,9 @@ Key Vault secrets required:
 - Web: `apps/web/Dockerfile`, port `80`, runtime API configuration through `API_BASE_URL`
 - Contracts: `libs/schemas/openapi.json`
 - Reporting: `/dashboard/summary`, `/reports/executive-summary`, `/reports/executive-summary.pdf`
+- Audit: `/audit/history`, `/audit/verify`
+- Compliance: `/compliance/retention/policy`, `/compliance/retention/status`, `/compliance/legal-holds`
+- Release approvals: `/release/approvals/current`, `/release/approvals/request`, `/release/approvals/{id}/approve`
 
 ## 6. Validation plan
 
@@ -64,7 +67,7 @@ Run before deployment:
 
 Completed locally on 2026-04-20:
 
-- Backend integration: `.\.venv\Scripts\python.exe tests\test_backend.py` passed with 313/313 assertions.
+- Backend integration: `.\.venv\Scripts\python.exe tests\test_backend.py` passed with 378/378 assertions.
 - Backend pytest: `.\.venv\Scripts\python.exe -m pytest -q` passed with 2 tests.
 - Backend dependencies: `.\.venv\Scripts\python.exe -m pip check` reported no broken requirements.
 - Contract export: `.\.venv\Scripts\python.exe scripts\export_openapi.py` regenerated `libs/schemas/openapi.json`.

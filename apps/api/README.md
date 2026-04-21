@@ -23,6 +23,16 @@ That is the canonical source of truth for the API.
 | GET | `/reliability/score/history` | public | score history |
 | POST | `/policy/evaluate` | public | policy gate |
 | GET | `/policy/history` | public | policy audit history |
+| GET | `/audit/history` | security/compliance/admin | audit ledger history |
+| GET | `/audit/verify` | security/compliance/admin | audit-chain verification |
+| GET | `/compliance/retention/policy` | security/compliance/admin | retention policy |
+| POST | `/compliance/retention/policy` | security/compliance/admin | configure retention |
+| GET | `/compliance/retention/status` | security/compliance/admin | retention/legal-hold status |
+| POST | `/compliance/legal-holds` | security/compliance/admin | create legal hold |
+| POST | `/compliance/legal-holds/{id}/release` | security/compliance/admin | release legal hold |
+| GET | `/release/approvals/current` | bearer | release approval summary |
+| POST | `/release/approvals/request` | bearer | create approval requests |
+| POST | `/release/approvals/{id}/approve` | bearer | approve in the matching role lane |
 | POST | `/assessments` | bearer | NIST AI RMF assessment |
 | GET | `/assessments` | bearer | list assessments |
 | GET | `/assessments/{id}` | bearer | single assessment |
@@ -48,4 +58,4 @@ cd ../../enterprise_ai_backend
 python tests/test_backend.py
 ```
 
-Current full integration result: `313/313` assertions passing.
+Current full integration result: `378/378` assertions passing.

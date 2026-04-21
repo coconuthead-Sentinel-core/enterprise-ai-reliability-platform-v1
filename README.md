@@ -6,7 +6,7 @@ reliability engineering math, policy gating, audit history, dashboard/reporting
 surfaces, and local compliance evidence export.
 
 **Status:** `v0.3.0`, full local build validated. Real FastAPI, real bcrypt +
-JWT, real SQLite, real scikit-learn `IsolationForest`, and 313/313 integration
+JWT, real SQLite, real scikit-learn `IsolationForest`, and 378/378 integration
 assertions passing on the current laptop branch.
 
 ## Monorepo layout
@@ -43,6 +43,13 @@ Key local endpoints:
 - `/docs`
 - `/policy/evaluate`
 - `/policy/history`
+- `/audit/history`
+- `/audit/verify`
+- `/compliance/retention/policy`
+- `/compliance/retention/status`
+- `/compliance/legal-holds`
+- `/release/approvals/current`
+- `/release/approvals/request`
 - `/dashboard/summary`
 - `/reports/executive-summary`
 - `/reports/executive-summary.pdf`
@@ -61,7 +68,9 @@ The local web app opens at `http://127.0.0.1:5173` and expects the backend at
 ## Current product surface
 
 - Reliability scoring with weighted composite output and NIST breakdown
-- Policy evaluation with allow/warn/block decisions and audit history
+- Policy evaluation with allow/warn/block decisions and hash-chained audit history
+- Release approval workflow with separated Security Lead and Compliance Lead sign-off
+- Retention policy and legal-hold controls for audited records
 - Authenticated NIST AI RMF assessments with persisted gate outcomes
 - Dashboard workspace with Release, Security, and Executive views
 - JSON and PDF executive summary export
@@ -71,7 +80,7 @@ The local web app opens at `http://127.0.0.1:5173` and expects the backend at
 
 Validated locally on 2026-04-20:
 
-- `python tests/test_backend.py`: pass, 313/313 assertions
+- `python tests/test_backend.py`: pass, 378/378 assertions
 - `python -m pytest -q`: pass, 2 tests
 - `python -m pip check`: pass
 - `python scripts/export_openapi.py`: pass

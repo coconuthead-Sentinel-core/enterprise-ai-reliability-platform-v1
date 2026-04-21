@@ -6,7 +6,7 @@ Candidate PR: `#8`
 
 Note: the branch has been rolled forward locally beyond the original Sprint 3
 delta and now includes Sprint 4 dashboard/reporting work plus the Sprint 5
-local evidence-bundle slice.
+local evidence-bundle, release-approval, audit-ledger, and retention/legal-hold slices.
 
 ## Environment findings
 
@@ -24,7 +24,7 @@ local evidence-bundle slice.
 | Evidence | Command | Status |
 | --- | --- | --- |
 | Backend install | `.\.venv\Scripts\python.exe -m pip install -r requirements.txt` | Pass |
-| Backend tests | `.\.venv\Scripts\python.exe tests\test_backend.py` | Pass: 313/313 assertions |
+| Backend tests | `.\.venv\Scripts\python.exe tests\test_backend.py` | Pass: 378/378 assertions |
 | Backend pytest | `.\.venv\Scripts\python.exe -m pytest -q` | Pass: 2 tests, 2 FastAPI deprecation warnings |
 | Backend dependency check | `.\.venv\Scripts\python.exe -m pip check` | Pass |
 | OpenAPI export | `.\.venv\Scripts\python.exe scripts\export_openapi.py` | Pass |
@@ -36,6 +36,16 @@ local evidence-bundle slice.
 
 Local product additions validated in the same pass:
 
+- `GET /release/approvals/current`
+- `POST /release/approvals/request`
+- `POST /release/approvals/{id}/approve`
+- `GET /audit/history`
+- `GET /audit/verify`
+- `GET /compliance/retention/policy`
+- `POST /compliance/retention/policy`
+- `GET /compliance/retention/status`
+- `POST /compliance/legal-holds`
+- `POST /compliance/legal-holds/{id}/release`
 - `GET /dashboard/summary`
 - `GET /reports/executive-summary`
 - `GET /reports/executive-summary.pdf`

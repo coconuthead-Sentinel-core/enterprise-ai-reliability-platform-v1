@@ -12,16 +12,17 @@ Sprint 5 local work adds a repo-backed evidence bundle to the executive summary.
 
 ## Current status
 
+- Implemented: separated release approvals for Security Lead and Compliance Lead
+- Implemented: append-only hash-chained audit ledger with verification
+- Implemented: local retention policy and legal-hold controls
 - Implemented: CI security scanning
-- Partial: auth boundaries, audit traceability, release governance
-- Planned: retention and legal hold automation
+- Partial: auth boundaries, audit traceability, release governance, cloud retention enforcement
 
 ## Open gaps
 
 - Azure deployment secrets and live smoke tests
-- Stronger approval separation than the current user/admin split
-- Tamper-evident or immutable audit storage
-- Runtime retention and legal-hold enforcement
+- External immutable storage for the audit ledger
+- Cloud lifecycle policy or scheduled retention enforcement
 
 ## Delivery surfaces
 
@@ -29,3 +30,8 @@ The evidence bundle is available through:
 
 - `GET /reports/executive-summary`
 - `GET /reports/executive-summary.pdf`
+- `GET /audit/history`
+- `GET /audit/verify`
+- `GET /compliance/retention/policy`
+- `GET /compliance/retention/status`
+- `POST /compliance/legal-holds`

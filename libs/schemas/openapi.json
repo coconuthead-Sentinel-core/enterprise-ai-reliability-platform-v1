@@ -761,6 +761,343 @@
         }
       }
     },
+    "/audit/history": {
+      "get": {
+        "tags": [
+          "audit"
+        ],
+        "summary": "History",
+        "operationId": "history_audit_history_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "event_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter to one audit event type.",
+              "title": "Event Type"
+            },
+            "description": "Filter to one audit event type."
+          },
+          {
+            "name": "entity_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter to one audited entity type.",
+              "title": "Entity Type"
+            },
+            "description": "Filter to one audited entity type."
+          },
+          {
+            "name": "entity_key",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter to one audited entity key.",
+              "title": "Entity Key"
+            },
+            "description": "Filter to one audited entity key."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Maximum number of records to return (newest first).",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Maximum number of records to return (newest first)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditLogHistoryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/audit/verify": {
+      "get": {
+        "tags": [
+          "audit"
+        ],
+        "summary": "Verify",
+        "operationId": "verify_audit_verify_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditChainVerificationOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/compliance/retention/policy": {
+      "get": {
+        "tags": [
+          "compliance"
+        ],
+        "summary": "Get Policy",
+        "operationId": "get_policy_compliance_retention_policy_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetentionPolicyOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "compliance"
+        ],
+        "summary": "Set Policy",
+        "operationId": "set_policy_compliance_retention_policy_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetentionPolicyInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetentionPolicyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/compliance/retention/status": {
+      "get": {
+        "tags": [
+          "compliance"
+        ],
+        "summary": "Retention Status",
+        "operationId": "retention_status_compliance_retention_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetentionStatusOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/compliance/legal-holds": {
+      "post": {
+        "tags": [
+          "compliance"
+        ],
+        "summary": "Create Hold",
+        "operationId": "create_hold_compliance_legal_holds_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalHoldInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/compliance/legal-holds/{hold_id}/release": {
+      "post": {
+        "tags": [
+          "compliance"
+        ],
+        "summary": "Release Hold",
+        "operationId": "release_hold_compliance_legal_holds__hold_id__release_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "hold_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Hold Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalHoldReleaseInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/info/epics": {
       "get": {
         "tags": [
@@ -834,6 +1171,135 @@
             "OAuth2PasswordBearer": []
           }
         ]
+      }
+    },
+    "/release/approvals/current": {
+      "get": {
+        "tags": [
+          "release"
+        ],
+        "summary": "Current Approvals",
+        "operationId": "current_approvals_release_approvals_current_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseApprovalSummaryOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/release/approvals/request": {
+      "post": {
+        "tags": [
+          "release"
+        ],
+        "summary": "Request Approvals",
+        "operationId": "request_approvals_release_approvals_request_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseApprovalRequestInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseApprovalSummaryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/release/approvals/{approval_id}/approve": {
+      "post": {
+        "tags": [
+          "release"
+        ],
+        "summary": "Approve",
+        "operationId": "approve_release_approvals__approval_id__approve_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "approval_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Approval Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseApprovalActionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseApprovalOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/reports/executive-summary": {
@@ -1184,6 +1650,246 @@
         "type": "object",
         "title": "AssessmentSummaryOut",
         "description": "Aggregate counts across stored assessments."
+      },
+      "AuditChainIssueOut": {
+        "properties": {
+          "record_id": {
+            "type": "integer",
+            "title": "Record Id"
+          },
+          "issue": {
+            "type": "string",
+            "title": "Issue"
+          },
+          "expected": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected"
+          },
+          "actual": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual"
+          }
+        },
+        "type": "object",
+        "required": [
+          "record_id",
+          "issue"
+        ],
+        "title": "AuditChainIssueOut",
+        "description": "One audit-chain verification failure."
+      },
+      "AuditChainVerificationOut": {
+        "properties": {
+          "chain_valid": {
+            "type": "boolean",
+            "title": "Chain Valid"
+          },
+          "checked_records": {
+            "type": "integer",
+            "title": "Checked Records"
+          },
+          "latest_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Hash"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/AuditChainIssueOut"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "chain_valid",
+          "checked_records"
+        ],
+        "title": "AuditChainVerificationOut",
+        "description": "Response body for GET /audit/verify."
+      },
+      "AuditLogHistoryOut": {
+        "properties": {
+          "event_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Type"
+          },
+          "entity_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Type"
+          },
+          "entity_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Key"
+          },
+          "stats": {
+            "$ref": "#/components/schemas/AuditLogStats"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/AuditLogRecordOut"
+            },
+            "type": "array",
+            "title": "Records"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stats"
+        ],
+        "title": "AuditLogHistoryOut",
+        "description": "Response body for GET /audit/history."
+      },
+      "AuditLogRecordOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "event_type": {
+            "type": "string",
+            "title": "Event Type"
+          },
+          "entity_type": {
+            "type": "string",
+            "title": "Entity Type"
+          },
+          "entity_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Key"
+          },
+          "actor_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Email"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "previous_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Hash"
+          },
+          "record_hash": {
+            "type": "string",
+            "title": "Record Hash"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "event_type",
+          "entity_type",
+          "record_hash",
+          "created_at"
+        ],
+        "title": "AuditLogRecordOut",
+        "description": "One persisted append-only audit ledger row."
+      },
+      "AuditLogStats": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "latest_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Hash"
+          },
+          "oldest_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Oldest Hash"
+          }
+        },
+        "type": "object",
+        "required": [
+          "count"
+        ],
+        "title": "AuditLogStats",
+        "description": "Aggregate facts about the returned audit-history window."
       },
       "ComplianceControlOut": {
         "properties": {
@@ -1601,6 +2307,131 @@
           "database"
         ],
         "title": "HealthResponse"
+      },
+      "LegalHoldInput": {
+        "properties": {
+          "entity_type": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Entity Type"
+          },
+          "entity_key": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Entity Key"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "entity_type",
+          "entity_key",
+          "reason"
+        ],
+        "title": "LegalHoldInput"
+      },
+      "LegalHoldOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "entity_type": {
+            "type": "string",
+            "title": "Entity Type"
+          },
+          "entity_key": {
+            "type": "string",
+            "title": "Entity Key"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active"
+          },
+          "created_by_email": {
+            "type": "string",
+            "title": "Created By Email"
+          },
+          "released_by_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Released By Email"
+          },
+          "release_notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Release Notes"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "released_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Released At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "entity_type",
+          "entity_key",
+          "reason",
+          "active",
+          "created_by_email",
+          "created_at"
+        ],
+        "title": "LegalHoldOut"
+      },
+      "LegalHoldReleaseInput": {
+        "properties": {
+          "release_notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Release Notes"
+          }
+        },
+        "type": "object",
+        "title": "LegalHoldReleaseInput"
       },
       "NISTBreakdown": {
         "properties": {
@@ -2078,6 +2909,182 @@
         "title": "PolicyTrendStats",
         "description": "Aggregate statistics computed across a policy-history window."
       },
+      "ReleaseApprovalActionInput": {
+        "properties": {
+          "approval_notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approval Notes"
+          }
+        },
+        "type": "object",
+        "title": "ReleaseApprovalActionInput"
+      },
+      "ReleaseApprovalOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "release": {
+            "type": "string",
+            "title": "Release"
+          },
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          },
+          "approval_type": {
+            "$ref": "#/components/schemas/ReleaseApprovalType"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReleaseApprovalStatus"
+          },
+          "requested_by_email": {
+            "type": "string",
+            "title": "Requested By Email"
+          },
+          "approved_by_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved By Email"
+          },
+          "request_notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Notes"
+          },
+          "approval_notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approval Notes"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "release",
+          "branch",
+          "approval_type",
+          "status",
+          "requested_by_email",
+          "created_at"
+        ],
+        "title": "ReleaseApprovalOut"
+      },
+      "ReleaseApprovalRequestInput": {
+        "properties": {
+          "request_notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Notes"
+          }
+        },
+        "type": "object",
+        "title": "ReleaseApprovalRequestInput"
+      },
+      "ReleaseApprovalStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "approved"
+        ],
+        "title": "ReleaseApprovalStatus"
+      },
+      "ReleaseApprovalSummaryOut": {
+        "properties": {
+          "release": {
+            "type": "string",
+            "title": "Release"
+          },
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          },
+          "ready_for_release": {
+            "type": "boolean",
+            "title": "Ready For Release"
+          },
+          "pending_approval_types": {
+            "items": {
+              "$ref": "#/components/schemas/ReleaseApprovalType"
+            },
+            "type": "array",
+            "title": "Pending Approval Types"
+          },
+          "approvals": {
+            "items": {
+              "$ref": "#/components/schemas/ReleaseApprovalOut"
+            },
+            "type": "array",
+            "title": "Approvals"
+          }
+        },
+        "type": "object",
+        "required": [
+          "release",
+          "branch",
+          "ready_for_release"
+        ],
+        "title": "ReleaseApprovalSummaryOut"
+      },
+      "ReleaseApprovalType": {
+        "type": "string",
+        "enum": [
+          "security_lead",
+          "compliance_lead"
+        ],
+        "title": "ReleaseApprovalType"
+      },
       "ReliabilityInput": {
         "properties": {
           "mtbf_hours": {
@@ -2452,6 +3459,133 @@
         ],
         "title": "ReliabilityScoreWithExplanation",
         "description": "Response body for POST /reliability/score/explain.\n\nExtends the base score response with a detailed ``explanation`` object\nthat tells the caller *why* the composite landed where it did and what\nto do about it."
+      },
+      "RetentionPolicyInput": {
+        "properties": {
+          "retention_days": {
+            "type": "integer",
+            "maximum": 36500.0,
+            "minimum": 0.0,
+            "title": "Retention Days",
+            "description": "Days before an audit record becomes eligible for review. 0 is allowed for local validation."
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "retention_days"
+        ],
+        "title": "RetentionPolicyInput"
+      },
+      "RetentionPolicyOut": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "retention_days": {
+            "type": "integer",
+            "title": "Retention Days"
+          },
+          "configured_by_email": {
+            "type": "string",
+            "title": "Configured By Email"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "retention_days",
+          "configured_by_email",
+          "created_at"
+        ],
+        "title": "RetentionPolicyOut"
+      },
+      "RetentionStatusOut": {
+        "properties": {
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "retention_days": {
+            "type": "integer",
+            "title": "Retention Days"
+          },
+          "total_audit_records": {
+            "type": "integer",
+            "title": "Total Audit Records"
+          },
+          "active_legal_holds": {
+            "type": "integer",
+            "title": "Active Legal Holds"
+          },
+          "held_record_count": {
+            "type": "integer",
+            "title": "Held Record Count"
+          },
+          "eligible_record_count": {
+            "type": "integer",
+            "title": "Eligible Record Count"
+          },
+          "held_record_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Held Record Ids"
+          },
+          "eligible_record_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Eligible Record Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "generated_at",
+          "retention_days",
+          "total_audit_records",
+          "active_legal_holds",
+          "held_record_count",
+          "eligible_record_count"
+        ],
+        "title": "RetentionStatusOut"
       },
       "ScoreContribution": {
         "properties": {

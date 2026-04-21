@@ -11,11 +11,14 @@ from .routers import (
     ai,
     assessments,
     auth,
+    audit,
+    compliance,
     dashboard,
     hash as hash_router,
     health,
     info,
     policy,
+    release,
     reliability,
     reports,
 )
@@ -48,8 +51,11 @@ app.include_router(policy.router)
 app.include_router(assessments.router)
 app.include_router(ai.router)
 app.include_router(hash_router.router)
+app.include_router(audit.router)
+app.include_router(compliance.router)
 app.include_router(info.router)
 app.include_router(dashboard.router)
+app.include_router(release.router)
 app.include_router(reports.router)
 
 

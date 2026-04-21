@@ -17,7 +17,7 @@ As of: 2026-04-20
 | 2 | E2 | Reliability Scoring Engine | done |
 | 3 | E3 | Policy Gate Evaluation | done on the current branch head |
 | 4 | E4 | Dashboard and Reporting | implemented locally; pending push/CI on the rolled-forward branch head |
-| 5 | E5 | Security and Compliance | partial local implementation; cloud-only controls still blocked by Azure credentials |
+| 5 | E5 | Security and Compliance | approval separation, audit ledger, and retention/legal-hold local slices implemented; cloud-only controls still blocked by Azure credentials |
 
 PR #8 originally represented the exact Sprint 3 delivery branch. The same branch
 now carries rolled-forward local Sprint 4 and Sprint 5 work.
@@ -49,7 +49,7 @@ so local product work, release evidence, and Azure blockers stay separated.
 | Green | Row 5 / active artifacts | `apps/web/src/App.tsx`, `apps/web/src/api.ts`, `enterprise_ai_backend/app/reporting.py`, `docs/SPRINT_PLAN.md`, `docs/go-no-go.md`, `docs/release-evidence.md` |
 | Yellow | Row 2 / synthesis | Branch strategy after the rolled-forward local implementation, release evidence refresh |
 | Red | Row 10 / archive evidence | CI run results, last Azure workflow result, validation command history, exact blocked secret list |
-| Future | Row 13 / backlog horizon | Azure deploy, FQDN capture, live smoke tests, stronger approval separation, tamper-evident audit storage, retention/legal-hold automation |
+| Future | Row 13 / backlog horizon | Azure deploy, FQDN capture, live smoke tests, external immutable audit storage, cloud lifecycle retention enforcement, E1 ingestion connectors |
 
 ---
 
@@ -101,11 +101,27 @@ Epic E5 now has a local evidence-bundle slice:
    - Five controls covering auth, CI security scanning, audit traceability,
      release governance, and retention/legal-hold.
 
-2. Outstanding gaps
-   - Approval separation, immutable audit storage, retention/legal-hold
-     automation, and Azure smoke-test completion remain open.
+2. Release approval workflow
+   - Security Lead and Compliance Lead approvals are now separated.
+   - Self-approval is blocked for the release requester.
 
-3. Recommended next steps
+3. Audit ledger
+   - Policy evaluations and release approvals are now written into an
+     append-only, hash-chained audit ledger.
+   - `/audit/history` and `/audit/verify` expose restricted review and
+     tamper-detection flows.
+
+4. Retention and legal hold
+   - `/compliance/retention/policy` configures the local audit retention window.
+   - `/compliance/retention/status` reports eligible and held audit records.
+   - `/compliance/legal-holds` and `/compliance/legal-holds/{id}/release`
+     manage legal holds for audited entity keys.
+
+5. Outstanding gaps
+   - External immutable audit storage, cloud lifecycle retention enforcement, and Azure
+     smoke-test completion remain open.
+
+6. Recommended next steps
    - The report endpoints and dashboard now surface the exact local status and
      the remaining blockers.
 
@@ -115,7 +131,7 @@ Epic E5 now has a local evidence-bundle slice:
 
 Validated locally on 2026-04-20:
 
-- `python tests/test_backend.py`: pass, 313/313 assertions
+- `python tests/test_backend.py`: pass, 378/378 assertions
 - `python -m pytest -q`: pass, 2 tests
 - `python -m pip check`: pass
 - `python scripts/export_openapi.py`: pass

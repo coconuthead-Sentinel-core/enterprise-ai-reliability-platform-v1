@@ -45,6 +45,48 @@ class UserOut(BaseModel):
     created_at: datetime
 
 
+class ReleaseApprovalType(str, Enum):
+    security_lead = "security_lead"
+    compliance_lead = "compliance_lead"
+
+
+class ReleaseApprovalStatus(str, Enum):
+    pending = "pending"
+    approved = "approved"
+
+
+class ReleaseApprovalRequestInput(BaseModel):
+    request_notes: Optional[str] = Field(default=None, max_length=2000)
+
+
+class ReleaseApprovalActionInput(BaseModel):
+    approval_notes: Optional[str] = Field(default=None, max_length=2000)
+
+
+class ReleaseApprovalOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    release: str
+    branch: str
+    approval_type: ReleaseApprovalType
+    status: ReleaseApprovalStatus
+    requested_by_email: str
+    approved_by_email: Optional[str] = None
+    request_notes: Optional[str] = None
+    approval_notes: Optional[str] = None
+    created_at: datetime
+    approved_at: Optional[datetime] = None
+
+
+class ReleaseApprovalSummaryOut(BaseModel):
+    release: str
+    branch: str
+    ready_for_release: bool
+    pending_approval_types: List[ReleaseApprovalType] = Field(default_factory=list)
+    approvals: List[ReleaseApprovalOut] = Field(default_factory=list)
+
+
 # ---------- Health ----------
 
 class HealthResponse(BaseModel):
@@ -448,6 +490,118 @@ class PolicyHistoryOut(BaseModel):
     )
     stats: PolicyTrendStats
     records: List[PolicyEvaluationRecordOut]
+
+
+# ---------- Audit Ledger (Sprint 5, E5-S2 local slice) ----------
+
+class AuditLogRecordOut(BaseModel):
+    """One persisted append-only audit ledger row."""
+
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    event_type: str
+    entity_type: str
+    entity_key: Optional[str] = None
+    actor_email: Optional[str] = None
+    payload: dict = Field(default_factory=dict)
+    previous_hash: Optional[str] = None
+    record_hash: str
+    created_at: datetime
+
+
+class AuditLogStats(BaseModel):
+    """Aggregate facts about the returned audit-history window."""
+
+    count: int
+    latest_hash: Optional[str] = None
+    oldest_hash: Optional[str] = None
+
+
+class AuditLogHistoryOut(BaseModel):
+    """Response body for GET /audit/history."""
+
+    event_type: Optional[str] = None
+    entity_type: Optional[str] = None
+    entity_key: Optional[str] = None
+    stats: AuditLogStats
+    records: List[AuditLogRecordOut] = Field(default_factory=list)
+
+
+class AuditChainIssueOut(BaseModel):
+    """One audit-chain verification failure."""
+
+    record_id: int
+    issue: str
+    expected: Optional[str] = None
+    actual: Optional[str] = None
+
+
+class AuditChainVerificationOut(BaseModel):
+    """Response body for GET /audit/verify."""
+
+    chain_valid: bool
+    checked_records: int
+    latest_hash: Optional[str] = None
+    issues: List[AuditChainIssueOut] = Field(default_factory=list)
+
+
+# ---------- Retention and Legal Hold (Sprint 5, E5-S3 local slice) ----------
+
+class RetentionPolicyInput(BaseModel):
+    retention_days: int = Field(
+        ...,
+        ge=0,
+        le=36500,
+        description="Days before an audit record becomes eligible for review. "
+                    "0 is allowed for local validation.",
+    )
+    notes: Optional[str] = Field(default=None, max_length=2000)
+
+
+class RetentionPolicyOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: Optional[int] = None
+    retention_days: int
+    configured_by_email: str
+    notes: Optional[str] = None
+    created_at: datetime
+
+
+class LegalHoldInput(BaseModel):
+    entity_type: str = Field(..., min_length=1, max_length=100)
+    entity_key: str = Field(..., min_length=1, max_length=200)
+    reason: str = Field(..., min_length=1, max_length=2000)
+
+
+class LegalHoldReleaseInput(BaseModel):
+    release_notes: Optional[str] = Field(default=None, max_length=2000)
+
+
+class LegalHoldOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    entity_type: str
+    entity_key: str
+    reason: str
+    active: bool
+    created_by_email: str
+    released_by_email: Optional[str] = None
+    release_notes: Optional[str] = None
+    created_at: datetime
+    released_at: Optional[datetime] = None
+
+
+class RetentionStatusOut(BaseModel):
+    generated_at: datetime
+    retention_days: int
+    total_audit_records: int
+    active_legal_holds: int
+    held_record_count: int
+    eligible_record_count: int
+    held_record_ids: List[int] = Field(default_factory=list)
+    eligible_record_ids: List[int] = Field(default_factory=list)
 
 
 # ---------- Dashboard / Reporting (Sprint 4 + Sprint 5 slice) ----------

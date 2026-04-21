@@ -190,18 +190,20 @@ def build_compliance_evidence_bundle(
             title="Authentication and Role Boundary",
             status="partial",
             summary=(
-                "bcrypt password hashing, JWT access tokens, and authenticated "
-                "assessment/report routes are implemented."
+                "bcrypt password hashing, JWT access tokens, authenticated "
+                "routes, and separated Security Lead / Compliance Lead "
+                "release approvals are implemented."
             ),
             evidence=[
                 "enterprise_ai_backend/app/security.py",
                 "enterprise_ai_backend/app/routers/auth.py",
                 "enterprise_ai_backend/app/routers/assessments.py",
                 "enterprise_ai_backend/app/routers/dashboard.py",
+                "enterprise_ai_backend/app/routers/release.py",
                 "enterprise_ai_backend/app/routers/reports.py",
             ],
             gaps=[
-                "Approval separation is not yet enforced beyond user/admin roles.",
+                "Role assignment is still provisioned locally; no admin UI or SSO sync exists yet.",
             ],
         ),
         schemas.ComplianceControlOut(
@@ -224,17 +226,20 @@ def build_compliance_evidence_bundle(
             title="Audit Logging and Release Traceability",
             status="partial",
             summary=(
-                "Policy evaluations and assessment gate decisions are persisted "
-                "for review and trend analysis."
+                "Policy evaluations and release approvals are written into an "
+                "append-only, hash-chained audit ledger for review and "
+                "tamper detection."
             ),
             evidence=[
                 "enterprise_ai_backend/app/database.py",
                 "enterprise_ai_backend/app/services.py",
+                "enterprise_ai_backend/app/routers/audit.py",
                 "enterprise_ai_backend/app/routers/policy.py",
+                "enterprise_ai_backend/app/routers/release.py",
             ],
             gaps=[
-                "Audit storage is append-only in application flow but not yet "
-                "tamper-evident or externally immutable.",
+                "External immutable storage is not configured yet; the current "
+                "ledger is local append-only plus tamper-evident verification.",
             ],
         ),
         schemas.ComplianceControlOut(
@@ -258,26 +263,27 @@ def build_compliance_evidence_bundle(
         schemas.ComplianceControlOut(
             control_id="CTRL-05",
             title="Retention and Legal Hold",
-            status="planned",
+            status="partial",
             summary=(
-                "Retention and legal-hold requirements are tracked in the "
-                "security/compliance plan but not yet automated in runtime infra."
+                "Local retention policy configuration and legal-hold "
+                "registration/release flows are implemented for audit records."
             ),
             evidence=[
                 "security_and_compliance_plan/security_and_compliance_plan.txt",
                 "ga_hardening_compliance_launch/ga_hardening_compliance_launch.txt",
+                "enterprise_ai_backend/app/routers/compliance.py",
+                "enterprise_ai_backend/app/services.py",
             ],
             gaps=[
-                "No runtime retention or legal-hold enforcement is configured yet.",
+                "Cloud lifecycle enforcement and scheduled retention jobs are not configured yet.",
             ],
         ),
     ]
 
     outstanding_gaps = [
         "Add Azure deployment secrets and complete live smoke tests.",
-        "Implement stronger approval separation than the current user/admin split.",
-        "Move audit records into tamper-evident or immutable storage.",
-        "Define and automate retention/legal-hold policy enforcement.",
+        "Move the audit ledger into externally immutable storage.",
+        "Move retention enforcement into cloud lifecycle policy or a scheduled job.",
     ]
     if dashboard.assessment_summary.high_risk > 0:
         outstanding_gaps.insert(
@@ -293,7 +299,7 @@ def build_compliance_evidence_bundle(
         recommended_next_steps=[
             "Keep Sprint 4 dashboard/reporting work local until Azure credentials exist.",
             "Use the PDF export as the review artifact for release and HR-facing walkthroughs.",
-            "Treat retention/legal-hold and approval separation as the next security implementation slice.",
+            "Treat external immutable audit storage and cloud retention enforcement as the next security hardening slice.",
         ],
     )
 
