@@ -5,14 +5,18 @@ NIST AI Risk Management Framework (GOVERN, MAP, MEASURE, MANAGE), with
 reliability engineering math, policy gating, audit history, dashboard/reporting
 surfaces, and local compliance evidence export.
 
-**Status:** `v0.3.0`, full local build validated. Real FastAPI, real bcrypt +
-JWT, real SQLite, real scikit-learn `IsolationForest`, and 378/378 integration
-assertions passing on the current laptop branch.
+**Status:** `v0.3.0`, full local build validated on 2026-04-21. Real FastAPI,
+real bcrypt + JWT, real SQLite, real scikit-learn `IsolationForest`, and
+378/378 integration assertions are passing on the current branch. Repo docs,
+contracts, and release packaging are current on the branch. Azure credential
+provisioning remains an external prerequisite intentionally excluded from the
+current work cycle.
 
 ## Monorepo layout
 
 ```text
 enterprise-ai-reliability-platform-v1/
+|- api/                   Legacy signpost -> enterprise_ai_backend/
 |- apps/
 |  |- api/                 Signpost -> enterprise_ai_backend/
 |  `- web/                 React 18 + TypeScript + Vite dashboard UI
@@ -26,6 +30,10 @@ enterprise-ai-reliability-platform-v1/
 |- docs/                   Engineering and release docs
 `- ...                     SDLC, architecture, risk, and compliance folders
 ```
+
+The `enterprise_ai_backend/` folder is the only live API code tree. Both
+`apps/api/` and `api/` are signpost folders kept for navigation and
+backward-compatible repo wayfinding.
 
 ## Quickstart
 
@@ -78,7 +86,7 @@ The local web app opens at `http://127.0.0.1:5173` and expects the backend at
 
 ## Validation snapshot
 
-Validated locally on 2026-04-20:
+Validated locally on 2026-04-21:
 
 - `python tests/test_backend.py`: pass, 378/378 assertions
 - `python -m pytest -q`: pass, 2 tests
@@ -99,14 +107,16 @@ GitHub Actions workflows:
 4. `security-scans.yml`
 5. `release.yml`
 
-The last Azure release attempt built and pushed both images successfully, then
-stopped at `azure/login@v2` because the GitHub `dev` environment does not yet
-have the required Azure secrets.
+The release workflow always builds and pushes GHCR images. It only runs the
+Azure deployment job when the selected environment exposes the required Azure
+secrets; otherwise the Azure job is skipped and credential provisioning remains
+an external follow-on task.
 
 ## Azure note
 
-An Azure Pay-As-You-Go subscription is sufficient for this project. The current
-deployment blocker is credential setup, not subscription tier.
+An Azure Pay-As-You-Go subscription is sufficient for this project. Credential
+setup is external to the repo and intentionally excluded from the current work
+cycle; live deployment can resume once those values are available.
 
 ## More docs
 

@@ -54,7 +54,7 @@ compliance paperwork still lives at the repo root in dedicated folders.
 | --- | --- |
 | NIST AI RMF scoring policy | `libs/policy/scoring.py` |
 | Architecture + API contracts | `libs/schemas/openapi.json` |
-| Test strategy | `enterprise_ai_backend/tests/test_backend.py` (313 assertions) |
+| Test strategy | `enterprise_ai_backend/tests/test_backend.py` (378 assertions, isolated temp SQLite DB) |
 | Release plan | `RELEASE.md` + `.github/workflows/release.yml` |
 | Incident response runbook | `incident_response_runbook/` + rollback steps in `RELEASE.md` |
 | Security + compliance plan | `SECURITY.md` + `.github/workflows/security-scans.yml` |

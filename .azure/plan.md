@@ -1,6 +1,6 @@
 # Azure Deployment Plan - Enterprise AI Reliability Platform v1
 
-Status: Local validation complete; GitHub image publish verified; Azure deploy blocked on credentials
+Status: Local validation complete; GitHub image publish verified; Azure credential provisioning intentionally deferred for this work cycle
 
 ## 1. Summary
 
@@ -65,9 +65,9 @@ Run before deployment:
 
 ## 7. Validation proof
 
-Completed locally on 2026-04-20:
+Completed locally on 2026-04-21:
 
-- Backend integration: `.\.venv\Scripts\python.exe tests\test_backend.py` passed with 378/378 assertions.
+- Backend integration: `.\.venv\Scripts\python.exe tests\test_backend.py` passed with 378/378 assertions using an isolated temp SQLite database.
 - Backend pytest: `.\.venv\Scripts\python.exe -m pytest -q` passed with 2 tests.
 - Backend dependencies: `.\.venv\Scripts\python.exe -m pip check` reported no broken requirements.
 - Contract export: `.\.venv\Scripts\python.exe scripts\export_openapi.py` regenerated `libs/schemas/openapi.json`.
@@ -79,10 +79,15 @@ Completed on GitHub for the current PR #8 branch head:
 - PR CI checks are green.
 - Release workflow run `24663922506` successfully built and pushed API and web images to GHCR from `b29da3d9eaeedeae6ad64236c1a59b1961de1e8c`.
 
-Blocked:
+Excluded from this work cycle:
 
 - `az account show` on the laptop still requires `az login`.
 - `azure/login@v2` in GitHub Actions fails because the `dev` environment secrets are not configured.
+
+Workflow handling:
+
+- `.github/workflows/release.yml` now checks for the required Azure secrets up front.
+- When those values are absent, the workflow still publishes GHCR images and skips the Azure deployment job instead of failing the repo/package path.
 
 ## 8. Subscription note
 

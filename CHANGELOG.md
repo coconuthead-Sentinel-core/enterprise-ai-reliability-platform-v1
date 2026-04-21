@@ -83,6 +83,15 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 
+- `enterprise_ai_backend/tests/test_backend.py` now creates a unique temporary
+  SQLite database per run and cleans it up automatically, avoiding stale temp
+  DB collisions after interrupted local test sessions.
+- `.github/workflows/release.yml` now checks whether the required Azure secrets
+  are present and skips the cloud deployment job when they are absent, while
+  still building and publishing GHCR images.
+- Repo docs now distinguish repo/package completion from live Azure release
+  readiness, align the backend assertion count at 378 across the docs set, and
+  refresh the local validation snapshot to 2026-04-21.
 - `enterprise_ai_backend/app/routers/info.py` now reports Sprint 3 as done and
   exposes Sprint 4 / Sprint 5 as active local work on the current branch head.
 - `enterprise_ai_backend/scripts/export_openapi.py` now writes

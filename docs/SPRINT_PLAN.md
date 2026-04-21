@@ -4,7 +4,7 @@ Project: Enterprise AI Reliability Platform v1 (EARP)
 Release target: v0.3.0
 Owner: Shannon Bryan Kelly (`coconuthead-Sentinel-core`)
 Working branch: `sprint-3/policy-audit-log`
-As of: 2026-04-20
+As of: 2026-04-21
 
 ---
 
@@ -16,8 +16,8 @@ As of: 2026-04-20
 | 1 | E1 | Evidence Ingestion and Normalization | shim delivered; backlog epic still open |
 | 2 | E2 | Reliability Scoring Engine | done |
 | 3 | E3 | Policy Gate Evaluation | done on the current branch head |
-| 4 | E4 | Dashboard and Reporting | implemented locally; pending push/CI on the rolled-forward branch head |
-| 5 | E5 | Security and Compliance | approval separation, audit ledger, and retention/legal-hold local slices implemented; cloud-only controls still blocked by Azure credentials |
+| 4 | E4 | Dashboard and Reporting | implemented on the current branch head and included in this sync cycle |
+| 5 | E5 | Security and Compliance | approval separation, audit ledger, and retention/legal-hold local slices implemented; cloud-only controls are intentionally deferred because Azure credential provisioning is excluded from this cycle |
 
 PR #8 originally represented the exact Sprint 3 delivery branch. The same branch
 now carries rolled-forward local Sprint 4 and Sprint 5 work.
@@ -36,8 +36,8 @@ so local product work, release evidence, and Azure blockers stay separated.
 
 | Bucket | Items |
 | --- | --- |
-| Do now | Finish local dashboard/reporting work, keep backend and frontend validation green, publish accurate release evidence for the rolled-forward branch head |
-| Schedule next | Push the current branch head, rerun GitHub CI on the same head, decide whether to keep extending PR #8 or cut a new PR after review |
+| Do now | Keep backend and frontend validation green, publish accurate release evidence for the rolled-forward branch head, and sync the branch as the source of truth |
+| Schedule next | Rerun GitHub CI on the pushed branch head, decide whether to keep extending PR #8 or cut a new PR after review |
 | Delegate / wait | Azure login, active Azure subscription access, GitHub `dev` environment secrets, Key Vault secret population, live FQDN discovery |
 | Defer | Live smoke tests and public Azure URLs until Azure deployment credentials exist |
 
@@ -129,7 +129,7 @@ Epic E5 now has a local evidence-bundle slice:
 
 ## Validation snapshot
 
-Validated locally on 2026-04-20:
+Validated locally on 2026-04-21:
 
 - `python tests/test_backend.py`: pass, 378/378 assertions
 - `python -m pytest -q`: pass, 2 tests
@@ -151,16 +151,19 @@ Release workflow evidence for `b29da3d`:
 - `Build & push images`: success
 - `Deploy to Azure Container Apps`: failed at `azure/login@v2`
   because Azure secrets are not configured in the GitHub `dev` environment
+- Current repo change: `release.yml` now skips the Azure deployment job when
+  those secrets are absent, so cloud credentials are treated as an external
+  follow-on instead of a failing repo-completion step
 
 ---
 
-## Azure path
+## Azure path (excluded from this cycle)
 
 Azure is not blocked by subscription tier. An active Azure Pay-As-You-Go
 subscription is sufficient for this project as long as it can create the
 required resources and the account has permission to deploy them.
 
-What is blocked right now:
+What is intentionally excluded right now:
 
 - `az account show` on this laptop still requires `az login`
 - GitHub repository secrets are empty
@@ -184,10 +187,9 @@ along to:
 
 ## Next execution slice
 
-The next clean move is:
+The next clean move after this sync is:
 
-1. push the current rolled-forward branch head,
-2. rerun GitHub CI against that exact head,
-3. keep Azure deployment paused until credentials exist,
-4. once secrets exist, rerun `release.yml`, collect the API and web FQDNs,
-   and run smoke tests against the live URLs.
+1. rerun GitHub CI against the current synced branch head,
+2. keep Azure deployment excluded until credentials exist,
+3. once secrets exist, rerun `release.yml`, collect the API and web FQDNs,
+4. run smoke tests against the live URLs.

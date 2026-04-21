@@ -24,6 +24,48 @@ env:
   AZURE_REGION: centralus
 
 jobs:
+  check-azure-credentials:
+    name: Check Azure deployment prerequisites
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env || 'dev' }}
+    outputs:
+      azure_ready: ${{ steps.check.outputs.azure_ready }}
+    steps:
+      - name: Determine whether Azure credentials are configured
+        id: check
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_MANAGED_IDENTITY_ID: ${{ secrets.AZURE_MANAGED_IDENTITY_ID }}
+          AZURE_KEY_VAULT_URI: ${{ secrets.AZURE_KEY_VAULT_URI }}
+        run: |
+          missing=()
+          for name in AZURE_CLIENT_ID AZURE_TENANT_ID AZURE_SUBSCRIPTION_ID AZURE_MANAGED_IDENTITY_ID AZURE_KEY_VAULT_URI; do
+            if [[ -z "${!name}" ]]; then
+              missing+=("$name")
+            fi
+          done
+
+          if [[ ${#missing[@]} -eq 0 ]]; then
+            echo "azure_ready=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "Azure deployment prerequisites"
+              echo
+              echo "All required Azure deployment secrets are configured for this environment."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "azure_ready=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "Azure deployment skipped"
+              echo
+              echo "The workflow will still publish GHCR images. Azure deployment is treated as an external follow-on when these secrets are absent:"
+              for name in "${missing[@]}"; do
+                echo "- $name"
+              done
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   build-and-push:
     name: Build & push images
     runs-on: ubuntu-latest
@@ -69,7 +111,8 @@ jobs:
 
   deploy:
     name: Deploy to Azure Container Apps
-    needs: build-and-push
+    if: needs.check-azure-credentials.outputs.azure_ready == 'true'
+    needs: [check-azure-credentials, build-and-push]
     runs-on: ubuntu-latest
     environment: ${{ inputs.env || 'dev' }}
     steps:

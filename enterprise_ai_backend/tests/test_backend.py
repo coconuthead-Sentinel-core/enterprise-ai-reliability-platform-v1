@@ -5,19 +5,23 @@ real scikit-learn IsolationForest. No mocks.
 
 Run:   python test_backend.py     (from the enterprise_ai_backend/ folder)
 """
+import atexit
 import hashlib
 import io
 import json
 import math
 import os
+import shutil
 import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-_TMP_DB = os.path.join(tempfile.gettempdir(), "enterprise_ai_test_v3.db")
-if os.path.exists(_TMP_DB):
-    os.remove(_TMP_DB)
+# Use a unique temp directory for each run so interrupted sessions do not leave
+# behind a reused SQLite file that can collide with the next invocation.
+_TMP_DIR = tempfile.mkdtemp(prefix="enterprise_ai_test_v3-")
+atexit.register(lambda: shutil.rmtree(_TMP_DIR, ignore_errors=True))
+_TMP_DB = os.path.join(_TMP_DIR, "enterprise_ai_test_v3.db")
 os.environ["DATABASE_URL"] = f"sqlite:///{_TMP_DB}"
 os.environ["JWT_SECRET"] = "test-secret-" + "z" * 48
 

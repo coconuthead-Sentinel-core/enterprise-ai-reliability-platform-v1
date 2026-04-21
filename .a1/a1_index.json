@@ -1,0 +1,4186 @@
+{
+  "belongs_to": "enterprise-ai-reliability-platform-v1",
+  "generated_at_utc": "2026-04-21T07:50:59.135808+00:00",
+  "links": [],
+  "nodes": [
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T12:26:14.779850+00:00",
+      "node_id": "24139dae6567",
+      "path": ".gitattributes",
+      "row": "row8",
+      "sha256": null,
+      "size": 274,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T00:25:54.195057+00:00",
+      "node_id": "a5cc2925ca82",
+      "path": ".gitignore",
+      "row": "row8",
+      "sha256": null,
+      "size": 515,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-21T07:45:17.610387+00:00",
+      "node_id": "ab09011fa121",
+      "path": "CHANGELOG.md",
+      "row": "row10",
+      "sha256": "382532898b3d9699ff91008d7bebc1646449bded997ad014c974a29026b066ef",
+      "size": 6656,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T07:35:31.719779+00:00",
+      "node_id": "3f454a98e586",
+      "path": "CONTRIBUTING.md",
+      "row": "row8",
+      "sha256": "2299b84192317c828666e6ffdc3ce6d36429309ccaddb7b74ee1a0b6fc42a602",
+      "size": 2149,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T00:25:19.409249+00:00",
+      "node_id": "0398ccd0f492",
+      "path": "LICENSE",
+      "row": "row8",
+      "sha256": null,
+      "size": 1816,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.086357+00:00",
+      "node_id": "64c3e07ec4ed",
+      "path": "Project software development life cycle..txt",
+      "row": "row8",
+      "sha256": "873d216d36547d20e20594279cd26452c5165b37ffec988aba93d9a6a0c9cf90",
+      "size": 2548,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-21T07:45:17.570638+00:00",
+      "node_id": "8ec9a00bfd09",
+      "path": "README.md",
+      "row": "row10",
+      "sha256": "1d4eefe44dc1b4b1c53fe29d0b5a760e6faf05dabd9a0cba76098fb770b47578",
+      "size": 4079,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T04:16:50.132351+00:00",
+      "node_id": "bf6489393eca",
+      "path": "README_CANONICAL.txt",
+      "row": "row8",
+      "sha256": "e03b1bf174e20d25fcafcac6fe09220583e0d3493c08b990e72c11c6d183be4c",
+      "size": 206,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T07:35:59.922963+00:00",
+      "node_id": "4cb649179972",
+      "path": "RELEASE.md",
+      "row": "row8",
+      "sha256": "78fcd548591e8c0e3931ae10a79c54c06b619c9cdf097e31a845f0c91114f4d9",
+      "size": 2145,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T07:35:44.468915+00:00",
+      "node_id": "7c875fef5426",
+      "path": "SECURITY.md",
+      "row": "row8",
+      "sha256": "afcc437fbd8ccfa098d8e464f25fdace619dfb32629ad54f8ec272e350c927e1",
+      "size": 1866,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-21T05:39:27.273049+00:00",
+      "node_id": "896a3cdcd318",
+      "path": ".a1/a1_index.json",
+      "row": "row8",
+      "sha256": "a23b4f2d6af6e226803beec8b08d239f51183aae471ea6d2830e0382d1e4081d",
+      "size": 141566,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-21T07:46:16.804316+00:00",
+      "node_id": "40e335ca5fe1",
+      "path": ".azure/plan.md",
+      "row": "row13",
+      "sha256": "010d2b5274f144de60d792c4c485c83e3deec9ea3312103d9cdebf1f52fb1795",
+      "size": 4379,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-19T06:56:39.654604+00:00",
+      "node_id": "9e46cc1aaf55",
+      "path": ".claude-skills-staging/planning-canon/SKILL.md",
+      "row": "row8",
+      "sha256": "de777291a467bc73d136126425088133d77d6a0d2c62816e21252164f694a6f7",
+      "size": 12456,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T08:25:51.775775+00:00",
+      "node_id": "533252a7511c",
+      "path": ".claude-skills-staging/planning-canon/references/arc42-template.md",
+      "row": "row8",
+      "sha256": "d9512a4e5447eca12443a8846e0515104bc19856ce941cce7e1b4cb89eab2088",
+      "size": 8393,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-18T08:30:54.690996+00:00",
+      "node_id": "dac976564cfb",
+      "path": ".claude-skills-staging/planning-canon/references/asyncapi-skeleton.yaml",
+      "row": "row8",
+      "sha256": "6c347373d00b6450fbdb55e81fa9e2e88368a5101320ee557a5843b032bcf51d",
+      "size": 9055,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T08:27:42.617822+00:00",
+      "node_id": "7b24aa97b747",
+      "path": ".claude-skills-staging/planning-canon/references/c4-model-guide.md",
+      "row": "row8",
+      "sha256": "879b4b306d9a5b1c038e55abad08386cf9d18a217b741b3ff5805a00a29ae83f",
+      "size": 8510,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-19T06:55:24.775791+00:00",
+      "node_id": "6dbaef2aaec9",
+      "path": ".claude-skills-staging/planning-canon/references/gates.md",
+      "row": "row8",
+      "sha256": "03ff65f1822926af727806234abade867a152128a6a621341240c7e59fa56aec",
+      "size": 10043,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T08:26:48.282896+00:00",
+      "node_id": "5d84f0ca170f",
+      "path": ".claude-skills-staging/planning-canon/references/madr-template.md",
+      "row": "row8",
+      "sha256": "879f8c20d5af2a4948983282bcd39ca3d27964694b211d61d3a42f657803c9ab",
+      "size": 8595,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-19T06:53:42.707560+00:00",
+      "node_id": "a2411f612149",
+      "path": ".claude-skills-staging/planning-canon/references/nist-ai-rmf-playbook.md",
+      "row": "row8",
+      "sha256": "e64e5eb475a429524faf33688ef5b8dda524f36a413c0faf4faea7cf409ca945",
+      "size": 14599,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-18T08:28:28.223564+00:00",
+      "node_id": "1322ecdf5591",
+      "path": ".claude-skills-staging/planning-canon/references/openapi-skeleton.yaml",
+      "row": "row8",
+      "sha256": "2ca063f36b0862a2635738c006cd97b4d83ec911cd7f380aec08314999af2616",
+      "size": 8492,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-19T06:54:25.609585+00:00",
+      "node_id": "84321e281ce3",
+      "path": ".claude-skills-staging/planning-canon/references/rubric.md",
+      "row": "row8",
+      "sha256": "b162ae0fd4ed020cfd464c325adc87690df07aa0c16f05eeed4e27f93ed9b8df",
+      "size": 6597,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-19T06:52:21.186052+00:00",
+      "node_id": "10b16bc5236c",
+      "path": ".claude-skills-staging/planning-canon/references/threat-dragon-template.json",
+      "row": "row8",
+      "sha256": "9345f9e03bb91208d7c2388867a628b10f787c6b8c9b28f00ef39be1d1b567d1",
+      "size": 10090,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:34:26.092202+00:00",
+      "node_id": "7f9004ad0df1",
+      "path": ".github/CODEOWNERS",
+      "row": "row13",
+      "sha256": null,
+      "size": 1065,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:34:35.740919+00:00",
+      "node_id": "b8baf23d7ed7",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "row": "row13",
+      "sha256": "5260005f4265b8da5cad2fc579fad688229239541aa3fe59d6b952595a5e368a",
+      "size": 1102,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:34:46.068930+00:00",
+      "node_id": "3e235c5513b5",
+      "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "row": "row13",
+      "sha256": "b297fd1e1954a65fca033147d4c125682d07fec8456514206cf0e10035d0ca88",
+      "size": 1414,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:34:52.769224+00:00",
+      "node_id": "dc11e028cae5",
+      "path": ".github/ISSUE_TEMPLATE/feature_request.yml",
+      "row": "row13",
+      "sha256": "bca1560da8ee5b190c919d6b7ffb9e24806803345e95e140d566f3580462b37f",
+      "size": 1098,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:33:35.321248+00:00",
+      "node_id": "4075863c43a3",
+      "path": ".github/workflows/ci-api.yml",
+      "row": "row13",
+      "sha256": "3b30f5d52b635ca1d318b23e92b0a41dfe6ee113597f8dddd1c4d04981fa11c7",
+      "size": 1508,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:33:53.986820+00:00",
+      "node_id": "1899c4596048",
+      "path": ".github/workflows/ci-contracts.yml",
+      "row": "row13",
+      "sha256": "c15fc17dab3b5e9ae29ccde6e7dbc206e4f60b1655c5cdc20abfa9c92c7db06a",
+      "size": 2145,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:33:40.528459+00:00",
+      "node_id": "c499b1cbebba",
+      "path": ".github/workflows/ci-web.yml",
+      "row": "row13",
+      "sha256": "46937c132988c6e736a3eaa8f383d8977ec9f7b6267759103775cc7c0c2f4307",
+      "size": 867,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-21T07:45:17.563536+00:00",
+      "node_id": "16911b9809e0",
+      "path": ".github/workflows/release.yml",
+      "row": "row13",
+      "sha256": "c72347476ee9c007fb271da3ff69c684be8df4c71f3119d058d50bb10866b198",
+      "size": 4979,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:34:05.563209+00:00",
+      "node_id": "35edf06a5560",
+      "path": ".github/workflows/security-scans.yml",
+      "row": "row13",
+      "sha256": "9aa9c5a3a71a07e5b7d7baa4a93a03f301450da19ca6a59c5cfd47b4222d7c86",
+      "size": 1593,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T07:36:28.503532+00:00",
+      "node_id": "126af53d6205",
+      "path": "api/api.txt",
+      "row": "row8",
+      "sha256": "4f69a82d2578900b26ce9a74f5855ee46cca9514521d7e0c210a01e361f16234",
+      "size": 244,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-21T02:20:02.562395+00:00",
+      "node_id": "143061a8a195",
+      "path": "apps/api/README.md",
+      "row": "row10",
+      "sha256": "a19a8d6d0dbf76b5d67557e35552d9708a9cc72c28e8f4a70b62323a5384ca39",
+      "size": 2630,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T10:55:57.111747+00:00",
+      "node_id": "fce4b991c3bf",
+      "path": "apps/web/Dockerfile",
+      "row": "row8",
+      "sha256": null,
+      "size": 333,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-20T20:42:00.876767+00:00",
+      "node_id": "7964e76a2779",
+      "path": "apps/web/README.md",
+      "row": "row10",
+      "sha256": "e6fb68a0f65c5ce94cec3501a1beda8fa03e3d3ac6eca9766b3c56770ef423fa",
+      "size": 818,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T10:55:56.941667+00:00",
+      "node_id": "208ad3e754e9",
+      "path": "apps/web/index.html",
+      "row": "row8",
+      "sha256": null,
+      "size": 422,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-18T11:27:25.612449+00:00",
+      "node_id": "e060f84a8ab3",
+      "path": "apps/web/package-lock.json",
+      "row": "row8",
+      "sha256": "ef6bef4dda7008afdf9f3609961c4b03d95ba56c871997d24923af4721bc2b05",
+      "size": 33527,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-18T11:27:25.504436+00:00",
+      "node_id": "197e113e4d3e",
+      "path": "apps/web/package.json",
+      "row": "row8",
+      "sha256": "21178412da2a82ba46e107c9535628625875bf17083c6cef9e6e58eccee330f8",
+      "size": 621,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-18T07:30:35.169149+00:00",
+      "node_id": "9161a379683e",
+      "path": "apps/web/tsconfig.json",
+      "row": "row8",
+      "sha256": "3dbbde6e820d93d3bc05d0c54de9aba50d39b9e7fb6b736713a60a2edf5a17af",
+      "size": 508,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T07:30:39.860901+00:00",
+      "node_id": "3e69cba5d021",
+      "path": "apps/web/vite.config.ts",
+      "row": "row5",
+      "sha256": "5cca152ecca953ba15cfffba16b407d106bd32ab08d18f68ba18c370a0eb7085",
+      "size": 556,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T20:45:34.975134+00:00",
+      "node_id": "6d5f907f208e",
+      "path": "apps/web/vite.stderr.log",
+      "row": "row8",
+      "sha256": null,
+      "size": 0,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T20:45:42.139481+00:00",
+      "node_id": "23a88aaa0a9a",
+      "path": "apps/web/vite.stdout.log",
+      "row": "row8",
+      "sha256": null,
+      "size": 219,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T10:55:57.358321+00:00",
+      "node_id": "c02b5d1af4df",
+      "path": "apps/web/docker-entrypoint.d/40-earp-config.sh",
+      "row": "row8",
+      "sha256": "829fa85f196a0b9acc392e175ed4dcb19d1b853f0893b59f0703faa2aa41cdbe",
+      "size": 128,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T10:55:57.192406+00:00",
+      "node_id": "3c89b0c0ee4f",
+      "path": "apps/web/public/config.js",
+      "row": "row5",
+      "sha256": "9278ec08e932e90297e22c9cf1a496229440d022f15a836e7c2a3718d0e37cf6",
+      "size": 44,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-20T20:25:42.646068+00:00",
+      "node_id": "9064b7bb3ab7",
+      "path": "apps/web/src/App.tsx",
+      "row": "row5",
+      "sha256": "17f28427ebc935a82b37617109b7401f4ec94226215317510339552987b848cb",
+      "size": 22512,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-20T20:23:40.339883+00:00",
+      "node_id": "dee70f45769a",
+      "path": "apps/web/src/api.ts",
+      "row": "row5",
+      "sha256": "ccaca57f98eba1f271385cfd082aabb2919b79731db48c1e96e74f9608f0bb4b",
+      "size": 8403,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T07:30:46.684416+00:00",
+      "node_id": "3b90b8c77340",
+      "path": "apps/web/src/main.tsx",
+      "row": "row5",
+      "sha256": "a80dcb91da9f1dd02e8b64c31d056e8b5894c2e08efe3500d2ef03f996293d30",
+      "size": 237,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T20:25:32.437856+00:00",
+      "node_id": "539bb2bb13a0",
+      "path": "apps/web/src/styles.css",
+      "row": "row8",
+      "sha256": null,
+      "size": 5381,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T11:25:53.287844+00:00",
+      "node_id": "ba8ddfe414d1",
+      "path": "apps/web/src/vite-env.d.ts",
+      "row": "row5",
+      "sha256": "0470577dde6277ce7ef4dd677796ac748327623a0232e68f33d524da9e6ee7c7",
+      "size": 120,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-15T01:14:12.567812+00:00",
+      "node_id": "921ff9840875",
+      "path": "architecture_and_api_contracts/SP-Core_Spec.json",
+      "row": "row8",
+      "sha256": "d5736a61b86ce2c80cbb3501d1c8c222ba18c55fd9c1e305920b99032f9b46e5",
+      "size": 1873,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.095383+00:00",
+      "node_id": "ed0b3872b3be",
+      "path": "architecture_and_api_contracts/architecture_and_api_contracts.txt",
+      "row": "row8",
+      "sha256": "cf8dbee1fede16559e0091eb720e7b63031c1fbc0451ec4e4fccb7fef745b604",
+      "size": 1704,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.484274+00:00",
+      "node_id": "986c5b4c1be3",
+      "path": "architecture_and_api_contracts/building_block_view.txt",
+      "row": "row8",
+      "sha256": "12dbb51a31961ff91fd8bd13222df31ba5721379dad9cfa59a72779ec269b440",
+      "size": 1141,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.495764+00:00",
+      "node_id": "7830e04ce25e",
+      "path": "architecture_and_api_contracts/cross_cutting_concepts.txt",
+      "row": "row8",
+      "sha256": "a653f0e57d666e7668bf9de8b373df29d8a18fe0d5957421b61803056cd94e6a",
+      "size": 1051,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:24:51.518507+00:00",
+      "node_id": "a9321f745da0",
+      "path": "architecture_and_api_contracts/data_model_schema.txt",
+      "row": "row8",
+      "sha256": "6d59677e6724ef920b8ec1829141c230f2e854311fdeab85e79d7e5fd5592f6d",
+      "size": 1154,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.515990+00:00",
+      "node_id": "9389209703b2",
+      "path": "architecture_and_api_contracts/deployment_view.txt",
+      "row": "row8",
+      "sha256": "33dbcb86e95e81f0c0c0ee7f0d053aaf02b35867b5eecf0ffebb4b2350520206",
+      "size": 1056,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.526690+00:00",
+      "node_id": "528f84c77c2c",
+      "path": "architecture_and_api_contracts/error_model_and_status_codes.txt",
+      "row": "row8",
+      "sha256": "bf6d2e7557819c835d1e50ada80983b98c3b47609d4385094a1ad81bcb1b1f60",
+      "size": 1090,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.532304+00:00",
+      "node_id": "d8d1f9c47101",
+      "path": "architecture_and_api_contracts/integration_contracts.txt",
+      "row": "row8",
+      "sha256": "63c7a8476293ff9cd33dd24db0e710af32ccd439520ceca6d6286063503dddda",
+      "size": 1166,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-15T01:24:51.528679+00:00",
+      "node_id": "0da46899c4b2",
+      "path": "architecture_and_api_contracts/openapi_spec.yaml",
+      "row": "row8",
+      "sha256": "0eef486386934ee41b436751d8e82ea658abb4f4f987a67bb44103ef753ed104",
+      "size": 6050,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.537048+00:00",
+      "node_id": "2b6b1ebc8b13",
+      "path": "architecture_and_api_contracts/runtime_scenarios.txt",
+      "row": "row8",
+      "sha256": "275ce4b1888c1e63377d60d2fc0ac8916dbfe8cd8cb553f55febb81d6a073e71",
+      "size": 1030,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T12:21:24.744744+00:00",
+      "node_id": "166a39172177",
+      "path": "Azure/Azure.txt",
+      "row": "row8",
+      "sha256": "341264910446f5a1f86df306b85e0cc8d89f11414b2a7cb7927e3c4526d45b85",
+      "size": 6492,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T07:39:05.117433+00:00",
+      "node_id": "545163f39652",
+      "path": "Azure/DEPLOYMENT.md",
+      "row": "row8",
+      "sha256": "b6cea02ec38838f014964880e682b04f3ba3695bbb88de5c1ae60dc10d84bf3e",
+      "size": 2589,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-20T11:54:28.636100+00:00",
+      "node_id": "92847aebbca3",
+      "path": "Azure/README.md",
+      "row": "row10",
+      "sha256": "5dea7203bb3543f630383293567f2dbf317559264871779409370b6eeb2b703c",
+      "size": 1599,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-16T13:33:25.616523+00:00",
+      "node_id": "f3fc686b9145",
+      "path": "Back in/.env",
+      "row": "row8",
+      "sha256": null,
+      "size": 928,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-16T13:41:23.121563+00:00",
+      "node_id": "9c31b8fec583",
+      "path": "Back in/Back end..txt",
+      "row": "row8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-16T14:05:43.692226+00:00",
+      "node_id": "72833b858c84",
+      "path": "Back in/auth.py",
+      "row": "row5",
+      "sha256": "51879da36e073b14a990908b905e40a1b75ba5393db60af0650e2e9bf72d231d",
+      "size": 1828,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-16T14:05:16.393505+00:00",
+      "node_id": "a6066992f70f",
+      "path": "Back in/database.py",
+      "row": "row5",
+      "sha256": "2f2be4ae089f08dce68af321b46f9072b99f824b0ba5fe75568d078784c0f4cc",
+      "size": 3899,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-17T01:04:45.013438+00:00",
+      "node_id": "77812a4e95b9",
+      "path": "Back in/earp-backend-8000.err.log",
+      "row": "row8",
+      "sha256": null,
+      "size": 79011,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-17T08:22:22.016057+00:00",
+      "node_id": "a5e034e4c678",
+      "path": "Back in/earp-backend-8000.out.log",
+      "row": "row8",
+      "sha256": null,
+      "size": 1188,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-16T21:52:48.061580+00:00",
+      "node_id": "5592c9be0980",
+      "path": "Back in/earp.db",
+      "row": "row8",
+      "sha256": null,
+      "size": 49152,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-17T00:54:12.197638+00:00",
+      "node_id": "70c244583c74",
+      "path": "Back in/main.py",
+      "row": "row5",
+      "sha256": "8c7ce8643c8535f276b8d508404777dd4116c4c5cbf560c5a6fd458afbcdf6f1",
+      "size": 19635,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-16T14:07:46.512059+00:00",
+      "node_id": "506b6c46e1e7",
+      "path": "Back in/requirements.txt",
+      "row": "row8",
+      "sha256": "290eafeb0a349391a78bcaefdf34342f210271498ee43b69a8d1f7fdcc6a7a97",
+      "size": 91,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-16T14:07:55.957196+00:00",
+      "node_id": "3b610a17b4fe",
+      "path": "Back in/run.py",
+      "row": "row5",
+      "sha256": "8ca2c2e25bb6b7c8136480e065c727a14c692024ad585ca4e433cac3ed42ac4c",
+      "size": 219,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-16T14:05:58.273927+00:00",
+      "node_id": "a920656c8088",
+      "path": "Back in/schemas.py",
+      "row": "row5",
+      "sha256": "7a814b36e38b0bfd4862d5a58af7be5280353d0d2ad24b77fac2cc797139d91e",
+      "size": 3409,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-16T14:07:00.972861+00:00",
+      "node_id": "7c6449f05ab9",
+      "path": "Back in/services/__init__.py",
+      "row": "row5",
+      "sha256": "603841d784dbe78f83f242524a4d9fc0c91cad1c1350ee4fb7a7e2df03fabb98",
+      "size": 24,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-16T14:06:56.907251+00:00",
+      "node_id": "6b36bf0e8245",
+      "path": "Back in/services/audit_reporting.py",
+      "row": "row5",
+      "sha256": "30c1f0f01e9ea423550084c88154e118b7ec32965fe544f83c94f486dc4dcdd7",
+      "size": 4900,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-16T14:06:38.047398+00:00",
+      "node_id": "7efe73fc9d42",
+      "path": "Back in/services/policy_evaluation.py",
+      "row": "row5",
+      "sha256": "40aa89ac1dc08c4cdcd8dde7869bc92941685b4d4f2115f606bb1bb025c1a08e",
+      "size": 6062,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-16T14:06:14.801172+00:00",
+      "node_id": "5bcd7ceba8fb",
+      "path": "Back in/services/reliability_scoring.py",
+      "row": "row5",
+      "sha256": "88a9d3e07376dda6fd2067665086ec8b38f344b157dab6f220309534a948309c",
+      "size": 4647,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.545611+00:00",
+      "node_id": "129c31b0f597",
+      "path": "data_governance_and_privacy_plan/data_governance_and_privacy_plan.txt",
+      "row": "row8",
+      "sha256": "d6748eaf95253dd492449ed02b4e3726d312c3b2802f03cda40efdf649651e91",
+      "size": 1354,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.550353+00:00",
+      "node_id": "3d26901cb600",
+      "path": "decision_log_adr/decision_log_adr.txt",
+      "row": "row8",
+      "sha256": "082fed9ee7f426aa013981bda8895fea748a46053ba14f7187c0ed8a65fe8aee",
+      "size": 1365,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.558221+00:00",
+      "node_id": "655c24c3a680",
+      "path": "discovery_and_problem_definition/reliability-platform-v1 .txt",
+      "row": "row8",
+      "sha256": "3c7b7c91c7643e796afa6fd20edc7aa23987c69624cf63f446206d6ed4d0389a",
+      "size": 1462,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-21T07:45:17.579226+00:00",
+      "node_id": "9f7cbce127b9",
+      "path": "docs/README.md",
+      "row": "row10",
+      "sha256": "7d121f1c4242513af069b520d84db18f2dd15d291c62b0ac1f65fb53ee685624",
+      "size": 3363,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-21T07:46:16.797171+00:00",
+      "node_id": "46ea6a2ccb8f",
+      "path": "docs/SPRINT_PLAN.md",
+      "row": "row10",
+      "sha256": "0588e04903f44609130f447813680d0461996e0211a40dfc55b32ccd9b62b0ec",
+      "size": 7623,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-20T20:43:32.282686+00:00",
+      "node_id": "20d573855bf4",
+      "path": "docs/dashboard-reporting.md",
+      "row": "row10",
+      "sha256": "5a16c16698f1fe1b4c03421aaffb5fa00af815968d157cc84dc01795acc41c61",
+      "size": 880,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "evidence",
+      "mtime_utc": "2026-04-21T07:46:16.801495+00:00",
+      "node_id": "91318e69bff7",
+      "path": "docs/go-no-go.md",
+      "row": "row10",
+      "sha256": "6a265e4aa24aa072b2cddd5277a908b64c0de89d990938daa7f75d28bedd67b3",
+      "size": 3196,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-18T12:19:48.835824+00:00",
+      "node_id": "5e0ed708f1f2",
+      "path": "docs/hr-review-guide.md",
+      "row": "row10",
+      "sha256": "1a4fd139fa5b81059fb20171acbab5c062bae07da24d4f8f24bc8ca5d80233cd",
+      "size": 2054,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "evidence",
+      "mtime_utc": "2026-04-21T07:45:17.593862+00:00",
+      "node_id": "dc6d5c682b67",
+      "path": "docs/release-evidence.md",
+      "row": "row10",
+      "sha256": "265c3a5fd9d67237692e4b13b3a33a013c0d9de26fc94e0701689198cfc6371d",
+      "size": 3619,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "evidence",
+      "mtime_utc": "2026-04-21T02:20:02.572467+00:00",
+      "node_id": "037e134dcbe1",
+      "path": "docs/security-compliance-evidence-bundle.md",
+      "row": "row10",
+      "sha256": "6d6fb060dfaa3fd809ff02256adba56272cb736a173be9bbddc8dde39fc0603d",
+      "size": 1179,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T01:56:50.415126+00:00",
+      "node_id": "350ea5f6374b",
+      "path": "Enterprise readability AI Platform v1 Artificial Intelligence/Risk Management Framework/NIST.AI.100-1.pdf",
+      "row": "row8",
+      "sha256": null,
+      "size": 1946127,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.570715+00:00",
+      "node_id": "d43eb4158187",
+      "path": "Enterprise readability AI Platform v1 Artificial Intelligence/Risk Management Framework/Risk Management Framework.txt",
+      "row": "row8",
+      "sha256": "8a0f574cb2de4dc9dbb474a05a8d5277bf097c334759678cd66950113a6d88de",
+      "size": 2471,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.579809+00:00",
+      "node_id": "7eb1c1f17db2",
+      "path": "enterprise-ai-reliability-platform-v1/arc42_mapping_index.txt",
+      "row": "row8",
+      "sha256": "ec07de8f8c8152960c48010e3617673578138e513db0f2b7d6131b50c419af25",
+      "size": 1520,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:16:31.870741+00:00",
+      "node_id": "8093b2bd22d5",
+      "path": "enterprise-ai-reliability-platform-v1/sdlc_baseline_project_software_development_life_cycle_txt",
+      "row": "row8",
+      "sha256": null,
+      "size": 568,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T04:23:52.649183+00:00",
+      "node_id": "d51cb1327ef4",
+      "path": "enterprise_ai_backend/.env",
+      "row": "row8",
+      "sha256": null,
+      "size": 340,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T04:23:54.817933+00:00",
+      "node_id": "fc0788fd543c",
+      "path": "enterprise_ai_backend/.env.example",
+      "row": "row8",
+      "sha256": null,
+      "size": 287,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T02:52:44.748264+00:00",
+      "node_id": "e7c07d519ad1",
+      "path": "enterprise_ai_backend/.gitignore",
+      "row": "row8",
+      "sha256": null,
+      "size": 288,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T02:53:49.242683+00:00",
+      "node_id": "9512444ea879",
+      "path": "enterprise_ai_backend/Dockerfile",
+      "row": "row8",
+      "sha256": null,
+      "size": 296,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-21T02:20:02.555342+00:00",
+      "node_id": "71900f4dee36",
+      "path": "enterprise_ai_backend/README.md",
+      "row": "row10",
+      "sha256": "13bcc9497c71dd0fded9bb5f541d8bbe47e082c49c2906f284a106889e53fb43",
+      "size": 2998,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-18T02:53:51.246205+00:00",
+      "node_id": "ab42691283bf",
+      "path": "enterprise_ai_backend/docker-compose.yml",
+      "row": "row8",
+      "sha256": "030e27e9c0648bfb10985f5320e78e8d29a12321a2774b52f5139fbb2e204b65",
+      "size": 332,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T02:52:45.792223+00:00",
+      "node_id": "ca0b3fe72493",
+      "path": "enterprise_ai_backend/main.py",
+      "row": "row5",
+      "sha256": "71e831edc4d83b1ae1d1a3922380172b7585f5fd1ddcfc59163322d7073ccff0",
+      "size": 117,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T20:21:21.865404+00:00",
+      "node_id": "f15b4614e433",
+      "path": "enterprise_ai_backend/requirements.txt",
+      "row": "row8",
+      "sha256": "7b0c06acf270a74e8ada059f265dff5a4e7c36b528c8c16947a9bc97c537714b",
+      "size": 334,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T02:52:38.047968+00:00",
+      "node_id": "58a591a60127",
+      "path": "enterprise_ai_backend/run.py",
+      "row": "row5",
+      "sha256": "80132abd4746f751a13d85de7b03836b4747a008bfb6a7ad5da620f83043d47d",
+      "size": 345,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "test",
+      "mtime_utc": "2026-04-18T02:53:23.859574+00:00",
+      "node_id": "c3b5708b1af6",
+      "path": "enterprise_ai_backend/test_backend.py",
+      "row": "row5",
+      "sha256": "202b9cfece865e2b7848077321f4c615bf10d6198a1ab302aac66ece70ad746f",
+      "size": 149,
+      "status": "active",
+      "tags": [
+        "verify"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T20:45:59.323511+00:00",
+      "node_id": "00be9a1c9962",
+      "path": "enterprise_ai_backend/uvicorn.stderr.log",
+      "row": "row8",
+      "sha256": null,
+      "size": 201,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T20:46:15.871745+00:00",
+      "node_id": "104c5c48b108",
+      "path": "enterprise_ai_backend/uvicorn.stdout.log",
+      "row": "row8",
+      "sha256": null,
+      "size": 59,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T02:51:44.566514+00:00",
+      "node_id": "3db7e3efd2da",
+      "path": "enterprise_ai_backend/app/__init__.py",
+      "row": "row5",
+      "sha256": "8f6bed71d01002d7f3d6cb4355737e9ceb8cb464211e93580a22e08472a1ca7e",
+      "size": 90,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T04:22:44.018708+00:00",
+      "node_id": "5499f5560173",
+      "path": "enterprise_ai_backend/app/config.py",
+      "row": "row5",
+      "sha256": "7cbaaa636a1d8de929cd15ba7d22c8564c7352bef30cdd23fbd3d2143ed79e34",
+      "size": 1109,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T02:17:25.906584+00:00",
+      "node_id": "09c765a4f3e9",
+      "path": "enterprise_ai_backend/app/database.py",
+      "row": "row5",
+      "sha256": "b77c27f7aeb12dfb47bc71b27601c5530326250ec2a4885f731647c8d1ab0690",
+      "size": 11051,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T02:17:25.914777+00:00",
+      "node_id": "ddc1fc86cf5d",
+      "path": "enterprise_ai_backend/app/main.py",
+      "row": "row5",
+      "sha256": "cfc9d5bf279d04d576c58bd3c30611a4c8ed9bbbd95cae98d061ee94b2ca2299",
+      "size": 1777,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T04:23:16.906081+00:00",
+      "node_id": "55b41dc7a5e8",
+      "path": "enterprise_ai_backend/app/ml.py",
+      "row": "row5",
+      "sha256": "a0d6157e05bd4546e6285625314b30e28f2067bb80f8f8823d669a0ba303df04",
+      "size": 2170,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T02:17:25.915778+00:00",
+      "node_id": "7fabe7145e0e",
+      "path": "enterprise_ai_backend/app/reporting.py",
+      "row": "row5",
+      "sha256": "ffd362a002fdeacceb9ec26a22682d23c758eec30cd99223d4ea669a14ed54ba",
+      "size": 17762,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T02:17:25.910222+00:00",
+      "node_id": "e27a8ce458c5",
+      "path": "enterprise_ai_backend/app/schemas.py",
+      "row": "row5",
+      "sha256": "a3239f2914ba8f1da9fec045e48b6aa0fe0399f61f648ea9f89b7413edc56152",
+      "size": 21783,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T01:56:58.201869+00:00",
+      "node_id": "121e3adeeeda",
+      "path": "enterprise_ai_backend/app/security.py",
+      "row": "row5",
+      "sha256": "5c150397ad83f4b0e58208f9a4e68391c003cc787f62b2227a364432f7b4a7be",
+      "size": 2953,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T02:17:25.911680+00:00",
+      "node_id": "f97b050d55ee",
+      "path": "enterprise_ai_backend/app/services.py",
+      "row": "row5",
+      "sha256": "433eae9dfb22e802576de00b5d6b06acf3c671f8e90ef40e944a3b43e402d350",
+      "size": 43228,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T02:52:16.695735+00:00",
+      "node_id": "1600b7342bf6",
+      "path": "enterprise_ai_backend/app/routers/__init__.py",
+      "row": "row5",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T04:23:36.666985+00:00",
+      "node_id": "af11e6ab3c80",
+      "path": "enterprise_ai_backend/app/routers/ai.py",
+      "row": "row5",
+      "sha256": "d3827e09ad41e7f0cf6e0c1c9e3c9b79625dd7b75657940d153110ca1003a8d8",
+      "size": 1136,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T04:23:40.854092+00:00",
+      "node_id": "1e73a93ad86c",
+      "path": "enterprise_ai_backend/app/routers/assessments.py",
+      "row": "row5",
+      "sha256": "0e8f45ce6779fb47f44ab29b558827e06ef494575105925dd05f8fd59383a9c6",
+      "size": 1240,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T02:08:02.057150+00:00",
+      "node_id": "8b2bda29315c",
+      "path": "enterprise_ai_backend/app/routers/audit.py",
+      "row": "row5",
+      "sha256": "254a41f968c644351e52af8f8188b3d6b6dda1d8c5d9ced88115b8cad6a24b9f",
+      "size": 1705,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T04:23:32.536408+00:00",
+      "node_id": "9a89a36638b1",
+      "path": "enterprise_ai_backend/app/routers/auth.py",
+      "row": "row5",
+      "sha256": "47feff071841bb3cad9b905bcb490a8ea13f6af85f6b6f7bb67978be8011bbf2",
+      "size": 1523,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T02:18:28.039167+00:00",
+      "node_id": "8e46c629626a",
+      "path": "enterprise_ai_backend/app/routers/compliance.py",
+      "row": "row5",
+      "sha256": "26e330dd6432566f57bafe83a2275129c1f60cfb57efa10835a23e1a7a714505",
+      "size": 2961,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-20T20:23:06.784191+00:00",
+      "node_id": "cb74712a9137",
+      "path": "enterprise_ai_backend/app/routers/dashboard.py",
+      "row": "row5",
+      "sha256": "da2698ad007130c4bfde1741de55ec02d3a6b29c3f9f6373c4f0d4db759fe8bd",
+      "size": 672,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T02:52:29.390608+00:00",
+      "node_id": "5b227c683229",
+      "path": "enterprise_ai_backend/app/routers/hash.py",
+      "row": "row5",
+      "sha256": "31fb16e7507425af47536933aed7f5a059d757d7963a90937a73d4b49b6bfa9e",
+      "size": 544,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T02:52:20.918149+00:00",
+      "node_id": "e5a1e42d65db",
+      "path": "enterprise_ai_backend/app/routers/health.py",
+      "row": "row5",
+      "sha256": "4e68b020388ac019b078f0979361aae61281a1468c63ac3a64a27efa1849b8bf",
+      "size": 1098,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-20T20:37:09.430091+00:00",
+      "node_id": "0cead4648f58",
+      "path": "enterprise_ai_backend/app/routers/info.py",
+      "row": "row5",
+      "sha256": "794d72f710695f402e1d38ab706c86ff8513aae16fc9996659d018cc1fbb89ed",
+      "size": 1947,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-20T10:58:53.810284+00:00",
+      "node_id": "5fb28b24640a",
+      "path": "enterprise_ai_backend/app/routers/policy.py",
+      "row": "row5",
+      "sha256": "854861f5c47d3caaf2edefc57b6478cf7e7c84fd40fe284827568069d8b2a4ed",
+      "size": 2272,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-21T01:57:28.911188+00:00",
+      "node_id": "73e0a5f52614",
+      "path": "enterprise_ai_backend/app/routers/release.py",
+      "row": "row5",
+      "sha256": "15c649fd69ef0abb3867d077836cbd560664809c8f031572de7364096fc42c4e",
+      "size": 2680,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-20T05:36:34.742068+00:00",
+      "node_id": "5f430c3f3452",
+      "path": "enterprise_ai_backend/app/routers/reliability.py",
+      "row": "row5",
+      "sha256": "66d540491339b54a5fe5d6213cf09a76357bfc03257ca46d6965a3f32e4b255a",
+      "size": 3152,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-20T20:23:06.787965+00:00",
+      "node_id": "79806542d5f2",
+      "path": "enterprise_ai_backend/app/routers/reports.py",
+      "row": "row5",
+      "sha256": "0aa738e56ab20c1d0a5eab19cc56fc0cc1c6454ecceb2a7ab1d4d8f436dbb1e6",
+      "size": 1353,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-20T20:45:59.302890+00:00",
+      "node_id": "7c23716101b8",
+      "path": "enterprise_ai_backend/data/enterprise_ai.db",
+      "row": "row8",
+      "sha256": null,
+      "size": 45056,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T02:53:40.288090+00:00",
+      "node_id": "877f16781230",
+      "path": "enterprise_ai_backend/frontend/app.js",
+      "row": "row5",
+      "sha256": "00468ab0d68a35693c523cad9c1dab44f8dce66eaf91565ef33859ed0e896e69",
+      "size": 2310,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T02:53:31.879532+00:00",
+      "node_id": "eb099c2d1ceb",
+      "path": "enterprise_ai_backend/frontend/index.html",
+      "row": "row8",
+      "sha256": null,
+      "size": 2250,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T02:53:47.197188+00:00",
+      "node_id": "fdf8d55d809a",
+      "path": "enterprise_ai_backend/frontend/styles.css",
+      "row": "row8",
+      "sha256": null,
+      "size": 1591,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T10:57:25.117753+00:00",
+      "node_id": "d44662666162",
+      "path": "enterprise_ai_backend/scripts/demo_flow.py",
+      "row": "row5",
+      "sha256": "bcce3ba9645d7bd54d35a7ad1962a7b98643cceb184a4f35ff167677033b3d9d",
+      "size": 2930,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-20T11:25:01.586629+00:00",
+      "node_id": "8899eac4013d",
+      "path": "enterprise_ai_backend/scripts/export_openapi.py",
+      "row": "row5",
+      "sha256": "2cff8d8f535476d2c45c8c26cd423c73f183b6227340f8aa722866461ac4762f",
+      "size": 694,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "test",
+      "mtime_utc": "2026-04-18T02:52:46.594750+00:00",
+      "node_id": "c0e9162780a6",
+      "path": "enterprise_ai_backend/tests/__init__.py",
+      "row": "row5",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "active",
+      "tags": [
+        "verify"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "test",
+      "mtime_utc": "2026-04-21T07:45:17.553890+00:00",
+      "node_id": "964539ed6a3d",
+      "path": "enterprise_ai_backend/tests/test_backend.py",
+      "row": "row5",
+      "sha256": "c67d7d4ef41d46a0c09cde2f704372d9961bc937ace1fe6b53520a6a158fff17",
+      "size": 61285,
+      "status": "active",
+      "tags": [
+        "verify"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "test",
+      "mtime_utc": "2026-04-20T11:14:44.025543+00:00",
+      "node_id": "907564d2c4f6",
+      "path": "enterprise_ai_backend/tests/test_sqlite_compat.py",
+      "row": "row5",
+      "sha256": "ac49aed78888f263cb75ec707ab5674a8b7641ee8e4ada883797e18f80e2941f",
+      "size": 2793,
+      "status": "active",
+      "tags": [
+        "verify"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T07:36:34.857131+00:00",
+      "node_id": "70389516b06a",
+      "path": "Front end/Front end..txt",
+      "row": "row8",
+      "sha256": "ac1353989fbbd5fbda03dbcb4f652e47d555770bebb91db1916a42f06dd9ad60",
+      "size": 273,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.585861+00:00",
+      "node_id": "0fa31e21e36c",
+      "path": "ga_hardening_compliance_launch/ga_hardening_compliance_launch.txt",
+      "row": "row8",
+      "sha256": "a5a4893d70feb87fccde3186e8303e0374c271f61d13270693ed6b551112d7bd",
+      "size": 897,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T03:05:19.087749+00:00",
+      "node_id": "7981af4b6d94",
+      "path": "GitHub documentation/GitHub documentation.txt",
+      "row": "row8",
+      "sha256": "da501cafbe335678dd6e86ab8cb0034033871681d399f86d91820a311f9a7d84",
+      "size": 6120,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.144737+00:00",
+      "node_id": "4cb43df399f4",
+      "path": "go_no_go_checklist/go_no_go_checklist.txt",
+      "row": "row8",
+      "sha256": "d688f1cf0be1e9a9554fc66f09e6b863cdc38b146e0bd37ddacf497e6d01a3a2",
+      "size": 1066,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T07:38:43.623913+00:00",
+      "node_id": "89aae281672d",
+      "path": "gui/New Text Document.txt",
+      "row": "row8",
+      "sha256": "26c0f483638a1f62da6576eb5a137ea2e6e08b9432c9e2ed3483b9e1db994ea5",
+      "size": 390,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.600880+00:00",
+      "node_id": "30293b48931b",
+      "path": "incident_response_runbook/incident_response_runbook.txt",
+      "row": "row8",
+      "sha256": "b4489d7e7554eaebc4a8739bc10227f7c6e96a50d350ba045534b49b09b48a01",
+      "size": 1109,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-18T12:19:10.937532+00:00",
+      "node_id": "f1af55b139c9",
+      "path": "infra/bicep/README.md",
+      "row": "row10",
+      "sha256": "be2649954ec983680f05ef914d45b6be72186da32b577cdbccba385d5c8c4fc8",
+      "size": 1970,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T10:58:32.291633+00:00",
+      "node_id": "ba55fe91b378",
+      "path": "infra/bicep/main.bicep",
+      "row": "row13",
+      "sha256": "fae47cd1689169186cf7adfcfe2625f93d4068089ee8640a4eb511c8e4826c8e",
+      "size": 5926,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-21T07:49:05.845172+00:00",
+      "node_id": "122dbc59eeef",
+      "path": "infra/bicep/main.json",
+      "row": "row13",
+      "sha256": "583ef0bfa40f90aecb26dd037463b2126561f08f588b53ac2c76a855b3612d46",
+      "size": 10065,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "future.row13.backlog",
+      "kind": "infra",
+      "mtime_utc": "2026-04-18T07:32:45.284171+00:00",
+      "node_id": "9eb5c3cb7514",
+      "path": "infra/docker/docker-compose.yml",
+      "row": "row13",
+      "sha256": "79f8352dc0c7b7e53d28797c0551f40f715271845ffb833f4d7b706f8e46bd98",
+      "size": 1474,
+      "status": "deferred",
+      "tags": [
+        "deploy"
+      ],
+      "zone": "future"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:24:51.439956+00:00",
+      "node_id": "5497842fec3d",
+      "path": "kpi_dashboard_definition/kpi_dashboard_definition.txt",
+      "row": "row8",
+      "sha256": "9a0c03fe351d0c6e5860ed00fba2911fc30fc2bca2f8ac95bcc110e42a97ecc4",
+      "size": 1307,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-18T07:32:14.356069+00:00",
+      "node_id": "e644a8379053",
+      "path": "libs/policy/README.md",
+      "row": "row10",
+      "sha256": "93e4c5126fc5db22bd015dccc713495c60ee30c098baaf097a3ec10f15f5c04a",
+      "size": 1072,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "code",
+      "mtime_utc": "2026-04-18T07:32:03.522565+00:00",
+      "node_id": "9fa509adcc42",
+      "path": "libs/policy/scoring.py",
+      "row": "row5",
+      "sha256": "6a9bc1f1dc33a4df51e2a67f84b12b0952549cf586a8e752cf26e4a6dbf58064",
+      "size": 1729,
+      "status": "active",
+      "tags": [
+        "implementation"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "red.row10.evidence",
+      "kind": "doc",
+      "mtime_utc": "2026-04-18T07:32:21.285469+00:00",
+      "node_id": "5a2e6e759030",
+      "path": "libs/schemas/README.md",
+      "row": "row10",
+      "sha256": "70e12143e6140dde303802df32a94009415157737759f2b097480dc1295208f5",
+      "size": 816,
+      "status": "verified",
+      "tags": [
+        "docs"
+      ],
+      "zone": "red"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "contract",
+      "mtime_utc": "2026-04-21T07:49:09.334068+00:00",
+      "node_id": "e5200f26c8a0",
+      "path": "libs/schemas/openapi.json",
+      "row": "row8",
+      "sha256": "53bdc069513189460a8993c5b9798417d48233ed3cb78fc21a9cc1f5006e97ee",
+      "size": 112248,
+      "status": "review",
+      "tags": [
+        "contract"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.627383+00:00",
+      "node_id": "e258f55d7b7b",
+      "path": "maintenance_and_operating_plan/maintenance_and_operating_plan.txt",
+      "row": "row8",
+      "sha256": "28d759cf3bf23797191f9ed295232c4eb74a257b31abb2a0c5eb53ae89487c3a",
+      "size": 974,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:25:39.539726+00:00",
+      "node_id": "8a43fef39962",
+      "path": "market_research_and_use_cases/market_research_and_use_cases.txt",
+      "row": "row8",
+      "sha256": "1e6a7753d32c382e81f4f89ce1788835ed96deaae7c0ad38f5bab44bd173682f",
+      "size": 2193,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-18T07:38:38.693456+00:00",
+      "node_id": "6c79ca21b58d",
+      "path": "Middle layer/Middle layer..txt",
+      "row": "row8",
+      "sha256": "b85c076c78e6f993a258acba461590e7e237b5b594abe1202c392fdb48e6bf1f",
+      "size": 760,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T04:16:50.595602+00:00",
+      "node_id": "ffa7ca585803",
+      "path": "mvp_core_platform_build/coding_assistant_precode_intake_review.txt",
+      "row": "row8",
+      "sha256": "d18df2dd1a0a33631ccd2160fb24eac4700d9bde70253521bb1df6d88d3cb573",
+      "size": 3930,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.109400+00:00",
+      "node_id": "316eba9073f0",
+      "path": "mvp_core_platform_build/implementation_work_breakdown.txt",
+      "row": "row8",
+      "sha256": "d366cd25f7d51ed4014dc3555a8f9db9268a0a62f599ffbf39444e300635add6",
+      "size": 1266,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.099384+00:00",
+      "node_id": "b8309f2974ff",
+      "path": "mvp_core_platform_build/mvp_core_platform_build.txt",
+      "row": "row8",
+      "sha256": "277bd42a897c5364b4a1bb980b78c9bdf42324fc6fe7ae505731a9b25c600297",
+      "size": 1518,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.119968+00:00",
+      "node_id": "dad828ec517c",
+      "path": "mvp_dashboard_integrations_testing/ci_cd_pipeline_spec.txt",
+      "row": "row8",
+      "sha256": "d13e8c6f6b7eeb88498497abeee1562da7bfe0f0597b335c5d316b37707b2340",
+      "size": 1093,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.132455+00:00",
+      "node_id": "729f9764b7ef",
+      "path": "mvp_dashboard_integrations_testing/environment_config_matrix.txt",
+      "row": "row8",
+      "sha256": "fad37b8639866c3c086449f6ab22bd81e0bbf629e59066415ee2f917b57fc110",
+      "size": 1369,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.695177+00:00",
+      "node_id": "5de6cca31e3a",
+      "path": "mvp_dashboard_integrations_testing/mvp_dashboard_integrations_testing.txt",
+      "row": "row8",
+      "sha256": "e4d2f6ddfbb9df9b131d1fb815d2bb7031fb2f4a5a32b54074c98d38574ae8f6",
+      "size": 1044,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.703243+00:00",
+      "node_id": "d2fa54954b96",
+      "path": "mvp_readiness_engine_release_gates/mvp_readiness_engine_release_gates.txt",
+      "row": "row8",
+      "sha256": "e92318b02cd78adc06ea38b1cd59dab8b9f365e495ca0e8c77b1c83b8dace04e",
+      "size": 873,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:24:51.426293+00:00",
+      "node_id": "aec1da185db0",
+      "path": "mvp_readiness_engine_release_gates/readiness_policy_spec.txt",
+      "row": "row8",
+      "sha256": "b3fff90cf321dd7e95fccbf029c09f19d4cc6d8c37fb56833056a8ffc9cacf3c",
+      "size": 1319,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.719423+00:00",
+      "node_id": "85864aa9e906",
+      "path": "NIST AI RMF Folder Completion Plan/NIST AI RMF Folder Completion Plan.txt",
+      "row": "row8",
+      "sha256": "26ad9a8902c48b1da3d2044d261623140bce063a595b6aeeecc0abef27f5a490",
+      "size": 996,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.727005+00:00",
+      "node_id": "96f9a762ce2f",
+      "path": "pilot_execution_feedback/pilot_execution_feedback.txt",
+      "row": "row8",
+      "sha256": "38dc6e8e07c25714bf0d0dd0bf0642514f68b40545e2ca8ff11477ff483ebcbe",
+      "size": 1009,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.731776+00:00",
+      "node_id": "90dc89930af5",
+      "path": "pilot_scorecard_template/pilot_scorecard_template.txt",
+      "row": "row8",
+      "sha256": "41dbe3923adc709757803123157a008069bd711db53970197119285df1dc0610",
+      "size": 876,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.736778+00:00",
+      "node_id": "9c7a3afbda52",
+      "path": "product_backlog/product_backlog.txt",
+      "row": "row8",
+      "sha256": "013ce6a938f46a5a77e804d0aafe7b09045e6100d5dba2ff9de624b9e6f5ed96",
+      "size": 1299,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:25:39.549452+00:00",
+      "node_id": "dad74f3d937d",
+      "path": "project_charter/P1-BIZCASE-002.txt",
+      "row": "row8",
+      "sha256": "2b9c148326db9770d4d77ea3ae92a8eab438d36144e05bc956210cdc975be010",
+      "size": 1836,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.758795+00:00",
+      "node_id": "f22c2f7d79d1",
+      "path": "project_charter/P1-VISION-008.txt",
+      "row": "row8",
+      "sha256": "622e79e4d191a6a6a15dc25400644aa9d1fd9507064a192bf18c8230e437c33f",
+      "size": 1157,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.744319+00:00",
+      "node_id": "fca6cda5cd09",
+      "path": "project_charter/glossary.txt",
+      "row": "row8",
+      "sha256": "e73aa26325f91fbf802dd45a61e415d5727dc52a0bd6664635f637b3b7f920f2",
+      "size": 1137,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.764304+00:00",
+      "node_id": "c7cca92a50c5",
+      "path": "project_charter/project_charter.txt",
+      "row": "row8",
+      "sha256": "07583b60f8f106233af8f29f1a03afc536724f149bacf5c1015e58a711fd6370",
+      "size": 2074,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.768838+00:00",
+      "node_id": "07c3e31dcf8d",
+      "path": "release_plan/release_plan.txt",
+      "row": "row8",
+      "sha256": "31229f7049aad4a8f91612868c4c5bfd75a9d0315f4ac36dbeb1b70320724526",
+      "size": 1115,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:25:39.557989+00:00",
+      "node_id": "f336330155e3",
+      "path": "requirements_and_prd_baseline/requirements_and_prd_baseline.txt",
+      "row": "row8",
+      "sha256": "cc327c59e4a2921a44e44a4fb1d93bd92558afb26fa68e040ba3221448ef0cef",
+      "size": 2679,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:24:51.537056+00:00",
+      "node_id": "e9c679773813",
+      "path": "risk_register/risk_register.txt",
+      "row": "row8",
+      "sha256": "5d1d07d43d1c581a3fbff9b8b1e0e33b98048fcc2b0c9abda8bbab7d920a30cc",
+      "size": 1648,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.793467+00:00",
+      "node_id": "b54255606fc9",
+      "path": "security_and_compliance_plan/security_and_compliance_plan.txt",
+      "row": "row8",
+      "sha256": "d856cf143635d26ee510a62389ce6af7d6713a9983e409620f54e6c36c9ec1f5",
+      "size": 1401,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T05:07:05.455429+00:00",
+      "node_id": "24839233114b",
+      "path": "sp-core-spec-json/sp-core-spec-json.txt",
+      "row": "row8",
+      "sha256": "3362547ffd891a55bb69f17afa5d7017b64054ced414e1e179a87ed0f4119381",
+      "size": 2165,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "test",
+      "mtime_utc": "2026-04-15T01:24:51.457370+00:00",
+      "node_id": "4dbf5d685343",
+      "path": "test_strategy_and_test_plan/test_strategy_and_test_plan.txt",
+      "row": "row5",
+      "sha256": "cb573dac3bfa440bf86b8659528c181db30241c8f023edbebc7591b1a3c45477",
+      "size": 1304,
+      "status": "active",
+      "tags": [
+        "verify"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T04:16:50.142907+00:00",
+      "node_id": "b69d8f6bbd50",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/README_HANDOFF.txt",
+      "row": "row8",
+      "sha256": "9cc7c7dac1fd9fb325f9c82c1c0aeb79b3472084e9b8feb6bd6cafa63c50db30",
+      "size": 183,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-15T01:05:03.925816+00:00",
+      "node_id": "7026dd795b8c",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/SP-Core_Spec_2026-04-14_snapshot.json",
+      "row": "row8",
+      "sha256": "d08fe69c69619d5b57f5856fa50ad6ad072dd6499e03227eee19bf04840b4d03",
+      "size": 3037,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T04:16:50.121082+00:00",
+      "node_id": "9ce1b9060cab",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/MANIFEST.txt",
+      "row": "row8",
+      "sha256": "3a826f9f7b6a8d2f29d18b8f365c54c8d5a53b1659f3c7a7cb86c1f0ffc27378",
+      "size": 6355,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.086357+00:00",
+      "node_id": "584d1cec8346",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/Project software development life cycle..txt",
+      "row": "row8",
+      "sha256": "873d216d36547d20e20594279cd26452c5165b37ffec988aba93d9a6a0c9cf90",
+      "size": 2548,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-15T01:14:12.567812+00:00",
+      "node_id": "134cf9df0f39",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/SP-Core_Spec.json",
+      "row": "row8",
+      "sha256": "d5736a61b86ce2c80cbb3501d1c8c222ba18c55fd9c1e305920b99032f9b46e5",
+      "size": 1873,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.095383+00:00",
+      "node_id": "54860cac89e2",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/architecture_and_api_contracts.txt",
+      "row": "row8",
+      "sha256": "cf8dbee1fede16559e0091eb720e7b63031c1fbc0451ec4e4fccb7fef745b604",
+      "size": 1704,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.484274+00:00",
+      "node_id": "592f7d151e30",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/building_block_view.txt",
+      "row": "row8",
+      "sha256": "12dbb51a31961ff91fd8bd13222df31ba5721379dad9cfa59a72779ec269b440",
+      "size": 1141,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.495764+00:00",
+      "node_id": "17563368a47b",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/cross_cutting_concepts.txt",
+      "row": "row8",
+      "sha256": "a653f0e57d666e7668bf9de8b373df29d8a18fe0d5957421b61803056cd94e6a",
+      "size": 1051,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:24:51.518507+00:00",
+      "node_id": "9ece3dfac327",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/data_model_schema.txt",
+      "row": "row8",
+      "sha256": "6d59677e6724ef920b8ec1829141c230f2e854311fdeab85e79d7e5fd5592f6d",
+      "size": 1154,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.515990+00:00",
+      "node_id": "23bc749476c5",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/deployment_view.txt",
+      "row": "row8",
+      "sha256": "33dbcb86e95e81f0c0c0ee7f0d053aaf02b35867b5eecf0ffebb4b2350520206",
+      "size": 1056,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.526690+00:00",
+      "node_id": "e56518be4934",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/error_model_and_status_codes.txt",
+      "row": "row8",
+      "sha256": "bf6d2e7557819c835d1e50ada80983b98c3b47609d4385094a1ad81bcb1b1f60",
+      "size": 1090,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.532304+00:00",
+      "node_id": "d470c75975ab",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/integration_contracts.txt",
+      "row": "row8",
+      "sha256": "63c7a8476293ff9cd33dd24db0e710af32ccd439520ceca6d6286063503dddda",
+      "size": 1166,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-15T01:24:51.528679+00:00",
+      "node_id": "6190d7488d2a",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/openapi_spec.yaml",
+      "row": "row8",
+      "sha256": "0eef486386934ee41b436751d8e82ea658abb4f4f987a67bb44103ef753ed104",
+      "size": 6050,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.537048+00:00",
+      "node_id": "a3cbfd215600",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/architecture_and_api_contracts/runtime_scenarios.txt",
+      "row": "row8",
+      "sha256": "275ce4b1888c1e63377d60d2fc0ac8916dbfe8cd8cb553f55febb81d6a073e71",
+      "size": 1030,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T03:12:28.368183+00:00",
+      "node_id": "03f9de48d30e",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/Azure/Azure.txt",
+      "row": "row8",
+      "sha256": "95abc23435766dd79ec7c8f3612de8266c370dfa3e3a53add3d32d2d89fbf3a6",
+      "size": 6511,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.545611+00:00",
+      "node_id": "0ad972c69604",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/data_governance_and_privacy_plan/data_governance_and_privacy_plan.txt",
+      "row": "row8",
+      "sha256": "d6748eaf95253dd492449ed02b4e3726d312c3b2802f03cda40efdf649651e91",
+      "size": 1354,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.550353+00:00",
+      "node_id": "765008cf6721",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/decision_log_adr/decision_log_adr.txt",
+      "row": "row8",
+      "sha256": "082fed9ee7f426aa013981bda8895fea748a46053ba14f7187c0ed8a65fe8aee",
+      "size": 1365,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.558221+00:00",
+      "node_id": "270f4b12bc15",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/discovery_and_problem_definition/reliability-platform-v1 .txt",
+      "row": "row8",
+      "sha256": "3c7b7c91c7643e796afa6fd20edc7aa23987c69624cf63f446206d6ed4d0389a",
+      "size": 1462,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.570715+00:00",
+      "node_id": "d0c00ac35795",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/Enterprise readability AI Platform v1 Artificial Intelligence/Risk Management Framework/Risk Management Framework.txt",
+      "row": "row8",
+      "sha256": "8a0f574cb2de4dc9dbb474a05a8d5277bf097c334759678cd66950113a6d88de",
+      "size": 2471,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.579809+00:00",
+      "node_id": "72c315492783",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/enterprise-ai-reliability-platform-v1/arc42_mapping_index.txt",
+      "row": "row8",
+      "sha256": "ec07de8f8c8152960c48010e3617673578138e513db0f2b7d6131b50c419af25",
+      "size": 1520,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:16:31.870741+00:00",
+      "node_id": "fdc933e76bd1",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/enterprise-ai-reliability-platform-v1/sdlc_baseline_project_software_development_life_cycle_txt",
+      "row": "row8",
+      "sha256": null,
+      "size": 568,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.585861+00:00",
+      "node_id": "737ef6829c2b",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/ga_hardening_compliance_launch/ga_hardening_compliance_launch.txt",
+      "row": "row8",
+      "sha256": "a5a4893d70feb87fccde3186e8303e0374c271f61d13270693ed6b551112d7bd",
+      "size": 897,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T03:05:19.087749+00:00",
+      "node_id": "4b6b9c0deb4b",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/GitHub documentation/GitHub documentation.txt",
+      "row": "row8",
+      "sha256": "da501cafbe335678dd6e86ab8cb0034033871681d399f86d91820a311f9a7d84",
+      "size": 6120,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.144737+00:00",
+      "node_id": "030a874591ac",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/go_no_go_checklist/go_no_go_checklist.txt",
+      "row": "row8",
+      "sha256": "d688f1cf0be1e9a9554fc66f09e6b863cdc38b146e0bd37ddacf497e6d01a3a2",
+      "size": 1066,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.600880+00:00",
+      "node_id": "d6376cb95410",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/incident_response_runbook/incident_response_runbook.txt",
+      "row": "row8",
+      "sha256": "b4489d7e7554eaebc4a8739bc10227f7c6e96a50d350ba045534b49b09b48a01",
+      "size": 1109,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:24:51.439956+00:00",
+      "node_id": "dc284f4f131d",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/kpi_dashboard_definition/kpi_dashboard_definition.txt",
+      "row": "row8",
+      "sha256": "9a0c03fe351d0c6e5860ed00fba2911fc30fc2bca2f8ac95bcc110e42a97ecc4",
+      "size": 1307,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.627383+00:00",
+      "node_id": "eccaac77cbab",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/maintenance_and_operating_plan/maintenance_and_operating_plan.txt",
+      "row": "row8",
+      "sha256": "28d759cf3bf23797191f9ed295232c4eb74a257b31abb2a0c5eb53ae89487c3a",
+      "size": 974,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:25:39.539726+00:00",
+      "node_id": "2f3437acb996",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/market_research_and_use_cases/market_research_and_use_cases.txt",
+      "row": "row8",
+      "sha256": "1e6a7753d32c382e81f4f89ce1788835ed96deaae7c0ad38f5bab44bd173682f",
+      "size": 2193,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.079652+00:00",
+      "node_id": "615336cfb8fe",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/mvp_core_platform_build/coding_assistant_precode_intake_review.txt",
+      "row": "row8",
+      "sha256": "e3d7ebf837184c502bb5e99e8c522ff21bf5cea9150577ae9fd8efe98593e031",
+      "size": 3642,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.109400+00:00",
+      "node_id": "b9e0ee9e6640",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/mvp_core_platform_build/implementation_work_breakdown.txt",
+      "row": "row8",
+      "sha256": "d366cd25f7d51ed4014dc3555a8f9db9268a0a62f599ffbf39444e300635add6",
+      "size": 1266,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.099384+00:00",
+      "node_id": "572e42201498",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/mvp_core_platform_build/mvp_core_platform_build.txt",
+      "row": "row8",
+      "sha256": "277bd42a897c5364b4a1bb980b78c9bdf42324fc6fe7ae505731a9b25c600297",
+      "size": 1518,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.119968+00:00",
+      "node_id": "d77a7b063c79",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/mvp_dashboard_integrations_testing/ci_cd_pipeline_spec.txt",
+      "row": "row8",
+      "sha256": "d13e8c6f6b7eeb88498497abeee1562da7bfe0f0597b335c5d316b37707b2340",
+      "size": 1093,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:34:16.132455+00:00",
+      "node_id": "4a750ae6e4e9",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/mvp_dashboard_integrations_testing/environment_config_matrix.txt",
+      "row": "row8",
+      "sha256": "fad37b8639866c3c086449f6ab22bd81e0bbf629e59066415ee2f917b57fc110",
+      "size": 1369,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.695177+00:00",
+      "node_id": "4e02d8eca2a2",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/mvp_dashboard_integrations_testing/mvp_dashboard_integrations_testing.txt",
+      "row": "row8",
+      "sha256": "e4d2f6ddfbb9df9b131d1fb815d2bb7031fb2f4a5a32b54074c98d38574ae8f6",
+      "size": 1044,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.703243+00:00",
+      "node_id": "d519d970035a",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/mvp_readiness_engine_release_gates/mvp_readiness_engine_release_gates.txt",
+      "row": "row8",
+      "sha256": "e92318b02cd78adc06ea38b1cd59dab8b9f365e495ca0e8c77b1c83b8dace04e",
+      "size": 873,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:24:51.426293+00:00",
+      "node_id": "56d0f47d7490",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/mvp_readiness_engine_release_gates/readiness_policy_spec.txt",
+      "row": "row8",
+      "sha256": "b3fff90cf321dd7e95fccbf029c09f19d4cc6d8c37fb56833056a8ffc9cacf3c",
+      "size": 1319,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.719423+00:00",
+      "node_id": "081dfb321a21",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/NIST AI RMF Folder Completion Plan/NIST AI RMF Folder Completion Plan.txt",
+      "row": "row8",
+      "sha256": "26ad9a8902c48b1da3d2044d261623140bce063a595b6aeeecc0abef27f5a490",
+      "size": 996,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.727005+00:00",
+      "node_id": "f8d0e9548432",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/pilot_execution_feedback/pilot_execution_feedback.txt",
+      "row": "row8",
+      "sha256": "38dc6e8e07c25714bf0d0dd0bf0642514f68b40545e2ca8ff11477ff483ebcbe",
+      "size": 1009,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.731776+00:00",
+      "node_id": "8ebf7875e952",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/pilot_scorecard_template/pilot_scorecard_template.txt",
+      "row": "row8",
+      "sha256": "41dbe3923adc709757803123157a008069bd711db53970197119285df1dc0610",
+      "size": 876,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.736778+00:00",
+      "node_id": "cde728fd9ffa",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/product_backlog/product_backlog.txt",
+      "row": "row8",
+      "sha256": "013ce6a938f46a5a77e804d0aafe7b09045e6100d5dba2ff9de624b9e6f5ed96",
+      "size": 1299,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:25:39.549452+00:00",
+      "node_id": "22a7fbe1aee6",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/project_charter/P1-BIZCASE-002.txt",
+      "row": "row8",
+      "sha256": "2b9c148326db9770d4d77ea3ae92a8eab438d36144e05bc956210cdc975be010",
+      "size": 1836,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.758795+00:00",
+      "node_id": "99adbd44f0cc",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/project_charter/P1-VISION-008.txt",
+      "row": "row8",
+      "sha256": "622e79e4d191a6a6a15dc25400644aa9d1fd9507064a192bf18c8230e437c33f",
+      "size": 1157,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.744319+00:00",
+      "node_id": "a85f82cf374a",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/project_charter/glossary.txt",
+      "row": "row8",
+      "sha256": "e73aa26325f91fbf802dd45a61e415d5727dc52a0bd6664635f637b3b7f920f2",
+      "size": 1137,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.764304+00:00",
+      "node_id": "d4ebbfc22817",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/project_charter/project_charter.txt",
+      "row": "row8",
+      "sha256": "07583b60f8f106233af8f29f1a03afc536724f149bacf5c1015e58a711fd6370",
+      "size": 2074,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.768838+00:00",
+      "node_id": "45f041bfa133",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/release_plan/release_plan.txt",
+      "row": "row8",
+      "sha256": "31229f7049aad4a8f91612868c4c5bfd75a9d0315f4ac36dbeb1b70320724526",
+      "size": 1115,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:25:39.557989+00:00",
+      "node_id": "a175b2fe76e8",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/requirements_and_prd_baseline/requirements_and_prd_baseline.txt",
+      "row": "row8",
+      "sha256": "cc327c59e4a2921a44e44a4fb1d93bd92558afb26fa68e040ba3221448ef0cef",
+      "size": 2679,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:24:51.537056+00:00",
+      "node_id": "3b232c04c567",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/risk_register/risk_register.txt",
+      "row": "row8",
+      "sha256": "5d1d07d43d1c581a3fbff9b8b1e0e33b98048fcc2b0c9abda8bbab7d920a30cc",
+      "size": 1648,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:22:56.793467+00:00",
+      "node_id": "cf117f8f6696",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/security_and_compliance_plan/security_and_compliance_plan.txt",
+      "row": "row8",
+      "sha256": "d856cf143635d26ee510a62389ce6af7d6713a9983e409620f54e6c36c9ec1f5",
+      "size": 1401,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "test",
+      "mtime_utc": "2026-04-15T01:24:51.457370+00:00",
+      "node_id": "df4c24876073",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_Handoff_20260414-2316/test_strategy_and_test_plan/test_strategy_and_test_plan.txt",
+      "row": "row5",
+      "sha256": "cb573dac3bfa440bf86b8659528c181db30241c8f023edbebc7591b1a3c45477",
+      "size": 1304,
+      "status": "active",
+      "tags": [
+        "verify"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:42.990041+00:00",
+      "node_id": "cb6e740755f8",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/01_project_charter.txt",
+      "row": "row8",
+      "sha256": "4d42d0780db46ed6e08d1722e153e3fe8ba23b540901a2a8a77780edd4a9745e",
+      "size": 1266,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.688573+00:00",
+      "node_id": "f6e6f9467a52",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/02_discovery_and_problem_definition.txt",
+      "row": "row8",
+      "sha256": "24acc086df2295f0c6f3d1e21727846592c8dfd99430ee3259f95258801d937c",
+      "size": 1283,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.699019+00:00",
+      "node_id": "83795cfccbb0",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/03_market_research_and_use_cases.txt",
+      "row": "row8",
+      "sha256": "44e03ef580456e9c6cabde578c923323168abfd46428d0c8da04d0decefce1c7",
+      "size": 1306,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:43.006633+00:00",
+      "node_id": "7a1d9901e613",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/04_requirements_and_prd_baseline.txt",
+      "row": "row8",
+      "sha256": "f22594a71d0c5339f0841537cff42b1884ab7233455a2f0cedb0e571421e571c",
+      "size": 3183,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:43.033122+00:00",
+      "node_id": "9971cf143ce9",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/05_architecture_and_api_contracts.txt",
+      "row": "row8",
+      "sha256": "5d0fa567a88d0df93807ff1bab109026e40db8ec53d0d7faee3c637ebe04fcf3",
+      "size": 1852,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.740988+00:00",
+      "node_id": "c429c374fd12",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/06_mvp_core_platform_build.txt",
+      "row": "row8",
+      "sha256": "18d9c2afdf174b1360cfcb01c6c5676cd20cd0a043365934eae0a3e3d01c121c",
+      "size": 925,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.754652+00:00",
+      "node_id": "09ae1cb6c471",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/07_mvp_readiness_engine_release_gates.txt",
+      "row": "row8",
+      "sha256": "b24c0d4b0aeb8f8078376baaa2e4cc2b9b45dd64a4f9310a3bded99817e6cddf",
+      "size": 1235,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.769517+00:00",
+      "node_id": "bc861bf3bd98",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/08_mvp_dashboard_integrations_testing.txt",
+      "row": "row8",
+      "sha256": "d6c2dfa7f6fe72c350ef74c36db011e1c566b90f0034e974237443199fe228f2",
+      "size": 1153,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.789474+00:00",
+      "node_id": "aae611697688",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/09_pilot_execution_feedback.txt",
+      "row": "row8",
+      "sha256": "0d7051b7826c4e3a3687f6e92a677140106e45b88d69d5e2bbddd0c8273b049a",
+      "size": 919,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.805991+00:00",
+      "node_id": "64fbc3ed18fb",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/10_ga_hardening_compliance_launch.txt",
+      "row": "row8",
+      "sha256": "a7f791c051409f26b74637047b111fea866a33435e3fea22e25890f81896f0fc",
+      "size": 877,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.818831+00:00",
+      "node_id": "ae817086289e",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/11_release_plan.txt",
+      "row": "row8",
+      "sha256": "b17b280b250f178c6327d04903130b1aaf82fd5253d814dc99c667391f60183d",
+      "size": 872,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:43.043226+00:00",
+      "node_id": "679f641272ea",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/12_test_strategy_and_test_plan.txt",
+      "row": "row8",
+      "sha256": "c0556f03064771441a61e4ddcd08511f39d5d5d7ab398ffc4d781b84d0a1022b",
+      "size": 930,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-14T09:45:42.851942+00:00",
+      "node_id": "3450ecd9c0b8",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/13_maintenance_and_operating_plan.txt",
+      "row": "row8",
+      "sha256": "c3bd13e9aed004f2a1e77ca98189a2c52f0625335a7d5ba98be64c1c8fbb5193",
+      "size": 1253,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:43.154565+00:00",
+      "node_id": "e9bedaaf7409",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/AUDIT_MANIFEST.txt",
+      "row": "row8",
+      "sha256": "5144de81278d320fae6447887b8a53cf5a3d88a8fcfda148fe81ba04f54e732a",
+      "size": 359,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:43.000094+00:00",
+      "node_id": "cad033854598",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/P1-BIZCASE-002.txt",
+      "row": "row8",
+      "sha256": "3daa72f9957d413bd39f9fc62ba48800801001432d993bad4d9150d1505e5618",
+      "size": 932,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:42.992556+00:00",
+      "node_id": "946394ce4e6c",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/P1-VISION-008.txt",
+      "row": "row8",
+      "sha256": "972ff59dfac7137ca9af2b2652081a0a605d8528334488e44dada455bb3b7b10",
+      "size": 1015,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:42.985515+00:00",
+      "node_id": "a791a8252ca9",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/Project software development life cycle..txt",
+      "row": "row8",
+      "sha256": "7e9ecf2885df1f948d84663851a7e4af30bbdc2b16fb519470af9f153dbb154e",
+      "size": 1416,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:42.985515+00:00",
+      "node_id": "902af90e7118",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/SDLC_MASTER.txt",
+      "row": "row8",
+      "sha256": "7e9ecf2885df1f948d84663851a7e4af30bbdc2b16fb519470af9f153dbb154e",
+      "size": 1416,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:42.985515+00:00",
+      "node_id": "3daa7936bc9b",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/SDLC_MASTER_2026-04-14_historical_snapshot.txt",
+      "row": "row8",
+      "sha256": "7e9ecf2885df1f948d84663851a7e4af30bbdc2b16fb519470af9f153dbb154e",
+      "size": 1416,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "config",
+      "mtime_utc": "2026-04-15T01:05:03.925816+00:00",
+      "node_id": "07a289dc354b",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/architecture_and_api_contracts/SP-Core_Spec.json",
+      "row": "row8",
+      "sha256": "d08fe69c69619d5b57f5856fa50ad6ad072dd6499e03227eee19bf04840b4d03",
+      "size": 3037,
+      "status": "review",
+      "tags": [
+        "config"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:05:03.917768+00:00",
+      "node_id": "d06834ee9656",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/architecture_and_api_contracts/architecture_and_api_contracts.txt",
+      "row": "row8",
+      "sha256": "86670084e64d4e955ed692a0bee46259e834e5cbfcce2a2f297b112695f7bf7a",
+      "size": 1911,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:04:13.573151+00:00",
+      "node_id": "77bc853491a4",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/discovery_and_problem_definition/reliability-platform-v1 .txt",
+      "row": "row8",
+      "sha256": "e7cfa79911da5af2b902c091ee1ae76d42311ba0cdb7a1854282a22c2bb1f9c6",
+      "size": 1367,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:04:13.579017+00:00",
+      "node_id": "11181ff53927",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/ga_hardening_compliance_launch/ga_hardening_compliance_launch.txt",
+      "row": "row8",
+      "sha256": "bee2d1387bf6074fef5fb165516bc17ad238348cfc04b8643fbca30f6fde35b8",
+      "size": 880,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:04:13.591668+00:00",
+      "node_id": "338c0797760c",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/maintenance_and_operating_plan/maintenance_and_operating_plan.txt",
+      "row": "row8",
+      "sha256": "0c0b3a5eec3f906e3cefd0e0f923b7b1a9ed82bfc5386ff8da6733ff4f6a5cd3",
+      "size": 1301,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:05:03.921264+00:00",
+      "node_id": "3de3d4f476e5",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/market_research_and_use_cases/market_research_and_use_cases.txt",
+      "row": "row8",
+      "sha256": "6c213aef036985537dff2e4c7d6f16b9f30730453e1f7154760d06788a0cf39c",
+      "size": 1352,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:04:13.608211+00:00",
+      "node_id": "1921ca6d33f9",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/mvp_core_platform_build/mvp_core_platform_build.txt",
+      "row": "row8",
+      "sha256": "ca614b9066a0d1ea937fe85d727c91682c302dff5a48e65ab5c58cbd3ff835ee",
+      "size": 939,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:04:13.621940+00:00",
+      "node_id": "433b593764e9",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/mvp_dashboard_integrations_testing/mvp_dashboard_integrations_testing.txt",
+      "row": "row8",
+      "sha256": "4a9556dc649459404585df502a39b562f5f578668784e68248abae90a0a3109e",
+      "size": 1187,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:04:13.642413+00:00",
+      "node_id": "aaeccb532c64",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/pilot_execution_feedback/pilot_execution_feedback.txt",
+      "row": "row8",
+      "sha256": "af0c44237e457e3a6209793f14008e0b386400cef863a615679053006f625e04",
+      "size": 942,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:43.000094+00:00",
+      "node_id": "c1abe44d5248",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/project_charter/P1-BIZCASE-002.txt",
+      "row": "row8",
+      "sha256": "3daa72f9957d413bd39f9fc62ba48800801001432d993bad4d9150d1505e5618",
+      "size": 932,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:42.992556+00:00",
+      "node_id": "47ff6db9e821",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/project_charter/P1-VISION-008.txt",
+      "row": "row8",
+      "sha256": "972ff59dfac7137ca9af2b2652081a0a605d8528334488e44dada455bb3b7b10",
+      "size": 1015,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:42.990041+00:00",
+      "node_id": "043999cb61ab",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/project_charter/project_charter.txt",
+      "row": "row8",
+      "sha256": "4d42d0780db46ed6e08d1722e153e3fe8ba23b540901a2a8a77780edd4a9745e",
+      "size": 1266,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:04:13.657437+00:00",
+      "node_id": "434679637eb2",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/release_plan/release_plan.txt",
+      "row": "row8",
+      "sha256": "4c88878234469505d5fe7db56ba010255d36cca4a05ba18c46a5205f43ed45eb",
+      "size": 905,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:04:13.661995+00:00",
+      "node_id": "d06297a2d6e0",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/requirements_and_prd_baseline/requirements_and_prd_baseline.txt",
+      "row": "row8",
+      "sha256": "11d783288d94361eb8003d3aa520f4b94869b94342699cb56c405ee3a00013fb",
+      "size": 3237,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:43.060277+00:00",
+      "node_id": "233b52d9dcd9",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/risk_register/risk_register.txt",
+      "row": "row8",
+      "sha256": "1c363bb5ee25afe54437fd936ffa44e1eeacd49c6cb2b30e4f79a1777bbdeba6",
+      "size": 2711,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T01:01:43.052270+00:00",
+      "node_id": "d82d4c267a53",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/security_and_compliance_plan/security_and_compliance_plan.txt",
+      "row": "row8",
+      "sha256": "f8533326c4678dfbf3caeced9ac4d9c43bf8a4918115b3e4a4e09ee509ab9a04",
+      "size": 1698,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "green.row5.exec",
+      "kind": "test",
+      "mtime_utc": "2026-04-15T01:01:43.043226+00:00",
+      "node_id": "405c48327129",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/EARP_SDLC_Audit_Mirror_2026-04-14/test_strategy_and_test_plan/test_strategy_and_test_plan.txt",
+      "row": "row5",
+      "sha256": "c0556f03064771441a61e4ddcd08511f39d5d5d7ab398ffc4d781b84d0a1022b",
+      "size": 930,
+      "status": "active",
+      "tags": [
+        "verify"
+      ],
+      "zone": "green"
+    },
+    {
+      "belongs_to": "enterprise-ai-reliability-platform-v1",
+      "coordinate": "yellow.row8.synthesis",
+      "kind": "unknown",
+      "mtime_utc": "2026-04-15T04:12:21.447982+00:00",
+      "node_id": "4e819e3fa3c4",
+      "path": "_admin_archives/memo_folder_contents_20260414-232329/_legacy_quarantine/meno.txt",
+      "row": "row8",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "review",
+      "tags": [
+        "review"
+      ],
+      "zone": "yellow"
+    }
+  ],
+  "root": "C:\\Users\\sbrya\\OneDrive\\Desktop\\enterprise-ai-reliability-platform-v1\\enterprise-ai-reliability-platform-v1",
+  "schema": "a1-metadata-index",
+  "version": "1.0"
+}

@@ -1,6 +1,6 @@
 # Release Evidence
 
-Date: 2026-04-20
+Date: 2026-04-21
 Candidate branch: `sprint-3/policy-audit-log`
 Candidate PR: `#8`
 
@@ -16,15 +16,16 @@ local evidence-bundle, release-approval, audit-ledger, and retention/legal-hold 
   is required on this laptop.
 - Backend dependencies are installed in `enterprise_ai_backend/.venv`.
 - Frontend dependencies are installed in `apps/web/node_modules`.
-- GitHub repository secrets are empty.
-- GitHub `dev` environment secrets are empty.
+- Azure credential provisioning is intentionally excluded from the current
+  repo-completion cycle.
+- GitHub repository and `dev` environment Azure secrets remain unset.
 
 ## Validation evidence
 
 | Evidence | Command | Status |
 | --- | --- | --- |
 | Backend install | `.\.venv\Scripts\python.exe -m pip install -r requirements.txt` | Pass |
-| Backend tests | `.\.venv\Scripts\python.exe tests\test_backend.py` | Pass: 378/378 assertions |
+| Backend tests | `.\.venv\Scripts\python.exe tests\test_backend.py` | Pass: 378/378 assertions using an isolated temp SQLite database |
 | Backend pytest | `.\.venv\Scripts\python.exe -m pytest -q` | Pass: 2 tests, 2 FastAPI deprecation warnings |
 | Backend dependency check | `.\.venv\Scripts\python.exe -m pip check` | Pass |
 | OpenAPI export | `.\.venv\Scripts\python.exe scripts\export_openapi.py` | Pass |
@@ -66,7 +67,8 @@ Release workflow `24663922506` on prior code-bearing commit `b29da3d`:
 
 ## Azure evidence
 
-The current blocker is credentials, not subscription tier:
+Credential provisioning is still an external prerequisite, not a repo/code
+blocker:
 
 - no Azure login is active on this laptop,
 - no GitHub Azure secrets are configured,
@@ -76,6 +78,10 @@ An active Azure Pay-As-You-Go subscription is sufficient for this project once
 it is attached to the account used for deployment and the required secret values
 are available.
 
+The release workflow now skips the Azure deployment job when those secrets are
+absent, so GHCR image publication and repo completion are no longer reported as
+failed just because cloud credentials are deferred.
+
 ## Live URLs
 
 - Web URL: pending Azure deployment
@@ -83,5 +89,7 @@ are available.
 
 ## Release recommendation
 
-Current recommendation: `no-go` for a live public release until Azure
-deployment completes and smoke tests confirm the live API and web URLs.
+Current recommendation for repo/package completion: `go`.
+
+Current recommendation for live public release: `no-go` until Azure deployment
+completes and smoke tests confirm the live API and web URLs.
