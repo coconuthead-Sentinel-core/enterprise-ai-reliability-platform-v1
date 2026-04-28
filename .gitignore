@@ -13,6 +13,8 @@ dist/
 __pycache__/
 **/__pycache__/
 *.pyc
+*.accdb
+*.lock
 *.db
 *.sqlite
 *.sqlite3
@@ -29,3 +31,8 @@ Back in/
 Front end/
 Middle layer/
 Enterprise readability AI Platform v1 Artificial Intelligence/
+_runtime/
+.claude/
+~/.claude/
+build/
+**/build/
