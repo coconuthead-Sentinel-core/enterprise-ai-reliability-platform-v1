@@ -1,4 +1,4 @@
-# Enterprise AI Reliability Platform - v1 (EARP)
+# Enterprise AI Reliability Platform v1
 
 Production-grade platform for scoring and monitoring AI systems against the
 NIST AI Risk Management Framework (GOVERN, MAP, MEASURE, MANAGE), with
@@ -11,6 +11,12 @@ real bcrypt + JWT, real SQLite, real scikit-learn `IsolationForest`, and
 contracts, and release packaging are current on the branch. Azure credential
 provisioning remains an external prerequisite intentionally excluded from the
 current work cycle.
+
+## Project Identity
+
+The canonical public name for this repo is **Enterprise AI Reliability Platform v1**.
+Approved short form: `EARP`.
+Use `EARP` only for this project.
 
 ## Monorepo layout
 
